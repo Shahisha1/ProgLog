@@ -1,7 +1,6 @@
 // Firebase Configuration
 // Replace these values with your Firebase project config
 const firebaseConfig = {
-
   apiKey: "AIzaSyDqj2EU0aDBaHTBAG6HLw_YqvMGBlak6oA",
   authDomain: "proglog-fa459.firebaseapp.com",
   projectId: "proglog-fa459",
