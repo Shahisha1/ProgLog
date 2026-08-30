@@ -1,6 +1,6 @@
 # 🎮 Proglog
 
-> Your personal gaming log — track games, trophies, progress, and your gaming journey.
+>Your personal gaming log — track games, trophies, progress, and your gaming journey.
 
 ![Status](https://img.shields.io/badge/status-in%20development-F59E0B)
 ![Frontend](https://img.shields.io/badge/frontend-HTML%20%7C%20CSS%20%7C%20JavaScript-3178C6)
