@@ -33,3 +33,6 @@ Clone the repository:
 ```bash
 git clone https://github.com/YOUR-USERNAME/proglog.git
 cd proglog
+
+## Catalog
+The built-in catalog now includes additional popular titles and is structured so complete trophy/achievement sets can be synced from platform APIs instead of shipping unverified lists. Responsive media queries cover desktop, tablet, mobile, touch input, and reduced-motion preferences.

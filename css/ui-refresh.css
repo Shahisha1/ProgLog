@@ -1,0 +1,299 @@
+/* Proglog UI refresh — clean, product-style interface inspired by the approved mockup. */
+:root {
+  --bg-main: #f6f8f7;
+  --bg-card: #ffffff;
+  --bg-card-hover: #fbfdfc;
+  --bg-surface: #f1f4f3;
+  --bg-input: #ffffff;
+  --text-main: #17201c;
+  --text-dim: #53615b;
+  --text-muted: #7a8781;
+  --line: #e2e8e5;
+  --line-strong: #d0d9d5;
+  --radius: 12px;
+  --radius-sm: 9px;
+  --radius-lg: 16px;
+  --shadow-sm: 0 4px 16px rgba(20, 35, 28, .06);
+  --shadow: 0 12px 34px rgba(20, 35, 28, .08);
+}
+
+body { background: var(--bg-main); }
+
+/* Keep the selected profile accent as the only brand color. */
+.brand span.accent { background: none; -webkit-text-fill-color: initial; color: var(--brand-primary); }
+.btn-primary { background: var(--brand-primary); color: var(--brand-contrast); border: 1px solid var(--brand-primary); }
+.btn-primary:hover { background: var(--brand-hover); border-color: var(--brand-hover); }
+.eyebrow { background: var(--brand-soft); border-color: var(--brand-border); }
+
+/* Simple P mark instead of the old trophy emblem. */
+.brandmark { filter: none; }
+.brandmark rect:first-child { fill: var(--brand-primary); stroke: var(--brand-primary); }
+.brandmark path, .brandmark rect:not(:first-child), .brandmark defs { display: none; }
+
+/* App/profile: turn the existing topbar into the compact left rail from the mockup. */
+body.app-page .topbar,
+body.profile-page .topbar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  width: 224px;
+  min-height: 100vh;
+  z-index: 50;
+  padding: 24px 14px 18px;
+  background: #1e2a2d;
+  border-right: 1px solid #29383a;
+  border-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
+}
+
+body.app-page .topbar > div:first-child,
+body.profile-page .topbar > div:first-child {
+  display: flex !important;
+  flex-direction: column;
+  align-items: stretch !important;
+  gap: 28px !important;
+}
+
+body.app-page .brand,
+body.profile-page .brand { color: #fff; padding: 4px 10px; }
+body.app-page .brand span.accent,
+body.profile-page .brand span.accent { color: #fff; }
+body.app-page .nav-links,
+body.profile-page .nav-links { display: flex; flex-direction: column; gap: 5px; }
+body.app-page .nav-link,
+body.profile-page .nav-link {
+  color: #c7d1ce;
+  padding: 11px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+body.app-page .nav-link:hover,
+body.profile-page .nav-link:hover { color: #fff; background: rgba(255,255,255,.06); }
+body.app-page .nav-link.active,
+body.profile-page .nav-link.active { color: #fff; background: var(--brand-primary); }
+body.app-page .topbar-right,
+body.profile-page .topbar-right {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+}
+body.app-page .user-chip,
+body.profile-page .user-chip { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.08); color: #fff; padding: 7px 10px 7px 7px; }
+body.app-page .user-chip span,
+body.profile-page .user-chip span { color: #fff; }
+body.app-page .topbar-right .btn,
+body.profile-page .topbar-right .btn { width: 100%; color: #d8e1de; border-color: rgba(255,255,255,.1); }
+
+body.app-page .container,
+body.profile-page .container { margin-left: 224px; max-width: none; padding: 34px 38px 70px; }
+body.app-page #site-footer,
+body.profile-page #site-footer { margin-left: 224px; }
+body.app-page .breadcrumbs,
+body.profile-page .breadcrumbs { display: none; }
+
+/* Dashboard composition */
+body.app-page .section-head { margin-bottom: 18px; }
+body.app-page .stat-strip { gap: 12px; margin-bottom: 22px; }
+body.app-page .stat-card { padding: 18px; border-radius: 11px; }
+body.app-page .stat-card:hover { transform: none; box-shadow: var(--shadow-sm); }
+body.app-page .game-grid { grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 14px; }
+body.app-page .game-card { padding: 18px; border-radius: 11px; gap: 13px; }
+body.app-page .game-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); border-color: var(--brand-border); }
+
+.proglog-welcome {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  min-height: 150px;
+  padding: 24px 28px;
+  margin-bottom: 18px;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+.proglog-welcome h1 { font-size: 22px; line-height: 1.25; margin-bottom: 7px; letter-spacing: -.025em; }
+.proglog-welcome p { color: var(--text-dim); font-size: 13px; max-width: 510px; }
+.proglog-welcome .welcome-art { width: 150px; height: 100px; flex: 0 0 150px; display: grid; place-items: center; color: var(--brand-primary); opacity: .9; }
+.proglog-welcome .welcome-art svg { width: 130px; height: 100px; }
+
+/* Auth screens */
+body.auth-page { background: #f7f9f8; }
+body.auth-page #site-nav { background: #fff; border-bottom: 1px solid var(--line); box-shadow: none; }
+body.auth-page .nav-links { display: none; }
+body.auth-page .container { max-width: 520px; padding-top: 34px; }
+body.auth-page .breadcrumbs { display: none; }
+body.auth-page .auth-card { border-color: var(--line); box-shadow: var(--shadow); border-radius: 16px; padding: 34px; }
+body.auth-page .step-dots { margin-bottom: 28px; }
+body.auth-page .auth-alert { border-radius: 9px; }
+body.auth-page .btn-primary { box-shadow: none; }
+body.auth-page .oauth-group { gap: 10px; }
+body.auth-page .btn-oauth { border-color: var(--line); background: #fff; }
+body.auth-page .btn-oauth:hover { background: var(--bg-surface); }
+body.auth-page .field-label { font-size: 12px; letter-spacing: .04em; }
+body.auth-page .pfp-upload-section { align-items: center; }
+
+/* Cleaner profile page */
+body.profile-page .profile-hero { border-radius: 14px; box-shadow: var(--shadow-sm); padding: 24px; }
+body.profile-page .profile-hero::before { display: none; }
+body.profile-page .profile-stats-grid { gap: 16px; }
+body.profile-page .stat-strip { gap: 10px; margin-bottom: 18px; }
+body.profile-page .stat-card { box-shadow: none; }
+body.profile-page .hunter-level-card { border: 1px solid var(--line); border-radius: 10px; }
+
+/* Modals match the reference: simple white sheet, clear footer, no glow. */
+.modal-overlay { background: rgba(17, 27, 23, .32); backdrop-filter: blur(2px); }
+.modal { border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 22px 60px rgba(15, 30, 23, .16); background: #fff; }
+.modal-head { padding: 22px 24px; border-bottom: 1px solid var(--line); }
+.modal-head h3 { font-size: 20px; }
+.modal-body { padding: 24px; }
+.modal-foot { padding: 16px 24px; border-top: 1px solid var(--line); background: #fff; }
+.modal-close { color: var(--text-muted); }
+.modal-close:hover { color: var(--text-main); background: var(--bg-surface); }
+.game-suggestions { box-shadow: 0 14px 30px rgba(15,30,23,.10); }
+.game-suggestion:hover, .game-suggestion:focus-visible { background: #f6faf8; }
+
+/* Inputs/buttons: compact, crisp and closer to the reference. */
+.btn { border-radius: 9px; box-shadow: none; }
+.btn-lg { border-radius: 9px; }
+input, select, textarea { border-radius: 9px; min-height: 42px; }
+input:focus, select:focus, textarea:focus { box-shadow: 0 0 0 3px var(--brand-soft); }
+
+@media (max-width: 900px) {
+  body.app-page .topbar,
+  body.profile-page .topbar { position: sticky; width: 100%; min-height: auto; height: auto; padding: 12px 16px; flex-direction: row; align-items: center; }
+  body.app-page .topbar > div:first-child,
+  body.profile-page .topbar > div:first-child { flex-direction: row; align-items: center !important; gap: 12px !important; }
+  body.app-page .nav-links,
+  body.profile-page .nav-links { flex-direction: row; overflow-x: auto; }
+  body.app-page .topbar-right,
+  body.profile-page .topbar-right { flex-direction: row; }
+  body.app-page .topbar-right .btn,
+  body.profile-page .topbar-right .btn { width: auto; }
+  body.app-page .container,
+  body.profile-page .container,
+  body.app-page #site-footer,
+  body.profile-page #site-footer { margin-left: 0; }
+  body.app-page .container,
+  body.profile-page .container { padding: 24px 16px 60px; }
+  .proglog-welcome { min-height: 130px; }
+}
+
+@media (max-width: 600px) {
+  body.auth-page .auth-card { padding: 24px 20px; }
+  .proglog-welcome .welcome-art { display: none; }
+}
+
+/* Responsive polish — Proglog is designed to work cleanly from large monitors to small phones. */
+@media (max-width: 1200px) {
+  .container { max-width: 1120px; }
+  .game-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .catalog-page-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .profile-hero { padding: 24px; }
+  .modal { width: min(620px, calc(100vw - 32px)); }
+}
+
+@media (max-width: 1024px) {
+  .topbar { padding: 12px 20px; }
+  .container { padding: 28px 20px 64px; }
+  .section-head { align-items: flex-start; }
+  .toolbar { width: 100%; }
+  .toolbar .search-wrap { flex: 1 1 280px; }
+  .profile-stats-grid { grid-template-columns: 1fr; }
+  .game-card { min-width: 0; }
+  .modal-game .modal-body { padding: 20px; }
+}
+
+@media (max-width: 860px) {
+  #site-nav, .topbar { padding: 12px 16px; }
+  .brand { font-size: 17px; }
+  .nav-links { display: none; }
+  .topbar-right { gap: 8px; }
+  .topbar-right .btn { padding-inline: 11px; }
+  .container { padding: 22px 16px 56px; }
+  .game-grid, .catalog-page-grid { grid-template-columns: 1fr; gap: 14px; }
+  .stat-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .profile-hero { align-items: flex-start; }
+  .profile-hero .profile-actions { width: 100%; }
+  .achv-toolbar { align-items: stretch; }
+  .achv-toolbar .search-wrap { width: 100%; }
+  .filter-chips { max-width: 100%; overflow-x: auto; }
+  .modal { max-height: calc(100dvh - 24px); }
+}
+
+@media (max-width: 680px) {
+  .container { padding-inline: 12px; }
+  .section-head { margin-bottom: 16px; }
+  .section-head h1, .section-head h2 { font-size: 20px; }
+  .stat-strip { grid-template-columns: 1fr 1fr; }
+  .stat-card { padding: 14px; }
+  .stat-card .stat-value { font-size: 24px; }
+  .game-grid { grid-template-columns: 1fr; }
+  .game-card { border-radius: 12px; }
+  .game-card .game-cover { min-height: 150px; }
+  .modal-overlay { align-items: flex-end; padding: 0; }
+  .modal { width: 100%; max-width: none; border-radius: 16px 16px 0 0; max-height: 92dvh; }
+  .modal-head, .modal-body, .modal-foot { padding-left: 18px; padding-right: 18px; }
+  .modal-foot { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .modal-foot .btn { width: 100%; }
+  .game-suggestions { max-height: 42vh; overflow-y: auto; }
+  .game-suggestion { padding: 11px 12px; }
+  .profile-hero { padding: 18px; gap: 16px; }
+  .profile-stats-grid { gap: 14px; }
+}
+
+@media (max-width: 480px) {
+  .topbar { gap: 8px; }
+  .topbar-right .btn span { display: none; }
+  .topbar-right { margin-left: auto; }
+  .stat-strip { grid-template-columns: 1fr; }
+  .toolbar, .toolbar > * { width: 100%; }
+  .toolbar select, .toolbar .btn { width: 100%; }
+  .search-wrap { min-width: 0; width: 100%; }
+  .section-head { gap: 10px; }
+  .brandmark { width: 30px; height: 30px; }
+  .auth-card { width: calc(100vw - 24px); }
+  body.auth-page .auth-card { padding: 20px 16px; }
+  input, select, textarea { font-size: 16px; } /* prevents iOS zoom */
+  .modal-game .color-picker { gap: 8px; flex-wrap: wrap; }
+  .modal-game .swatch { width: 36px; height: 36px; }
+  .game-suggestion-art { width: 34px; height: 34px; }
+}
+
+@media (max-width: 360px) {
+  .container { padding-inline: 10px; }
+  .topbar { padding-inline: 10px; }
+  .modal-head h3 { font-size: 18px; }
+  .modal-foot { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .btn, .nav-link, .game-suggestion, .swatch, .modal-close { min-height: 42px; }
+  .game-suggestion { -webkit-tap-highlight-color: transparent; }
+}
+.catalog-data-note { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 12px; color: var(--text-muted); }
+
+/* Bulk trophy controls */
+.bulk-achievement-btn {
+  white-space: nowrap;
+}
+.bulk-achievement-btn.is-complete {
+  border-color: var(--border, #dfe5e1);
+  color: var(--text-muted, #667085);
+}
+@media (max-width: 720px) {
+  .achv-toolbar > div:last-child { width: 100%; }
+  .achv-toolbar .search-wrap { flex: 1; min-width: 0 !important; }
+  .bulk-achievement-btn { flex: 0 0 auto; }
+}

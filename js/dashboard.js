@@ -183,6 +183,9 @@
     var games = state.cabinet.games || [];
     var totals = cabinetTotals(games);
 
+    var welcomeName = document.getElementById('welcome-name-wrap');
+    if (welcomeName) welcomeName.textContent = state.currentUser ? ', ' + state.currentUser : '';
+
     document.getElementById('stat-games').textContent = totals.totalGames;
     document.getElementById('stat-unlocked').textContent = totals.unlockedAchv + ' / ' + totals.totalAchv;
     document.getElementById('stat-completion').textContent = totals.pct + '%';

@@ -101,6 +101,7 @@
 
     renderRoadmap();
     renderChips();
+    renderBulkButton();
     renderList();
   }
 
@@ -247,6 +248,41 @@
     });
   }
 
+
+  function renderBulkButton() {
+    var btn = document.getElementById('btn-toggle-all-achievements');
+    var label = document.getElementById('btn-toggle-all-label');
+    if (!btn || !label) return;
+
+    var all = game.achievements || [];
+    var complete = all.length > 0 && all.every(function(a) { return a.unlocked; });
+    btn.classList.toggle('is-complete', complete);
+    btn.title = complete ? 'Mark every trophy as locked' : 'Mark every trophy as unlocked';
+    label.textContent = complete ? 'Reset all trophies' : 'Mark all unlocked';
+  }
+
+  function toggleAllAchievements() {
+    var all = game.achievements || [];
+    if (!all.length) {
+      toast('There are no trophies to update.');
+      return;
+    }
+
+    var complete = all.every(function(a) { return a.unlocked; });
+    var action = complete ? 'lock every trophy' : 'mark every trophy as unlocked';
+    if (!confirm('Are you sure you want to ' + action + ' for "' + game.title + '"?')) return;
+
+    var now = Date.now();
+    all.forEach(function(a) {
+      a.unlocked = !complete;
+      a.unlockedAt = complete ? null : now;
+    });
+    save();
+    render();
+    toast(complete ? 'All trophies reset.' : 'All trophies marked as unlocked.');
+    if (!complete) playTrophyChime();
+  }
+
   function toggleAchievement(achvId) {
     var a = game.achievements.filter(function(x) { return x.id === achvId; })[0];
     if (!a) return;
@@ -345,6 +381,9 @@
 
     document.getElementById('btn-add-achievement').addEventListener('click', onAddAchv);
     document.getElementById('btn-add-achievement-empty').addEventListener('click', onAddAchv);
+
+    var bulkBtn = document.getElementById('btn-toggle-all-achievements');
+    if (bulkBtn) bulkBtn.addEventListener('click', toggleAllAchievements);
 
     document.getElementById('btn-edit-game').addEventListener('click', function() {
       showGameModal(game, function(updated) {

@@ -101,6 +101,7 @@
           '<span style="margin-left:auto; font-weight:700; color:var(--text-main);">' + achvs.length + ' Total Trophies</span>' +
         '</div>' +
         (rm.summary ? '<div class="catalog-desc">' + esc(rm.summary) + '</div>' : '') +
+        (item.catalogPreview ? '<div class="catalog-data-note">Catalog entry · full trophy set can be synced from the connected platform.</div>' : '') +
       '</div>';
     }).join('');
 
