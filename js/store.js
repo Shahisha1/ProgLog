@@ -210,6 +210,39 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
+// Helper to check if Firebase is available
+function isFirebaseAvailable() {
+  return !!(window.proglogFirebase && window.proglogFirebase.auth);
+}
+
+// Override auth functions to use Firebase when available
+var originalRegister = registerAccount;
+var originalAuthenticate = authenticateUser;
+var originalCompleteProfile = completeProfileSetup;
+
+// Keep local fallbacks but prefer Firebase
+registerAccount = function(email, password) {
+  if (isFirebaseAvailable()) {
+    // The actual auth is handled in auth-firebase.js
+    return Promise.reject(new Error('Use auth-firebase.js for Firebase auth'));
+  }
+  return originalRegister(email, password);
+};
+
+authenticateUser = function(email, password) {
+  if (isFirebaseAvailable()) {
+    return Promise.reject(new Error('Use auth-firebase.js for Firebase auth'));
+  }
+  return originalAuthenticate(email, password);
+};
+
+completeProfileSetup = function(userId, profileData) {
+  if (isFirebaseAvailable()) {
+    return Promise.reject(new Error('Use auth-firebase.js for Firebase auth'));
+  }
+  return originalCompleteProfile(userId, profileData);
+};
+
 // Update HTML files to use Firebase CDN
 // Replace Supabase script with:
 // <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>

@@ -1,33 +1,32 @@
 // Proglog Firebase Client
-(function() {
+(function () {
   'use strict';
 
-  var ready = false;
   var auth = null;
   var db = null;
   var storage = null;
 
   function init() {
     try {
-      auth = firebase.auth();
-      db = firebase.firestore();
-      storage = firebase.storage();
-      ready = true;
+      if (typeof firebase !== 'undefined' && firebase.app) {
+        auth = firebase.auth();
+        db = firebase.firestore();
+        storage = firebase.storage();
+        console.log('Firebase initialized successfully');
+      } else {
+        console.warn('Firebase SDK not loaded');
+      }
     } catch (e) {
       console.warn('Firebase initialization failed:', e);
     }
   }
 
-  if (typeof firebase !== 'undefined' && firebase.app) {
-    init();
-  } else {
-    console.warn('Firebase SDK not loaded');
-  }
+  init();
 
-  window.proglogFirebaseReady = ready;
   window.proglogFirebase = {
     auth: auth,
     db: db,
     storage: storage
   };
+  window.proglogFirebaseReady = !!(auth && db && storage);
 })();
