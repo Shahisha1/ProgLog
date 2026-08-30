@@ -1,4 +1,48 @@
 // Proglog Authentication with Firebase
+
+// Ensure global functions are available
+if (typeof window.cacheSession === 'undefined') {
+  window.cacheSession = function(session) {
+    try {
+      localStorage.setItem('proglog_session', JSON.stringify(session));
+      if (session && session.username) {
+        localStorage.setItem('cabinet_last_user', session.username);
+      }
+    } catch(e) {}
+  };
+}
+
+if (typeof window.syncCabinetProfile === 'undefined') {
+  window.syncCabinetProfile = function(session) {
+    // Simple version
+    if (session && session.username) {
+      try {
+        var cab = JSON.parse(localStorage.getItem('cabinet_data_' + session.username) || '{"games":[]}');
+        cab.profile = {
+          username: session.username,
+          color: session.color || '#16a66f',
+          avatar: session.avatar || null,
+          createdAt: cab.profile && cab.profile.createdAt ? cab.profile.createdAt : Date.now()
+        };
+        localStorage.setItem('cabinet_data_' + session.username, JSON.stringify(cab));
+      } catch(e) {}
+    }
+  };
+}
+
+if (typeof window.toast === 'undefined') {
+  window.toast = function(msg) {
+    console.log('TOAST:', msg);
+    var wrap = document.getElementById('toast-wrap');
+    if (wrap) {
+      var el = document.createElement('div');
+      el.className = 'toast';
+      el.textContent = msg;
+      wrap.appendChild(el);
+      setTimeout(function() { el.remove(); }, 3000);
+    }
+  };
+}
 (function() {
   'use strict';
 
@@ -12,23 +56,26 @@
   var btnSubmit = document.getElementById('btn-step1-submit');
 
   function init() {
+    console.log('Auth init started');
+    
     var params = new URLSearchParams(window.location.search);
     if (params.get('mode') === 'login') {
       setMode(false);
     } else if (params.get('mode') === 'profile') {
-      // Profile setup after OAuth
       checkOAuthSession();
     } else {
       setMode(true);
     }
 
     bindEvents();
-    checkAuthState();
-  }
-
-  function checkAuthState() {
-    if (!window.proglogFirebase || !window.proglogFirebase.auth) {
-      // Fallback to local auth
+    
+    // Wait for Firebase to be ready
+    if (window.proglogFirebase && window.proglogFirebase.auth) {
+      console.log('Firebase detected, checking auth state');
+      checkAuthState();
+    } else {
+      console.log('No Firebase, using local auth');
+      // Check local session
       refreshCurrentSession().then(function(session) {
         if (session && session.setupComplete) {
           window.location.href = 'app.html';
@@ -36,53 +83,90 @@
           goToStep2(session);
         }
       }).catch(function() {});
+    }
+  }
+
+  function checkAuthState() {
+    if (!window.proglogFirebase || !window.proglogFirebase.auth) return;
+
+    var auth = window.proglogFirebase.auth;
+    
+    // Check current user immediately
+    var currentUser = auth.currentUser;
+    if (currentUser) {
+      console.log('User already signed in:', currentUser.uid);
+      handleAuthenticatedUser(currentUser);
       return;
     }
 
-    var auth = window.proglogFirebase.auth;
+    // Listen for auth changes
     auth.onAuthStateChanged(function(user) {
+      console.log('Auth state changed:', user ? user.uid : 'null');
       if (user) {
-        // Check if profile is complete
-        var db = window.proglogFirebase.db;
-        db.collection('users').doc(user.uid).get()
-          .then(function(doc) {
-            if (doc.exists && doc.data().setupComplete) {
-              // Profile complete, go to app
-              var session = firebaseUserToSession(user);
-              cacheSession(session);
-              syncCabinetProfile(session);
-              window.location.href = 'app.html';
-            } else {
-              // Need to complete profile
-              var session = firebaseUserToSession(user);
-              goToStep2(session);
-            }
-          })
-          .catch(function(err) {
-            console.warn('Error checking profile:', err);
-          });
+        handleAuthenticatedUser(user);
+      } else {
+        console.log('No user signed in');
       }
     });
+  }
+
+  function handleAuthenticatedUser(user) {
+    if (!user) return;
+    
+    var db = window.proglogFirebase.db;
+    db.collection('users').doc(user.uid).get()
+      .then(function(doc) {
+        if (doc.exists && doc.data().setupComplete) {
+          // Profile complete, go to app
+          console.log('Profile complete, redirecting to app');
+          var session = firebaseUserToSession(user, doc.data());
+          window.cacheSession(session);
+          window.syncCabinetProfile(session);
+          window.location.href = 'app.html';
+        } else {
+          // Need to complete profile
+          console.log('Profile incomplete, showing step 2');
+          var data = doc.exists ? doc.data() : {};
+          var session = firebaseUserToSession(user, data);
+          goToStep2(session);
+        }
+      })
+      .catch(function(err) {
+        console.warn('Error checking profile:', err);
+        // Try to proceed anyway
+        var session = firebaseUserToSession(user, {});
+        goToStep2(session);
+      });
   }
 
   function checkOAuthSession() {
     if (!window.proglogFirebase || !window.proglogFirebase.auth) return;
     var user = window.proglogFirebase.auth.currentUser;
     if (user) {
-      var session = firebaseUserToSession(user);
-      goToStep2(session);
+      var db = window.proglogFirebase.db;
+      db.collection('users').doc(user.uid).get()
+        .then(function(doc) {
+          var data = doc.exists ? doc.data() : {};
+          var session = firebaseUserToSession(user, data);
+          goToStep2(session);
+        })
+        .catch(function() {
+          var session = firebaseUserToSession(user, {});
+          goToStep2(session);
+        });
     }
   }
 
-  function firebaseUserToSession(user) {
+  function firebaseUserToSession(user, profileData) {
     if (!user) return null;
+    var data = profileData || {};
     return {
       userId: user.uid,
       email: user.email,
-      username: user.displayName || user.email.split('@')[0],
-      color: '#16a66f',
-      avatar: user.photoURL || null,
-      setupComplete: false,
+      username: data.username || user.displayName || (user.email ? user.email.split('@')[0] : 'Hunter'),
+      color: data.color || '#16a66f',
+      avatar: data.avatar || user.photoURL || null,
+      setupComplete: data.setupComplete || false,
       token: user.refreshToken,
       expiresAt: null,
       provider: user.providerData && user.providerData[0] ? user.providerData[0].providerId : 'email'
@@ -171,12 +255,14 @@
       dot2.className = 'step-dot active';
     }
 
-    document.getElementById('step1-container').style.display = 'none';
-    document.getElementById('step2-container').style.display = 'block';
+    var step1 = document.getElementById('step1-container');
+    var step2 = document.getElementById('step2-container');
+    if (step1) step1.style.display = 'none';
+    if (step2) step2.style.display = 'block';
 
     var nameInput = document.getElementById('step2-hunter-name');
     if (nameInput) {
-      nameInput.value = session.username || session.email.split('@')[0];
+      nameInput.value = session.username || (session.email ? session.email.split('@')[0] : 'Hunter');
     }
     if (session.avatar) {
       state.step2Avatar = session.avatar;
@@ -212,11 +298,11 @@
     var prev = document.getElementById('step2-pfp-preview');
     if (!prev) return;
     if (state.step2Avatar) {
-      prev.innerHTML = '<img src="' + esc(state.step2Avatar) + '" alt="Avatar Preview">';
+      prev.innerHTML = '<img src="' + window.esc(state.step2Avatar) + '" alt="Avatar Preview">';
       prev.style.background = 'none';
     } else {
       var nameVal = (document.getElementById('step2-hunter-name').value || 'PV').trim();
-      prev.innerHTML = '<span style="font-family:\'JetBrains Mono\'; font-weight:700; font-size:20px; color:#06080e;">' + esc(initials(nameVal)) + '</span>';
+      prev.innerHTML = '<span style="font-family:\'JetBrains Mono\'; font-weight:700; font-size:20px; color:#06080e;">' + window.esc(window.initials(nameVal)) + '</span>';
       prev.style.background = state.step2Color;
     }
   }
@@ -268,7 +354,6 @@
         var user = result.user;
         // Check email verification
         if (!user.emailVerified) {
-          // Sign out and throw error
           return auth.signOut().then(function() {
             throw new Error('Please verify your email before logging in. Check your inbox.');
           });
@@ -288,8 +373,8 @@
               token: user.refreshToken,
               expiresAt: null
             };
-            cacheSession(session);
-            syncCabinetProfile(session);
+            window.cacheSession(session);
+            window.syncCabinetProfile(session);
             return session;
           });
       });
@@ -328,8 +413,8 @@
                 token: user.refreshToken,
                 expiresAt: null
               };
-              cacheSession(session);
-              syncCabinetProfile(session);
+              window.cacheSession(session);
+              window.syncCabinetProfile(session);
               return session;
             } else {
               // New user - create profile
@@ -351,8 +436,8 @@
                   token: user.refreshToken,
                   expiresAt: null
                 };
-                cacheSession(session);
-                syncCabinetProfile(session);
+                window.cacheSession(session);
+                window.syncCabinetProfile(session);
                 return session;
               });
             }
@@ -404,8 +489,8 @@
         token: updatedUser.refreshToken,
         expiresAt: null
       };
-      cacheSession(session);
-      syncCabinetProfile(session);
+      window.cacheSession(session);
+      window.syncCabinetProfile(session);
       return session;
     });
   }
@@ -414,7 +499,6 @@
     var storage = window.proglogFirebase.storage;
     var ref = storage.ref('avatars/' + uid + '.jpg');
     
-    // Convert data URL to blob
     return fetch(dataUrl)
       .then(function(res) { return res.blob(); })
       .then(function(blob) {
@@ -456,7 +540,6 @@
 
           setLoading(btnSubmit, true, 'Create Account & Continue →');
           
-          // Check if Firebase is available
           if (window.proglogFirebase && window.proglogFirebase.auth) {
             registerWithFirebase(email, pass)
               .then(function(session) {
@@ -466,7 +549,7 @@
                   document.getElementById('input-step1-email').value = email;
                   return;
                 }
-                toast('Account created! Set up your profile next.');
+                window.toast('Account created! Set up your profile next.');
                 goToStep2(session);
               })
               .catch(function(err) {
@@ -476,10 +559,9 @@
                 setLoading(btnSubmit, false, 'Create Account & Continue →');
               });
           } else {
-            // Fallback to local auth
-            registerAccount(email, pass)
+            window.registerAccount(email, pass)
               .then(function(session) {
-                toast('Account created! Set up your profile next.');
+                window.toast('Account created! Set up your profile next.');
                 goToStep2(session);
               })
               .catch(function(err) {
@@ -495,7 +577,7 @@
           if (window.proglogFirebase && window.proglogFirebase.auth) {
             loginWithFirebase(email, pass)
               .then(function(session) {
-                toast('Welcome back, ' + session.username + '!');
+                window.toast('Welcome back, ' + session.username + '!');
                 if (session.setupComplete) {
                   setTimeout(function() { window.location.href = 'app.html'; }, 350);
                 } else {
@@ -509,9 +591,9 @@
                 setLoading(btnSubmit, false, 'Sign In to Proglog →');
               });
           } else {
-            authenticateUser(email, pass)
+            window.authenticateUser(email, pass)
               .then(function(session) {
-                toast('Welcome back, ' + session.username + '!');
+                window.toast('Welcome back, ' + session.username + '!');
                 if (session.setupComplete) {
                   setTimeout(function() { window.location.href = 'app.html'; }, 350);
                 } else {
@@ -530,51 +612,57 @@
     }
 
     // OAuth Buttons
-    document.getElementById('btn-oauth-google').addEventListener('click', function() {
-      if (!window.proglogFirebase || !window.proglogFirebase.auth) {
-        showAlert('Social sign-in requires Firebase configuration.');
-        return;
-      }
-      var btn = this;
-      setLoading(btn, true, 'Continue with Google');
-      signInWithProvider('google')
-        .then(function(session) {
-          if (session.setupComplete) {
-            window.location.href = 'app.html';
-          } else {
-            goToStep2(session);
-          }
-        })
-        .catch(function(err) {
-          showAlert(err.message || 'Google sign-in failed.');
-        })
-        .finally(function() {
-          setLoading(btn, false);
-        });
-    });
+    var googleBtn = document.getElementById('btn-oauth-google');
+    if (googleBtn) {
+      googleBtn.addEventListener('click', function() {
+        if (!window.proglogFirebase || !window.proglogFirebase.auth) {
+          showAlert('Social sign-in requires Firebase configuration.');
+          return;
+        }
+        var btn = this;
+        setLoading(btn, true, 'Continue with Google');
+        signInWithProvider('google')
+          .then(function(session) {
+            if (session.setupComplete) {
+              window.location.href = 'app.html';
+            } else {
+              goToStep2(session);
+            }
+          })
+          .catch(function(err) {
+            showAlert(err.message || 'Google sign-in failed.');
+          })
+          .finally(function() {
+            setLoading(btn, false);
+          });
+      });
+    }
 
-    document.getElementById('btn-oauth-github').addEventListener('click', function() {
-      if (!window.proglogFirebase || !window.proglogFirebase.auth) {
-        showAlert('Social sign-in requires Firebase configuration.');
-        return;
-      }
-      var btn = this;
-      setLoading(btn, true, 'Continue with GitHub');
-      signInWithProvider('github')
-        .then(function(session) {
-          if (session.setupComplete) {
-            window.location.href = 'app.html';
-          } else {
-            goToStep2(session);
-          }
-        })
-        .catch(function(err) {
-          showAlert(err.message || 'GitHub sign-in failed.');
-        })
-        .finally(function() {
-          setLoading(btn, false);
-        });
-    });
+    var githubBtn = document.getElementById('btn-oauth-github');
+    if (githubBtn) {
+      githubBtn.addEventListener('click', function() {
+        if (!window.proglogFirebase || !window.proglogFirebase.auth) {
+          showAlert('Social sign-in requires Firebase configuration.');
+          return;
+        }
+        var btn = this;
+        setLoading(btn, true, 'Continue with GitHub');
+        signInWithProvider('github')
+          .then(function(session) {
+            if (session.setupComplete) {
+              window.location.href = 'app.html';
+            } else {
+              goToStep2(session);
+            }
+          })
+          .catch(function(err) {
+            showAlert(err.message || 'GitHub sign-in failed.');
+          })
+          .finally(function() {
+            setLoading(btn, false);
+          });
+      });
+    }
 
     // Step 2 Avatar file upload
     var pfpInput = document.getElementById('step2-file-input');
@@ -583,7 +671,7 @@
         var file = e.target.files && e.target.files[0];
         if (file) {
           if (file.size > 2 * 1024 * 1024) {
-            toast('Please choose an image under 2MB.');
+            window.toast('Please choose an image under 2MB.');
             return;
           }
           var reader = new FileReader();
@@ -637,7 +725,7 @@
             color: state.step2Color,
             avatar: state.step2Avatar
           }).then(function(session) {
-            toast('Profile saved. Welcome to Proglog.');
+            window.toast('Profile saved. Welcome to Proglog.');
             setTimeout(function() { window.location.href = 'app.html'; }, 350);
           }).catch(function(err) {
             showAlert(err.message || 'Your profile could not be saved.');
@@ -645,13 +733,13 @@
             setLoading(submit, false, 'Complete Setup & Open Proglog →');
           });
         } else {
-          completeProfileSetup(userId, {
+          window.completeProfileSetup(userId, {
             username: name,
             color: state.step2Color,
             avatar: state.step2Avatar
           }).then(function(completed) {
             if (!completed) throw new Error('Your account could not be updated.');
-            toast('Profile saved. Welcome to Proglog.');
+            window.toast('Profile saved. Welcome to Proglog.');
             setTimeout(function() { window.location.href = 'app.html'; }, 350);
           }).catch(function(err) {
             showAlert(err.message || 'Your profile could not be saved.');
@@ -662,5 +750,11 @@
       });
     }
   }
-  init();
+
+  // Start when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 })();
