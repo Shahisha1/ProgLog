@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proglog — 404 Area Out of Bounds</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="css/vars.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+
+<header id="site-nav">
+  <div style="display:flex; align-items:center; gap:28px;">
+    <a href="index.html" class="brand">
+      <svg class="brandmark" viewBox="0 0 32 32" fill="none">
+        <rect width="32" height="32" rx="8" fill="#10141f" stroke="rgba(56,189,248,0.3)"/>
+        <path d="M10 8H22V13C22 16.3 19.3 19 16 19C12.7 19 10 16.3 10 13V8Z" fill="url(#p404-grad)"/>
+        <path d="M14 19V23H18V19" stroke="var(--brand-primary)" stroke-width="2" stroke-linecap="round"/>
+        <rect x="11" y="23" width="10" height="2" rx="1" fill="var(--brand-primary)"/>
+        <path d="M10 10H7C6.4 10 6 10.4 6 11C6 12.3 7 13.5 8.5 13.5H10M22 10H25C25.6 10 26 10.4 26 11C26 12.3 25 13.5 23.5 13.5H22" stroke="var(--brand-primary)" stroke-width="1.8" stroke-linecap="round"/>
+        <defs>
+          <linearGradient id="p404-grad" x1="10" y1="8" x2="22" y2="19" gradientUnits="userSpaceOnUse">
+            <stop stop-color="var(--brand-primary)"/>
+            <stop offset="1" stop-color="var(--brand-primary)"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <span>Pro<span class="accent">glog</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="app.html" class="nav-link">Overview</a>
+      <a href="catalog.html" class="nav-link">Catalog</a>
+      <a href="profile.html" class="nav-link">Profile</a>
+    </div>
+  </div>
+
+  <nav style="display:flex; align-items:center; gap:16px;">
+    <a href="app.html" class="btn btn-primary btn-sm">Open Proglog</a>
+  </nav>
+</header>
+
+<div class="container" style="text-align:center; padding-top:60px;">
+  <nav class="breadcrumbs" style="justify-content:center;">
+    <a href="index.html">Home</a>
+    <span class="breadcrumb-sep">/</span>
+    <span class="breadcrumb-current">404 Error</span>
+  </nav>
+
+  <div style="max-width:580px; margin:0 auto;">
+    <div style="font-family:'JetBrains Mono', monospace; font-size:72px; font-weight:800; color:var(--brand-primary); letter-spacing:-0.04em; margin-bottom:12px; filter:drop-shadow(0 0 25px var(--brand-glow));">
+      404
+    </div>
+    <span class="eyebrow" style="margin-bottom:16px;">Map Boundary Reached</span>
+    <h1 style="font-size:32px; font-weight:800; margin-bottom:14px;">Area Out of Bounds</h1>
+    <p style="color:var(--text-dim); font-size:16px; line-height:1.6; margin-bottom:32px;">
+      You've wandered outside the rendered world geometry. The trophy guide or page you are looking for has either de-spawned or moved to another realm.
+    </p>
+
+    <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap; margin-bottom:40px;">
+      <a href="app.html" class="btn btn-primary btn-lg">Return to Overview</a>
+      <a href="catalog.html" class="btn btn-ghost btn-lg">Browse Trophy Catalog</a>
+      <a href="index.html" class="btn btn-ghost btn-lg">Home Page</a>
+    </div>
+  </div>
+</div>
+
+<footer id="site-footer">
+  <div class="wrap">
+    <span>Proglog — The Ultimate Trophy &amp; Achievement Journal.</span>
+    <div style="display:flex; gap:18px; font-size:13px; color:var(--text-muted);">
+      <a href="index.html">Home</a>
+      <a href="app.html">Overview</a>
+      <a href="catalog.html">Catalog</a>
+      <a href="profile.html">Profile</a>
+      <a href="privacy.html">Privacy Policy</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/theme.js"></script>
+</body>
+</html>
+

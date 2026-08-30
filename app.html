@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proglog — My Game Vault &amp; Active Checklists</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="css/vars.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+
+<div id="screen-auth" class="hidden">
+  <div class="auth-box">
+    <div class="auth-brand">
+      <div class="mark">
+        <svg width="40" height="40" viewBox="0 0 32 32" fill="none" aria-label="Proglog Trophy Brandmark">
+          <path d="M10 8H22V13C22 16.3 19.3 19 16 19C12.7 19 10 16.3 10 13V8Z" fill="url(#auth-grad)"/>
+          <path d="M14 19V23H18V19" stroke="var(--brand-primary)" stroke-width="2" stroke-linecap="round"/>
+          <rect x="11" y="23" width="10" height="2" rx="1" fill="var(--brand-primary)"/>
+          <path d="M10 10H7C6.4 10 6 10.4 6 11C6 12.3 7 13.5 8.5 13.5H10M22 10H25C25.6 10 26 10.4 26 11C26 12.3 25 13.5 23.5 13.5H22" stroke="var(--brand-primary)" stroke-width="1.8" stroke-linecap="round"/>
+          <defs>
+            <linearGradient id="auth-grad" x1="10" y1="8" x2="22" y2="19" gradientUnits="userSpaceOnUse">
+              <stop stop-color="var(--brand-primary)"/>
+              <stop offset="1" stop-color="var(--brand-primary)"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <h1>Pro<span class="accent">glog</span></h1>
+      <p>Select your hunter profile or create a new one.</p>
+    </div>
+
+    <div class="auth-card">
+      <div id="profile-list" class="profile-list"></div>
+      <div id="profile-empty" class="empty-note hidden">No profiles on this browser yet. Create your hunter profile below.</div>
+
+      <div class="divider-label">New Profile</div>
+
+      <!-- Custom PFP Upload Zone -->
+      <div class="pfp-upload-section">
+        <div class="pfp-preview" id="pfp-preview-el">
+          <span style="font-family:'JetBrains Mono'; font-weight:700; font-size:20px; color:#06080e;">PV</span>
+        </div>
+        <div class="pfp-upload-controls">
+          <label class="pfp-upload-btn" for="pfp-file-input">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            Upload Photo
+          </label>
+          <input type="file" id="pfp-file-input" accept="image/*" style="display:none;">
+          <div class="pfp-hint">Upload custom avatar (PNG, JPG, WebP)</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">Display Name</label>
+        <input type="text" id="new-profile-name" maxlength="24" placeholder="e.g. Ellie, ShadowByte, TrophyHunter">
+      </div>
+      <div class="field">
+        <label class="field-label">Accent Color</label>
+        <div class="swatches" id="color-swatches"></div>
+      </div>
+      <button class="btn btn-primary" style="width:100%" id="btn-create-profile">Create Profile &amp; Enter</button>
+
+      <div style="text-align:center; margin-top:16px;">
+        <a href="auth.html" style="font-size:12.5px; color:var(--text-muted);">Sign in with Google / GitHub &rarr;</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="screen-main" class="hidden">
+  <div class="topbar">
+    <div style="display:flex; align-items:center; gap:28px;">
+      <a href="index.html" class="brand">
+        <svg class="brandmark" viewBox="0 0 32 32" fill="none" aria-label="Proglog Logo">
+          <rect width="32" height="32" rx="8" fill="#10141f" stroke="rgba(56,189,248,0.3)"/>
+          <path d="M10 8H22V13C22 16.3 19.3 19 16 19C12.7 19 10 16.3 10 13V8Z" fill="url(#top-grad)"/>
+          <path d="M14 19V23H18V19" stroke="var(--brand-primary)" stroke-width="2" stroke-linecap="round"/>
+          <rect x="11" y="23" width="10" height="2" rx="1" fill="var(--brand-primary)"/>
+          <path d="M10 10H7C6.4 10 6 10.4 6 11C6 12.3 7 13.5 8.5 13.5H10M22 10H25C25.6 10 26 10.4 26 11C26 12.3 25 13.5 23.5 13.5H22" stroke="var(--brand-primary)" stroke-width="1.8" stroke-linecap="round"/>
+          <defs>
+            <linearGradient id="top-grad" x1="10" y1="8" x2="22" y2="19" gradientUnits="userSpaceOnUse">
+              <stop stop-color="var(--brand-primary)"/>
+              <stop offset="1" stop-color="var(--brand-primary)"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span>Pro<span class="accent">glog</span></span>
+      </a>
+      <div class="nav-links">
+        <a href="app.html" class="nav-link active">Overview</a>
+        <a href="catalog.html" class="nav-link">Catalog</a>
+        <a href="profile.html" class="nav-link">Profile</a>
+      </div>
+    </div>
+
+    <div class="topbar-right">
+      <div class="user-chip">
+        <div id="topbar-avatar-slot"></div>
+        <span id="topbar-name"></span>
+      </div>
+      <button class="btn btn-ghost btn-sm" id="btn-switch-profile">Switch Profile</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <nav class="breadcrumbs">
+      <a href="index.html">Home</a>
+      <span class="breadcrumb-sep">/</span>
+      <span class="breadcrumb-current">Overview</span>
+    </nav>
+
+    <div id="view-dashboard">
+      <div class="stat-strip">
+        <div class="stat-card accent">
+          <div class="stat-num" id="stat-games">0</div>
+          <div class="stat-label">Games in Vault</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="stat-unlocked">0</div>
+          <div class="stat-label">Trophies Unlocked</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="stat-completion">0%</div>
+          <div class="stat-label">Overall Completion</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="stat-points">0</div>
+          <div class="stat-label">Total Trophy Points</div>
+          <div class="trophy-breakdown" id="stat-trophy-breakdown"></div>
+        </div>
+      </div>
+
+      <div class="section-head">
+        <h2>Your Game Library</h2>
+        <div class="toolbar">
+          <div class="search-wrap">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            <input type="text" id="search-games" placeholder="Search games...">
+            <span class="kbd-hint">/</span>
+          </div>
+          <select id="filter-platform">
+            <option value="all">All Platforms</option>
+          </select>
+          <select id="sort-games">
+            <option value="recent">Recently Added</option>
+            <option value="name">Name A–Z</option>
+            <option value="progress-desc">Progress: High to Low</option>
+            <option value="progress-asc">Progress: Low to High</option>
+          </select>
+          <a href="catalog.html" class="btn btn-ghost">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            Browse Catalog
+          </a>
+          <button class="btn btn-primary" id="btn-add-game">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+            Add Game
+          </button>
+        </div>
+      </div>
+
+      <div id="game-grid" class="game-grid"></div>
+      <div id="dashboard-empty" class="empty-state hidden">
+        <h3>Your Vault is Empty</h3>
+        <p>Start tracking trophies by importing a starter checklist for <b>The Last of Us Part I</b> or adding a custom title.</p>
+        <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
+          <a href="catalog.html" class="btn btn-primary">Browse Trophy Catalog</a>
+          <button class="btn btn-ghost" id="btn-add-game-empty">+ Add Custom Game</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer id="site-footer">
+  <div class="wrap">
+    <span>Proglog — The Ultimate Trophy &amp; Achievement Journal.</span>
+    <div style="display:flex; gap:18px; font-size:13px; color:var(--text-muted); flex-wrap:wrap;">
+      <a href="index.html">Home</a>
+      <a href="app.html">Overview</a>
+      <a href="catalog.html">Catalog</a>
+      <a href="profile.html">Profile</a>
+      <a href="auth.html">Sign In</a>
+      <a href="privacy.html">Privacy Policy</a>
+    </div>
+  </div>
+</footer>
+
+<div class="toast-wrap" id="toast-wrap"></div>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-storage-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/firebase-client.js"></script>
+<script src="js/store.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/helpers.js"></script>
+<script src="js/catalog.js"></script>
+<script src="js/modals.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

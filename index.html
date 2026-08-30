@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proglog — The Ultimate Trophy &amp; Achievement Journal</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="css/vars.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+
+<div id="page-landing">
+  <header id="site-nav">
+    <div style="display:flex; align-items:center; gap:28px;">
+      <a href="index.html" class="brand">
+        <svg class="brandmark" viewBox="0 0 32 32" fill="none" aria-label="Proglog Trophy Emblem">
+          <rect width="32" height="32" rx="8" fill="#10141f" stroke="rgba(56,189,248,0.3)"/>
+          <path d="M10 8H22V13C22 16.3 19.3 19 16 19C12.7 19 10 16.3 10 13V8Z" fill="url(#b-grad)"/>
+          <path d="M14 19V23H18V19" stroke="var(--brand-primary)" stroke-width="2" stroke-linecap="round"/>
+          <rect x="11" y="23" width="10" height="2" rx="1" fill="var(--brand-primary)"/>
+          <path d="M10 10H7C6.4 10 6 10.4 6 11C6 12.3 7 13.5 8.5 13.5H10M22 10H25C25.6 10 26 10.4 26 11C26 12.3 25 13.5 23.5 13.5H22" stroke="var(--brand-primary)" stroke-width="1.8" stroke-linecap="round"/>
+          <defs>
+            <linearGradient id="b-grad" x1="10" y1="8" x2="22" y2="19" gradientUnits="userSpaceOnUse">
+              <stop stop-color="var(--brand-primary)"/>
+              <stop offset="1" stop-color="var(--brand-primary)"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span>Pro<span class="accent">glog</span></span>
+      </a>
+      <div class="nav-links">
+        <a href="app.html" class="nav-link">Overview</a>
+        <a href="catalog.html" class="nav-link">Catalog</a>
+        <a href="profile.html" class="nav-link">Profile</a>
+      </div>
+    </div>
+
+    <nav style="display:flex; align-items:center; gap:14px;">
+      <a href="#faq" style="font-size:13.5px; font-weight:600; color:var(--text-muted);">FAQ</a>
+      <a href="#request-guide" style="font-size:13.5px; font-weight:600; color:var(--text-muted);">Request Guide</a>
+      <a href="auth.html" class="btn btn-ghost btn-sm">Sign In</a>
+      <a href="app.html" class="btn btn-primary btn-sm">Open Proglog</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-mark">
+        <svg width="48" height="48" viewBox="0 0 32 32" fill="none" aria-label="Glowing Platinum Vault Crest">
+          <path d="M10 8H22V13C22 16.3 19.3 19 16 19C12.7 19 10 16.3 10 13V8Z" fill="url(#hero-grad)"/>
+          <path d="M14 19V23H18V19" stroke="var(--brand-primary)" stroke-width="2" stroke-linecap="round"/>
+          <rect x="11" y="23" width="10" height="2.5" rx="1" fill="var(--brand-primary)"/>
+          <path d="M10 10H7C6.4 10 6 10.4 6 11C6 12.3 7 13.5 8.5 13.5H10M22 10H25C25.6 10 26 10.4 26 11C26 12.3 25 13.5 23.5 13.5H22" stroke="var(--brand-primary)" stroke-width="2" stroke-linecap="round"/>
+          <defs>
+            <linearGradient id="hero-grad" x1="10" y1="8" x2="22" y2="19" gradientUnits="userSpaceOnUse">
+              <stop stop-color="var(--brand-primary)"/>
+              <stop offset="1" stop-color="var(--brand-primary)"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <div><span class="eyebrow">Trophy Hunter's Essential Companion</span></div>
+      <h1>Track Every Trophy. Master Every Game.</h1>
+      <p class="lede">Build your personal trophy showcase, track completion checklists across PlayStation, Steam, Xbox, and Nintendo, and follow step-by-step unlock guides inspired by PlatGet and PlayStationTrophies.</p>
+      
+      <div class="hero-actions">
+        <a href="app.html" class="btn btn-primary btn-lg">Open Your Vault</a>
+        <a href="catalog.html" class="btn btn-ghost btn-lg">Browse Guides</a>
+      </div>
+
+      <!-- Interactive Hero Showcase -->
+      <div class="hero-showcase">
+        <div class="showcase-header">
+          <div>
+            <span class="platform-tag" style="margin-top:0;"><span class="platform-dot" style="background:#38bdf8;"></span>PlayStation</span>
+            <div class="showcase-title">The Last of Us Part I</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-family:'JetBrains Mono'; font-size:18px; font-weight:700; color:var(--brand-primary);">100%</div>
+            <div style="font-size:11px; color:var(--text-muted); text-transform:uppercase;">Platinum Secured</div>
+          </div>
+        </div>
+        <div class="roadmap-strip" style="margin-top:0; margin-bottom:14px; background:var(--bg-main);">
+          <div class="roadmap-item"><span class="roadmap-label">Difficulty</span><span class="roadmap-val">3/10</span></div>
+          <div class="roadmap-item"><span class="roadmap-label">Time</span><span class="roadmap-val">15–20h</span></div>
+          <div class="roadmap-item"><span class="roadmap-label">Playthroughs</span><span class="roadmap-val">1 Run</span></div>
+          <div class="roadmap-item"><span class="roadmap-label">Missables</span><span class="roadmap-val">0</span></div>
+        </div>
+        <div class="gc-tiers" style="justify-content:space-between; padding:4px 2px;">
+          <span>🏆 1 Platinum</span>
+          <span>🥇 7 Gold</span>
+          <span>🥈 7 Silver</span>
+          <span>🥉 14 Bronze</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="strip">
+    <div class="cell"><b>4</b><span>Trophy Tiers</span></div>
+    <div class="cell"><b>∞</b><span>Platforms &amp; Titles</span></div>
+    <div class="cell"><b>100%</b><span>Local &amp; Private</span></div>
+    <div class="cell"><b>0</b><span>Sign-up Hassle</span></div>
+  </div>
+
+  <!-- Features Grid -->
+  <section class="feat-section" id="features">
+    <div class="wrap">
+      <div class="feat-head">
+        <span class="eyebrow">Trophy Hunting Refined</span>
+        <h2>Everything You Need For The Platinum Journey</h2>
+      </div>
+      <div class="feat-grid">
+        <div class="feat-card">
+          <div class="num">01 / UNIVERSAL SHELF</div>
+          <h3>Multi-Platform Tracking</h3>
+          <p>Organize games from PlayStation, Steam, Xbox, Nintendo, or PC into one unified, elegant showcase. No third-party API lock-in.</p>
+        </div>
+        <div class="feat-card">
+          <div class="num">02 / ROADMAPS &amp; GUIDES</div>
+          <h3>PlatGet &amp; Guide Integration</h3>
+          <p>Each game includes difficulty ratings, estimated completion hours, missable trophy warnings, and step-by-step walkthrough notes.</p>
+        </div>
+        <div class="feat-card">
+          <div class="num">03 / HUNTER RANK &amp; SHOWCASE</div>
+          <h3>Hunter Rank &amp; XP System</h3>
+          <p>Level up from Novice to Mythic Legend, showcase all earned Platinum trophies in your cabinet, and export complete JSON backups.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5-Question Interactive FAQ Accordion -->
+  <section class="faq-section" id="faq">
+    <div class="wrap">
+      <div class="feat-head">
+        <span class="eyebrow">Frequently Asked Questions</span>
+        <h2>Everything You Need to Know</h2>
+      </div>
+
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>How does Proglog track trophies without linking my PSN or Steam account?</span>
+            <div class="faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+          </button>
+          <div class="faq-answer">
+            Proglog functions as an independent, privacy-first journal. You don't need to share your PlayStation Network, Steam, or Xbox passwords or risk API downtime. You check off trophies as you earn them or import curated guides with 1 click.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Is my trophy data saved if I close my browser?</span>
+            <div class="faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+          </button>
+          <div class="faq-answer">
+            Yes! All your hunter profiles, checklists, completion percentages, and personal notes are instantly stored in your browser's persistent <code>localStorage</code>. They remain safe between sessions and computer restarts.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Can I export or transfer my trophy progress to another computer?</span>
+            <div class="faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+          </button>
+          <div class="faq-answer">
+            Absolutely. On the <a href="profile.html" style="color:var(--brand-primary); font-weight:600;">Profile page</a>, you can click "Download JSON Backup" to save your entire library to a <code>.json</code> file, and restore it on any other browser or device in one click.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>How are Hunter Levels and Trophy XP calculated?</span>
+            <div class="faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+          </button>
+          <div class="faq-answer">
+            Every unlocked trophy awards XP: Platinum = 300 XP, Gold = 90 XP, Silver = 30 XP, and Bronze = 15 XP. As your XP grows, your Hunter Rank upgrades through tiers from Novice Hunter to Mythic Trophy Legend.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Can I add custom achievements or games not in the catalog?</span>
+            <div class="faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+          </button>
+          <div class="faq-answer">
+            Yes! You can create any custom game title across any platform (PlayStation, Steam, Xbox, Switch, PC) and add custom trophy requirements, point values, categories (Story, Collectible, Combat, DLC), and personal strategy notes.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Request a Guide / Feedback Enquiry Form -->
+  <section class="cta-section" id="request-guide" style="padding-top:20px;">
+    <div class="wrap">
+      <div class="article-wrap" style="text-align:left; max-width:680px; margin:0 auto; background:var(--bg-surface);">
+        <span class="eyebrow" style="margin-bottom:8px;">Community Requests</span>
+        <h2 style="font-size:24px; margin-bottom:8px;">Request a Trophy Guide or Submit Feedback</h2>
+        <p style="font-size:14px; color:var(--text-dim); margin-bottom:20px;">Missing a game you'd like to see in our curated roadmap catalog? Send us an enquiry and our team will add it!</p>
+
+        <form action="thank-you.html" method="GET">
+          <div class="field">
+            <label class="field-label">Game Title Requested</label>
+            <input type="text" name="game" required placeholder="e.g. Silent Hill 2 Remake, Final Fantasy VII Rebirth" maxlength="80">
+          </div>
+          <div class="field">
+            <label class="field-label">Platform</label>
+            <select name="platform">
+              <option value="playstation">PlayStation 5 / PS4</option>
+              <option value="steam">Steam / PC</option>
+              <option value="xbox">Xbox Series X|S</option>
+              <option value="nintendo">Nintendo Switch</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="field-label">Your Email (Optional)</label>
+            <input type="email" name="email" placeholder="hunter@example.com">
+          </div>
+          <div class="field">
+            <label class="field-label">Additional Notes / Guide Links</label>
+            <textarea name="notes" placeholder="Any specific difficulty or missable trophy notes..." maxlength="300"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg" style="width:100%;">
+            Send Guide Request
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer id="site-footer">
+    <div class="wrap">
+      <span>Proglog — The Ultimate Trophy &amp; Achievement Journal.</span>
+      <div style="display:flex; gap:18px; font-size:13px; color:var(--text-muted); flex-wrap:wrap;">
+        <a href="index.html">Home</a>
+        <a href="app.html">Overview</a>
+        <a href="catalog.html">Catalog</a>
+        <a href="profile.html">Profile</a>
+        <a href="auth.html">Sign In / Sign Up</a>
+        <a href="privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script>
+  // FAQ Accordion Interaction
+  document.querySelectorAll('.faq-question').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var item = btn.closest('.faq-item');
+      var isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(function(i) { i.classList.remove('open'); });
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+</script>
+
+<script src="js/theme.js"></script>
+</body>
+</html>

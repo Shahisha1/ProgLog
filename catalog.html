@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proglog — Curated Trophy Guides &amp; Roadmaps</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="css/vars.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div style="display:flex; align-items:center; gap:28px;">
+    <a href="index.html" class="brand">
+      <svg class="brandmark" viewBox="0 0 32 32" fill="none" aria-label="Proglog Trophy Brandmark">
+        <rect width="32" height="32" rx="8" fill="#10141f" stroke="rgba(56,189,248,0.3)"/>
+        <path d="M10 8H22V13C22 16.3 19.3 19 16 19C12.7 19 10 16.3 10 13V8Z" fill="url(#cat-top-grad)"/>
+        <path d="M14 19V23H18V19" stroke="var(--brand-primary)" stroke-width="2" stroke-linecap="round"/>
+        <rect x="11" y="23" width="10" height="2" rx="1" fill="var(--brand-primary)"/>
+        <path d="M10 10H7C6.4 10 6 10.4 6 11C6 12.3 7 13.5 8.5 13.5H10M22 10H25C25.6 10 26 10.4 26 11C26 12.3 25 13.5 23.5 13.5H22" stroke="var(--brand-primary)" stroke-width="1.8" stroke-linecap="round"/>
+        <defs>
+          <linearGradient id="cat-top-grad" x1="10" y1="8" x2="22" y2="19" gradientUnits="userSpaceOnUse">
+            <stop stop-color="var(--brand-primary)"/>
+            <stop offset="1" stop-color="var(--brand-primary)"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <span>Pro<span class="accent">glog</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="app.html" class="nav-link">Overview</a>
+      <a href="catalog.html" class="nav-link active">Catalog</a>
+      <a href="profile.html" class="nav-link">Profile</a>
+    </div>
+  </div>
+
+  <div class="topbar-right">
+    <div class="user-chip">
+      <div id="topbar-avatar-slot"></div>
+      <span id="topbar-name">Hunter</span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <nav class="breadcrumbs">
+    <a href="index.html">Home</a>
+    <span class="breadcrumb-sep">/</span>
+    <span class="breadcrumb-current">Trophy Guide Catalog</span>
+  </nav>
+
+  <div class="section-head">
+    <div>
+      <span class="eyebrow" style="margin-bottom:8px;">Curated Roadmaps</span>
+      <h2>Trophy Guide Catalog</h2>
+      <p style="color:var(--text-muted); font-size:14px; margin-top:4px;">Authentic completion roadmaps and checklists inspired by PlatGet and PlayStationTrophies.</p>
+    </div>
+  </div>
+
+  <div class="toolbar" style="margin-bottom:30px;">
+    <div class="search-wrap">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input type="text" id="search-catalog" placeholder="Search guides by title...">
+      <span class="kbd-hint">/</span>
+    </div>
+    <select id="filter-cat-platform">
+      <option value="all">All Platforms</option>
+      <option value="playstation">PlayStation</option>
+      <option value="steam">Steam</option>
+      <option value="xbox">Xbox</option>
+    </select>
+    <select id="filter-cat-difficulty">
+      <option value="all">All Difficulties</option>
+      <option value="easy">Accessible (1–3/10)</option>
+      <option value="medium">Moderate (4–6/10)</option>
+      <option value="hard">Challenging (7–10/10)</option>
+    </select>
+  </div>
+
+  <div id="catalog-page-grid" class="catalog-page-grid"></div>
+</div>
+
+<footer id="site-footer">
+  <div class="wrap">
+    <span>Proglog — The Ultimate Trophy &amp; Achievement Journal.</span>
+    <div style="display:flex; gap:18px; font-size:13px; color:var(--text-muted); flex-wrap:wrap;">
+      <a href="index.html">Home</a>
+      <a href="app.html">Overview</a>
+      <a href="catalog.html">Catalog</a>
+      <a href="profile.html">Profile</a>
+      <a href="auth.html">Sign In</a>
+      <a href="privacy.html">Privacy Policy</a>
+    </div>
+  </div>
+</footer>
+
+<div class="toast-wrap" id="toast-wrap"></div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-storage-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/firebase-client.js"></script>
+<script src="js/store.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/helpers.js"></script>
+<script src="js/catalog.js"></script>
+<script src="js/modals.js"></script>
+<script src="js/catalog-page.js"></script>
+</body>
+</html>

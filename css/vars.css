@@ -1,0 +1,37 @@
+:root {
+  /* Proglog — clean neutral base; accent is selected per profile. */
+  --bg-main: #f5f7f8;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f8fafb;
+  --bg-surface: #f0f3f4;
+  --bg-input: #ffffff;
+  --text-main: #17201c;
+  --text-dim: #52615a;
+  --text-muted: #77847e;
+  --brand-primary: #16a66f;
+  --brand-hover: #128a5c;
+  --brand-glow: rgba(22,166,111,.16);
+  --brand-soft: rgba(22,166,111,.09);
+  --brand-border: rgba(22,166,111,.30);
+  --brand-accent: #16a66f;
+  --brand-gradient: linear-gradient(135deg,#16a66f 0%,#16a66f 100%);
+  --brand-contrast: #082016;
+  --platinum: #3b82a6;
+  --platinum-glow: rgba(59,130,166,.16);
+  --gold: #d39b12;
+  --gold-glow: rgba(211,155,18,.16);
+  --silver: #718096;
+  --silver-glow: rgba(113,128,150,.16);
+  --bronze: #c66b2f;
+  --bronze-glow: rgba(198,107,47,.16);
+  --danger: #d6455d;
+  --success: #16a66f;
+  --line: #e1e7e4;
+  --line-strong: #ccd6d1;
+  --shadow-sm: 0 4px 12px rgba(15,23,42,.06);
+  --shadow: 0 14px 36px rgba(15,23,42,.08);
+  --shadow-glow: 0 0 0 transparent;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-lg: 18px;
+}
