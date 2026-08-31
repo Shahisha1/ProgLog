@@ -16,31 +16,6 @@
 - 📱 Responsive UI
 - 🧭 Dedicated pages for Overview, Games, Trophies, Sessions, Friends, Stats, Profile, and Settings
 
-## Structure
-
-```text
-proglog/
-├── index.html                 # Landing page
-├── 404.html
-├── pages/
-│   ├── auth/
-│   ├── overview/
-│   ├── games/
-│   ├── game/
-│   ├── trophies/
-│   ├── sessions/
-│   ├── friends/
-│   ├── stats/
-│   ├── profile/
-│   ├── settings/
-│   ├── privacy/
-│   └── thank-you/
-├── assets/
-│   ├── css/
-│   └── js/
-└── README.md
-```
-
 ## Run locally
 
 Use any static server from the project root:
