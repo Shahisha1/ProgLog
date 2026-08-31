@@ -78,7 +78,7 @@ if (typeof window.toast === 'undefined') {
       // Check local session
       refreshCurrentSession().then(function(session) {
         if (session && session.setupComplete) {
-          window.location.href = 'app.html';
+          window.pgGo('overview');
         } else if (session && session.userId) {
           goToStep2(session);
         }
@@ -122,7 +122,7 @@ if (typeof window.toast === 'undefined') {
           var session = firebaseUserToSession(user, doc.data());
           window.cacheSession(session);
           window.syncCabinetProfile(session);
-          window.location.href = 'app.html';
+          window.pgGo('overview');
         } else {
           // Need to complete profile
           console.log('Profile incomplete, showing step 2');
@@ -274,6 +274,25 @@ if (typeof window.toast === 'undefined') {
     if (window.applyProglogTheme) window.applyProglogTheme(state.step2Color);
     drawStep2Swatches();
     updateStep2Preview();
+    setProfileSetupNavigationLock(true);
+  }
+
+  function setProfileSetupNavigationLock(locked) {
+    document.body.classList.toggle('profile-setup-active', !!locked);
+    document.querySelectorAll('.global-sidebar a[data-nav], .auth-nav-links a').forEach(function(link) {
+      if (locked) {
+        link.setAttribute('aria-disabled', 'true');
+        link.addEventListener('click', profileNavGuard);
+      } else {
+        link.removeAttribute('aria-disabled');
+        link.removeEventListener('click', profileNavGuard);
+      }
+    });
+  }
+
+  function profileNavGuard(event) {
+    event.preventDefault();
+    if (window.toast) window.toast('Finish your profile setup before leaving this page.');
   }
 
   function drawStep2Swatches() {
@@ -579,7 +598,7 @@ if (typeof window.toast === 'undefined') {
               .then(function(session) {
                 window.toast('Welcome back, ' + session.username + '!');
                 if (session.setupComplete) {
-                  setTimeout(function() { window.location.href = 'app.html'; }, 350);
+                  setTimeout(function() { window.pgGo('overview'); }, 350);
                 } else {
                   goToStep2(session);
                 }
@@ -595,7 +614,7 @@ if (typeof window.toast === 'undefined') {
               .then(function(session) {
                 window.toast('Welcome back, ' + session.username + '!');
                 if (session.setupComplete) {
-                  setTimeout(function() { window.location.href = 'app.html'; }, 350);
+                  setTimeout(function() { window.pgGo('overview'); }, 350);
                 } else {
                   goToStep2(session);
                 }
@@ -624,7 +643,7 @@ if (typeof window.toast === 'undefined') {
         signInWithProvider('google')
           .then(function(session) {
             if (session.setupComplete) {
-              window.location.href = 'app.html';
+              window.pgGo('overview');
             } else {
               goToStep2(session);
             }
@@ -650,7 +669,7 @@ if (typeof window.toast === 'undefined') {
         signInWithProvider('github')
           .then(function(session) {
             if (session.setupComplete) {
-              window.location.href = 'app.html';
+              window.pgGo('overview');
             } else {
               goToStep2(session);
             }
@@ -709,7 +728,7 @@ if (typeof window.toast === 'undefined') {
         if (!name) return;
 
         if (!state.currentUser) {
-          window.location.href = 'auth.html';
+          window.pgGo('auth');
           return;
         }
 
@@ -726,7 +745,7 @@ if (typeof window.toast === 'undefined') {
             avatar: state.step2Avatar
           }).then(function(session) {
             window.toast('Profile saved. Welcome to Proglog.');
-            setTimeout(function() { window.location.href = 'app.html'; }, 350);
+            setTimeout(function() { window.pgGo('overview'); }, 350);
           }).catch(function(err) {
             showAlert(err.message || 'Your profile could not be saved.');
           }).finally(function() {
@@ -740,7 +759,7 @@ if (typeof window.toast === 'undefined') {
           }).then(function(completed) {
             if (!completed) throw new Error('Your account could not be updated.');
             window.toast('Profile saved. Welcome to Proglog.');
-            setTimeout(function() { window.location.href = 'app.html'; }, 350);
+            setTimeout(function() { window.pgGo('overview'); }, 350);
           }).catch(function(err) {
             showAlert(err.message || 'Your profile could not be saved.');
           }).finally(function() {

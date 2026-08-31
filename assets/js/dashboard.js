@@ -26,7 +26,7 @@
     // A registered account must complete profile setup before the dashboard is available.
     var activeSession = getCurrentSession();
     if (activeSession && !activeSession.setupComplete) {
-      window.location.href = 'auth.html';
+      window.pgGo('auth');
       return;
     }
     if (activeSession && window.applyProglogTheme) window.applyProglogTheme(activeSession.color);
@@ -57,6 +57,7 @@
 
   function showAuth() {
     document.getElementById('screen-auth').classList.remove('hidden');
+    document.getElementById('screen-auth').classList.add('profile-switcher-open');
     document.getElementById('screen-main').classList.add('hidden');
     drawProfiles();
     drawSwatches();
@@ -64,6 +65,7 @@
 
   function showMain() {
     document.getElementById('screen-auth').classList.add('hidden');
+    document.getElementById('screen-auth').classList.remove('profile-switcher-open');
     document.getElementById('screen-main').classList.remove('hidden');
 
     var p = state.cabinet.profile || { username: state.currentUser, color: PROFILE_COLORS[0] };
@@ -281,7 +283,7 @@
     grid.querySelectorAll('.game-card').forEach(function(card) {
       card.addEventListener('click', function() {
         var id = card.getAttribute('data-id');
-        window.location.href = 'game.html#' + id;
+        window.pgGo('game', '#' + id);
       });
     });
   }

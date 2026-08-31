@@ -70,6 +70,7 @@
       var plat = platformById(item.platform);
       var rm = item.roadmap || {};
       var achvs = item.achievements || [];
+      var tsaSource = item.tsa || null;
       var isOwned = ownedIds[item.title.toLowerCase()];
 
       var tierCounts = { platinum: 0, gold: 0, silver: 0, bronze: 0 };
@@ -98,7 +99,7 @@
           '<span>' + tierSvg('gold') + ' ' + tierCounts.gold + '</span>' +
           '<span>' + tierSvg('silver') + ' ' + tierCounts.silver + '</span>' +
           '<span>' + tierSvg('bronze') + ' ' + tierCounts.bronze + '</span>' +
-          '<span style="margin-left:auto; font-weight:700; color:var(--text-main);">' + achvs.length + ' Total Trophies</span>' +
+          '<span style="margin-left:auto; font-weight:700; color:var(--text-main);">' + (item.totalTrophies || achvs.length) + ' Total Achievements</span>' +
         '</div>' +
         (rm.summary ? '<div class="catalog-desc">' + esc(rm.summary) + '</div>' : '') +
         (item.catalogPreview ? '<div class="catalog-data-note">Catalog entry · full trophy set can be synced from the connected platform.</div>' : '') +
@@ -120,7 +121,7 @@
 
     if (!currentUser) {
       toast('Please create or enter a hunter profile first.');
-      setTimeout(function() { window.location.href = 'app.html'; }, 1000);
+      setTimeout(function() { window.pgGo('overview'); }, 1000);
       return;
     }
 

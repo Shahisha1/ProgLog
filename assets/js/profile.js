@@ -9,7 +9,7 @@
     var session = getCurrentSession();
 
     if (session && !session.setupComplete) {
-      window.location.href = 'auth.html';
+      window.pgGo('auth');
       return;
     }
 
@@ -18,13 +18,13 @@
     // creates a session, so this page needs to recognize it too).
     currentUser = session ? session.username : getLastUser();
     if (!currentUser) {
-      window.location.href = 'app.html';
+      window.pgGo('overview');
       return;
     }
 
     cabinet = getCabinetData(currentUser);
     if (!cabinet) {
-      window.location.href = 'app.html';
+      window.pgGo('overview');
       return;
     }
 
@@ -50,8 +50,12 @@
     // Topbar
     var avSlot = document.getElementById('topbar-avatar-slot');
     if (avSlot) avSlot.innerHTML = avatarHtml(p);
+    var sideAv = document.getElementById('profile-sidebar-avatar');
+    if (sideAv) sideAv.innerHTML = avatarHtml(p);
     var nameEl = document.getElementById('topbar-name');
     if (nameEl) nameEl.textContent = p.username;
+    var sideName = document.getElementById('profile-sidebar-name');
+    if (sideName) sideName.textContent = p.username;
 
     // Profile Hero
     document.getElementById('profile-hero-avatar').innerHTML = avatarHtml(p, 'avatar-lg');
@@ -62,12 +66,17 @@
       ? new Date(p.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })
       : 'Recently';
     document.getElementById('profile-join-date').textContent = 'Hunter since ' + dateStr + ' • ' + games.length + ' Games in Vault';
+    var miniGames = document.getElementById('profile-mini-games'); if (miniGames) miniGames.textContent = games.length;
+    var miniTrophies = document.getElementById('profile-mini-trophies'); if (miniTrophies) miniTrophies.textContent = totals.totalAchv || 0;
+    var miniPlats = document.getElementById('profile-mini-platinums'); if (miniPlats) miniPlats.textContent = totals.tiers.platinum || 0;
+    var platformTotal = document.getElementById('profile-platform-total'); if (platformTotal) platformTotal.textContent = games.length;
 
     // Level & XP
     document.getElementById('profile-level-num').textContent = lvl.level;
     document.getElementById('profile-level-rank').textContent = 'Level ' + lvl.level + ' • ' + lvl.rankTitle;
     document.getElementById('profile-xp-text').textContent = lvl.totalXp.toLocaleString() + ' Total XP (' + lvl.pct + '% to Level ' + (lvl.level + 1) + ')';
     document.getElementById('profile-xp-fill').style.width = lvl.pct + '%';
+    var xpPct = document.getElementById('profile-xp-percent'); if (xpPct) xpPct.textContent = lvl.pct + '%';
 
     // Milestone Cards
     document.getElementById('prof-stat-plat').textContent = totals.tiers.platinum || 0;

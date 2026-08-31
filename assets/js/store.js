@@ -548,9 +548,9 @@ document.addEventListener('DOMContentLoaded', function () {
     googleBtn.addEventListener('click', function () {
       signInWithProvider('google').then(function (session) {
         if (session.setupComplete) {
-          window.location.href = 'app.html';
+          window.pgGo('overview');
         } else {
-          window.location.href = 'auth.html?mode=profile';
+          window.pgGo('auth','?mode=profile');
         }
       }).catch(function (err) {
         toast('Sign in failed: ' + err.message);
@@ -563,9 +563,9 @@ document.addEventListener('DOMContentLoaded', function () {
     githubBtn.addEventListener('click', function () {
       signInWithProvider('github').then(function (session) {
         if (session.setupComplete) {
-          window.location.href = 'app.html';
+          window.pgGo('overview');
         } else {
-          window.location.href = 'auth.html?mode=profile';
+          window.pgGo('auth','?mode=profile');
         }
       }).catch(function (err) {
         toast('Sign in failed: ' + err.message);

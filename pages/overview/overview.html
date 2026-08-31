@@ -4,15 +4,33 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Proglog — My Game Vault &amp; Active Checklists</title>
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="stylesheet" href="css/vars.css">
-  <link rel="stylesheet" href="css/reset.css">
-  <link rel="stylesheet" href="css/layout.css">
-  <link rel="stylesheet" href="css/components.css">
-  <link rel="stylesheet" href="css/pages.css">
-  <link rel="stylesheet" href="css/ui-refresh.css">
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <link rel="stylesheet" href="../../assets/css/vars.css">
+  <link rel="stylesheet" href="../../assets/css/reset.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/pages.css">
+  <link rel="stylesheet" href="../../assets/css/ui-refresh.css">
+  <link rel="stylesheet" href="../../assets/css/sidebar-refresh.css">
 </head>
-<body class="app-page">
+<body class="app-page has-global-sidebar" data-page="overview">
+<aside class="global-sidebar" aria-label="Primary navigation">
+  <a href="../../pages/overview/overview.html" class="global-brand" aria-label="Proglog home"><span class="global-brand-mark">P</span><span>proglog</span></a>
+  <nav class="global-nav">
+    <a href="../../pages/overview/overview.html" data-nav="overview"><span>⌂</span><b>Overview</b></a>
+    <a href="../../pages/games/games.html" data-nav="games"><span>◈</span><b>Games</b></a>
+    <a href="../../pages/trophies/trophies.html" data-nav="trophies"><span>♜</span><b>Trophies</b></a>
+    <a href="../../pages/sessions/sessions.html" data-nav="sessions"><span>◷</span><b>Sessions</b></a>
+    <a href="../../pages/friends/friends.html" data-nav="friends"><span>♧</span><b>Friends</b></a>
+    <a href="../../pages/stats/stats.html" data-nav="stats"><span>▥</span><b>Stats</b></a>
+  </nav>
+  <div class="global-nav-divider"></div>
+  <nav class="global-nav global-nav-secondary">
+    <a href="../../pages/profile/profile.html" data-nav="profile"><span>◎</span><b>Profile</b></a>
+    <a href="../../pages/settings/settings.html" data-nav="settings"><span>⚙</span><b>Settings</b></a>
+  </nav>
+  <div class="global-sidebar-user" title="Open profile"><div class="global-user-avatar" id="global-sidebar-avatar">P</div><div><strong id="global-sidebar-name">Hunter</strong><small>View profile</small></div></div>
+</aside>
 
 <div id="screen-auth" class="hidden">
   <div class="auth-box">
@@ -67,7 +85,7 @@
       <button class="btn btn-primary" style="width:100%" id="btn-create-profile">Create Profile &amp; Enter</button>
 
       <div style="text-align:center; margin-top:16px;">
-        <a href="auth.html" style="font-size:12.5px; color:var(--text-muted);">Sign in with Google / GitHub &rarr;</a>
+        <a href="../../pages/auth/auth.html" style="font-size:12.5px; color:var(--text-muted);">Sign in with Google / GitHub &rarr;</a>
       </div>
     </div>
   </div>
@@ -76,14 +94,14 @@
 <div id="screen-main" class="hidden">
   <div class="topbar">
     <div style="display:flex; align-items:center; gap:28px;">
-      <a href="index.html" class="brand">
+      <a href="../../../" class="brand">
         <svg class="brandmark" viewBox="0 0 32 32" fill="none" aria-label="Proglog logo"><path d="M7 26V6h9.5C22.3 6 26 9.2 26 13.6S22.3 21 16.5 21H12v5H7Zm5-9h4.3c3 0 4.7-1.2 4.7-3.4S19.3 10 16.3 10H12v7Z" fill="currentColor"/></svg>
         <span>Pro<span class="accent">glog</span></span>
       </a>
       <div class="nav-links">
-        <a href="app.html" class="nav-link active">Overview</a>
-        <a href="catalog.html" class="nav-link">Catalog</a>
-        <a href="profile.html" class="nav-link">Profile</a>
+        <a href="../../pages/overview/overview.html" class="nav-link active">Overview</a>
+        <a href="../../pages/games/games.html" class="nav-link">Catalog</a>
+        <a href="../../pages/profile/profile.html" class="nav-link">Profile</a>
       </div>
     </div>
 
@@ -98,7 +116,7 @@
 
   <div class="container">
     <nav class="breadcrumbs">
-      <a href="index.html">Home</a>
+      <a href="../../../">Home</a>
       <span class="breadcrumb-sep">/</span>
       <span class="breadcrumb-current">Overview</span>
     </nav>
@@ -108,7 +126,7 @@
         <div>
           <h1>Welcome back<span id="welcome-name-wrap"></span> 👋</h1>
           <p>Keep your library organized, check off trophies, and see how close you are to your next 100%.</p>
-          <a href="catalog.html" class="btn btn-ghost btn-sm" style="margin-top:14px;">Browse games</a>
+          <a href="../../pages/games/games.html" class="btn btn-ghost btn-sm" style="margin-top:14px;">Browse games</a>
         </div>
         <div class="welcome-art" aria-hidden="true">
           <svg viewBox="0 0 160 110" fill="none">
@@ -155,7 +173,7 @@
             <option value="progress-desc">Progress: High to Low</option>
             <option value="progress-asc">Progress: Low to High</option>
           </select>
-          <a href="catalog.html" class="btn btn-ghost">
+          <a href="../../pages/games/games.html" class="btn btn-ghost">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
             Browse Catalog
           </a>
@@ -171,7 +189,7 @@
         <h3>Your Vault is Empty</h3>
         <p>Start tracking trophies by importing a starter checklist for <b>The Last of Us Part I</b> or adding a custom title.</p>
         <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
-          <a href="catalog.html" class="btn btn-primary">Browse Trophy Catalog</a>
+          <a href="../../pages/games/games.html" class="btn btn-primary">Browse Trophy Catalog</a>
           <button class="btn btn-ghost" id="btn-add-game-empty">+ Add Custom Game</button>
         </div>
       </div>
@@ -183,12 +201,12 @@
   <div class="wrap">
     <span>Proglog — The Ultimate Trophy &amp; Achievement Journal.</span>
     <div style="display:flex; gap:18px; font-size:13px; color:var(--text-muted); flex-wrap:wrap;">
-      <a href="index.html">Home</a>
-      <a href="app.html">Overview</a>
-      <a href="catalog.html">Catalog</a>
-      <a href="profile.html">Profile</a>
-      <a href="auth.html">Sign In</a>
-      <a href="privacy.html">Privacy Policy</a>
+      <a href="../../../">Home</a>
+      <a href="../../pages/overview/overview.html">Overview</a>
+      <a href="../../pages/games/games.html">Catalog</a>
+      <a href="../../pages/profile/profile.html">Profile</a>
+      <a href="../../pages/auth/auth.html">Sign In</a>
+      <a href="../../pages/privacy/privacy.html">Privacy Policy</a>
     </div>
   </div>
 </footer>
@@ -198,19 +216,25 @@
 
 
 <!-- Firebase SDK -->
+<script src="../../assets/js/routes.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-storage-compat.js"></script>
-<script src="js/firebase-config.js"></script>
-<script src="js/firebase-client.js"></script>
-<script src="js/store.js"></script>
-<script src="js/theme.js"></script>
-<script src="js/helpers.js"></script>
-<script src="js/auth-firebase.js"></script>
-<script src="js/catalog.js"></script>
-<script src="js/catalog-extra.js"></script>
-<script src="js/modals.js"></script>
-<script src="js/dashboard.js"></script>
-</body>
+<script src="../../assets/js/firebase-config.js"></script>
+<script src="../../assets/js/firebase-client.js"></script>
+<script src="../../assets/js/store.js"></script>
+<script src="../../assets/js/theme.js"></script>
+<script src="../../assets/js/helpers.js"></script>
+<script src="../../assets/js/auth-firebase.js"></script>
+<script src="../../assets/js/catalog.js"></script>
+<script src="../../assets/js/catalog-extra.js"></script>
+<script src="../../assets/js/trophy-sources.js"></script>
+<script src="../../assets/js/modals.js"></script>
+<script src="../../assets/js/dashboard.js"></script>
+
+<script>
+(function(){const path=location.pathname; const map=[['/pages/overview/overview.html','overview'],['/pages/games/games.html','games'],['/pages/game/game.html','games'],['/pages/profile/profile.html','profile'],['/pages/settings/settings.html','settings'],['/pages/trophies/trophies.html','trophies'],['/pages/sessions/sessions.html','sessions'],['/pages/friends/friends.html','friends'],['/pages/stats/stats.html','stats']]; const hit=map.find(function(x){return path.indexOf(x[0])>=0;}); const key=hit&&hit[1]; if(key){document.querySelectorAll('.global-nav a').forEach(a=>a.classList.toggle('active',a.dataset.nav===key));}})();
+</script>
+<script src="../../assets/js/shell.js"></script></body>
 </html>

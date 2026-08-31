@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proglog — Game Library &amp; Trophy Guides</title>
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <link rel="stylesheet" href="../../assets/css/vars.css">
+  <link rel="stylesheet" href="../../assets/css/reset.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/pages.css">
+  <link rel="stylesheet" href="../../assets/css/ui-refresh.css">
+  <link rel="stylesheet" href="../../assets/css/sidebar-refresh.css">
+</head>
+<body class="has-global-sidebar" data-page="games">
+<aside class="global-sidebar" aria-label="Primary navigation">
+  <a href="../../pages/overview/overview.html" class="global-brand" aria-label="Proglog home"><span class="global-brand-mark">P</span><span>proglog</span></a>
+  <nav class="global-nav">
+    <a href="../../pages/overview/overview.html" data-nav="overview"><span>⌂</span><b>Overview</b></a>
+    <a href="../../pages/games/games.html" data-nav="games"><span>◈</span><b>Games</b></a>
+    <a href="../../pages/trophies/trophies.html" data-nav="trophies"><span>♜</span><b>Trophies</b></a>
+    <a href="../../pages/sessions/sessions.html" data-nav="sessions"><span>◷</span><b>Sessions</b></a>
+    <a href="../../pages/friends/friends.html" data-nav="friends"><span>♧</span><b>Friends</b></a>
+    <a href="../../pages/stats/stats.html" data-nav="stats"><span>▥</span><b>Stats</b></a>
+  </nav>
+  <div class="global-nav-divider"></div>
+  <nav class="global-nav global-nav-secondary">
+    <a href="../../pages/profile/profile.html" data-nav="profile"><span>◎</span><b>Profile</b></a>
+    <a href="../../pages/settings/settings.html" data-nav="settings"><span>⚙</span><b>Settings</b></a>
+  </nav>
+  <div class="global-sidebar-user" title="Open profile"><div class="global-user-avatar" id="global-sidebar-avatar">P</div><div><strong id="global-sidebar-name">Hunter</strong><small>View profile</small></div></div>
+</aside>
+
+<div class="topbar">
+  <div style="display:flex; align-items:center; gap:28px;">
+    <a href="../../../" class="brand">
+      <svg class="brandmark" viewBox="0 0 32 32" fill="none" aria-label="Proglog logo"><path d="M7 26V6h9.5C22.3 6 26 9.2 26 13.6S22.3 21 16.5 21H12v5H7Zm5-9h4.3c3 0 4.7-1.2 4.7-3.4S19.3 10 16.3 10H12v7Z" fill="currentColor"/></svg>
+      <span>Pro<span class="accent">glog</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="../../pages/overview/overview.html" class="nav-link">Overview</a>
+      <a href="../../pages/games/games.html" class="nav-link active">Catalog</a>
+      <a href="../../pages/profile/profile.html" class="nav-link">Profile</a>
+    </div>
+  </div>
+
+  <div class="topbar-right">
+    <div class="user-chip">
+      <div id="topbar-avatar-slot"></div>
+      <span id="topbar-name">Hunter</span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <nav class="breadcrumbs">
+    <a href="../../../">Home</a>
+    <span class="breadcrumb-sep">/</span>
+    <span class="breadcrumb-current">Trophy Guide Catalog</span>
+  </nav>
+
+  <div class="section-head">
+    <div>
+      <span class="eyebrow" style="margin-bottom:8px;">Game Library</span>
+      <h2>Trophy Guide Catalog</h2>
+      <p style="color:var(--text-muted); font-size:14px; margin-top:4px;">Authentic completion roadmaps and checklists inspired by PlatGet and PlayStationTrophies.</p>
+    </div>
+  </div>
+
+  <div class="toolbar" style="margin-bottom:30px;">
+    <div class="search-wrap">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input type="text" id="search-catalog" placeholder="Search guides by title...">
+      <span class="kbd-hint">/</span>
+    </div>
+    <select id="filter-cat-platform">
+      <option value="all">All Platforms</option>
+      <option value="playstation">PlayStation</option>
+      <option value="steam">Steam</option>
+      <option value="xbox">Xbox</option>
+    </select>
+    <select id="filter-cat-difficulty">
+      <option value="all">All Difficulties</option>
+      <option value="easy">Accessible (1–3/10)</option>
+      <option value="medium">Moderate (4–6/10)</option>
+      <option value="hard">Challenging (7–10/10)</option>
+    </select>
+  </div>
+
+  <div id="catalog-page-grid" class="catalog-page-grid"></div>
+</div>
+
+<footer id="site-footer">
+  <div class="wrap">
+    <span>Proglog — The Ultimate Trophy &amp; Achievement Journal.</span>
+    <div style="display:flex; gap:18px; font-size:13px; color:var(--text-muted); flex-wrap:wrap;">
+      <a href="../../../">Home</a>
+      <a href="../../pages/overview/overview.html">Overview</a>
+      <a href="../../pages/games/games.html">Catalog</a>
+      <a href="../../pages/profile/profile.html">Profile</a>
+      <a href="../../pages/auth/auth.html">Sign In</a>
+      <a href="../../pages/privacy/privacy.html">Privacy Policy</a>
+    </div>
+  </div>
+</footer>
+
+<div class="toast-wrap" id="toast-wrap"></div>
+
+<!-- Firebase SDK -->
+
+<!-- Firebase SDK -->
+<script src="../../assets/js/routes.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-storage-compat.js"></script>
+<script src="../../assets/js/firebase-config.js"></script>
+<script src="../../assets/js/firebase-client.js"></script>
+<script src="../../assets/js/store.js"></script>
+<script src="../../assets/js/theme.js"></script>
+<script src="../../assets/js/helpers.js"></script>
+<script src="../../assets/js/auth-firebase.js"></script>
+<script src="../../assets/js/catalog.js"></script>
+<script src="../../assets/js/catalog-extra.js"></script>
+<script src="../../assets/js/trophy-sources.js"></script>
+<script src="../../assets/js/modals.js"></script>
+<script src="../../assets/js/catalog-page.js"></script>
+
+<script>
+(function(){const path=location.pathname; const map=[['/pages/overview/overview.html','overview'],['/pages/games/games.html','games'],['/pages/game/game.html','games'],['/pages/profile/profile.html','profile'],['/pages/settings/settings.html','settings'],['/pages/trophies/trophies.html','trophies'],['/pages/sessions/sessions.html','sessions'],['/pages/friends/friends.html','friends'],['/pages/stats/stats.html','stats']]; const hit=map.find(function(x){return path.indexOf(x[0])>=0;}); const key=hit&&hit[1]; if(key){document.querySelectorAll('.global-nav a').forEach(a=>a.classList.toggle('active',a.dataset.nav===key));}})();
+</script>
+<script src="../../assets/js/shell.js"></script></body>
+</html>

@@ -284,16 +284,44 @@ input:focus, select:focus, textarea:focus { box-shadow: 0 0 0 3px var(--brand-so
 }
 .catalog-data-note { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 12px; color: var(--text-muted); }
 
-/* Bulk trophy controls */
-.bulk-achievement-btn {
-  white-space: nowrap;
-}
-.bulk-achievement-btn.is-complete {
-  border-color: var(--border, #dfe5e1);
-  color: var(--text-muted, #667085);
-}
+
+/* Cross-page consistency and overlap prevention */
+*, *::before, *::after { box-sizing: border-box; }
+img, svg, video, canvas { max-width: 100%; }
+button, input, select, textarea { max-width: 100%; }
+h1, h2, h3, h4, p, a, span, label, button, .field-label, .nav-link { overflow-wrap: anywhere; }
+.auth-site-nav { min-height: 64px; gap: 18px; }
+.auth-nav-links { display:flex; align-items:center; flex-wrap:wrap; gap:6px; }
+.auth-nav-links .nav-link { white-space:nowrap; }
+.auth-page .container { min-width:0; }
+.auth-page .auth-card { min-width:0; overflow:hidden; }
+.auth-page .step-dots { min-width:0; }
+.auth-page .step-dot { min-width:0; white-space:normal; }
+.auth-page .profile-setup-step { min-width:0; }
+.auth-page .pfp-upload-section { min-width:0; }
+.auth-page .pfp-upload-controls { min-width:0; }
+.auth-page .swatches { display:flex; flex-wrap:wrap; gap:9px; }
+.auth-page #site-nav { position:sticky; top:0; z-index:50; }
+
 @media (max-width: 720px) {
-  .achv-toolbar > div:last-child { width: 100%; }
-  .achv-toolbar .search-wrap { flex: 1; min-width: 0 !important; }
-  .bulk-achievement-btn { flex: 0 0 auto; }
+  .auth-site-nav { padding-inline: 16px; align-items:flex-start; flex-direction:column; }
+  .auth-site-nav > div:first-child { width:100%; justify-content:space-between; }
+  .auth-site-nav .nav-links { width:100%; overflow-x:auto; flex-wrap:nowrap; padding-bottom:2px; }
+  .auth-site-nav nav { width:100%; }
+  .auth-site-nav nav .btn { width:100%; }
+  .auth-page .container { padding-inline: 14px !important; padding-top:20px !important; }
+  .auth-page .auth-card { padding:22px !important; }
+  .auth-page .pfp-upload-section { align-items:flex-start; flex-wrap:wrap; }
 }
+
+@media (max-width: 420px) {
+  .auth-page .auth-card { padding:17px !important; }
+  .auth-page .step-dots { gap:7px; }
+  .auth-page .step-dot { font-size:11px; }
+  .auth-page .oauth-group { gap:8px; }
+}
+
+/* Final responsive hardening */
+html, body { max-width:100%; overflow-x:hidden; }
+img, svg, video, canvas { max-width:100%; }
+button, input, select, textarea { max-width:100%; }
