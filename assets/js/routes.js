@@ -21,6 +21,10 @@
     if (name === 'home') return (base || '') + '/';
     return (base || '') + '/' + path + (suffix || '');
   };
+  function normalizeUrlPath(url) {
+    return String(url || '').replace(/\/+$/, '');
+  }
+
   window.pgGo = function (name, suffix) {
     var extra = suffix;
     if (suffix && typeof suffix === 'object') {
@@ -28,6 +32,9 @@
       else if (suffix.query) extra = '?' + suffix.query;
       else extra = '';
     }
-    window.location.href = pgRoute(name, extra || '');
+    var target = pgRoute(name, extra || '');
+    var current = normalizeUrlPath(window.location.pathname + window.location.search + window.location.hash);
+    if (normalizeUrlPath(target) === current) return;
+    window.location.href = target;
   };
 })();

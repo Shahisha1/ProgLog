@@ -53,19 +53,25 @@
     }
 
     function searchGames(query, callback) {
-        var cached = getCached('search_' + query);
+        var safeQuery = String(query || '').trim();
+        if (!safeQuery) {
+            if (callback) callback([], null);
+            return;
+        }
+
+        var cached = getCached('search_' + safeQuery);
         if (cached) {
             if (callback) callback(cached, null);
             return;
         }
 
-        if (requestQueue[query]) {
-            if (callback) requestQueue[query].push(callback);
+        if (requestQueue[safeQuery]) {
+            if (callback) requestQueue[safeQuery].push(callback);
             return;
         }
 
-        requestQueue[query] = [callback || function () { }];
-        var endpoint = '/games?search=' + encodeURIComponent(query) + '&page_size=5';
+        requestQueue[safeQuery] = [callback || function () { }];
+        var endpoint = '/games?search=' + encodeURIComponent(safeQuery) + '&search_exact=true&search_precise=true&page_size=5';
 
         fetchAPI(endpoint, function (data, error) {
             var results = null;
@@ -83,8 +89,8 @@
                 });
                 setCached('search_' + query, results);
             }
-            var callbacks = requestQueue[query] || [];
-            delete requestQueue[query];
+            var callbacks = requestQueue[safeQuery] || [];
+            delete requestQueue[safeQuery];
             callbacks.forEach(function (cb) { if (cb) cb(results, error); });
         });
     }
@@ -179,7 +185,7 @@
             return;
         }
 
-        fetchAPI('/games/' + gameId + '/series?page_size=10', function (data, error) {
+        fetchAPI('/games/' + gameId + '/game-series?page_size=10', function (data, error) {
             if (data && data.results) {
                 var results = (data.results || []).map(function (game) {
                     return { id: game.id, name: game.name, released: game.released };
