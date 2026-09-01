@@ -1,4 +1,3 @@
-// Proglog Firebase Client
 (function () {
   'use strict';
 
@@ -12,9 +11,9 @@
         auth = firebase.auth();
         db = firebase.firestore();
         storage = firebase.storage();
-        console.log('Firebase initialized successfully');
+        
       } else {
-        console.warn('Firebase SDK not loaded');
+        
       }
     } catch (e) {
       console.warn('Firebase initialization failed:', e);

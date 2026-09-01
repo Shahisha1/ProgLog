@@ -1,4 +1,4 @@
-// Proglog Catalog Page Controller
+// Catalog page controller
 (function() {
   'use strict';
 
@@ -85,8 +85,8 @@
             '<div class="catalog-title" style="font-size:20px; margin-top:4px;">' + esc(item.title) + '</div>' +
           '</div>' +
           (isOwned
-            ? '<button class="btn btn-ghost btn-sm" disabled style="opacity:0.75;">✓ In Your Vault</button>'
-            : '<button class="btn btn-primary btn-sm btn-add-cat-game" data-id="' + item.id + '">+ Add to Vault</button>') +
+            ? '<button class="btn btn-ghost btn-sm btn-view-cat-game" data-id="' + item.id + '">View Details</button>'
+            : '<div style="display:flex;gap:8px;align-items:center;"><button class="btn btn-ghost btn-sm btn-view-cat-game" data-id="' + item.id + '">Details</button><button class="btn btn-primary btn-sm btn-add-cat-game" data-id="' + item.id + '">+ Add to Vault</button></div>') +
         '</div>' +
         '<div class="roadmap-strip" style="margin-top:4px;">' +
           (rm.difficulty ? '<div class="roadmap-item"><span class="roadmap-label">Difficulty</span><span class="roadmap-val">' + esc(rm.difficulty) + '</span></div>' : '') +
@@ -99,10 +99,10 @@
           '<span>' + tierSvg('gold') + ' ' + tierCounts.gold + '</span>' +
           '<span>' + tierSvg('silver') + ' ' + tierCounts.silver + '</span>' +
           '<span>' + tierSvg('bronze') + ' ' + tierCounts.bronze + '</span>' +
-          '<span style="margin-left:auto; font-weight:700; color:var(--text-main);">' + (item.totalTrophies || achvs.length) + ' Total Achievements</span>' +
+          '<span style="margin-left:auto; font-weight:700; color:var(--text-main);">' + (item.totalTrophies || achvs.length) + ' Total ' + (item.platform === 'playstation' ? 'Trophies' : 'Achievements') + '</span>' +
         '</div>' +
         (rm.summary ? '<div class="catalog-desc">' + esc(rm.summary) + '</div>' : '') +
-        (item.catalogPreview ? '<div class="catalog-data-note">Catalog entry · full trophy set can be synced from the connected platform.</div>' : '') +
+        (item.catalogPreview ? '<div class="catalog-data-note">Verified total from ' + esc(item.trophySource || (item.detail && item.detail.source) || 'platform source') + ' · complete list linked on the detail page.</div>' : '') +
       '</div>';
     }).join('');
 
@@ -111,6 +111,13 @@
         e.stopPropagation();
         var id = btn.getAttribute('data-id');
         addGameToVault(id);
+      });
+    });
+    grid.querySelectorAll('.btn-view-cat-game').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var id = btn.getAttribute('data-id');
+        window.location.href = window.pgRoute('game') + '#' + encodeURIComponent(id);
       });
     });
   }

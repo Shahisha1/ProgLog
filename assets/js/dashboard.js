@@ -1,4 +1,4 @@
-// Proglog Dashboard Controller
+// Dashboard controller
 (function() {
   'use strict';
 
@@ -73,7 +73,10 @@
     if (avSlot) {
       avSlot.innerHTML = avatarHtml(p);
     }
-    document.getElementById('topbar-name').textContent = p.username;
+    var nameEl = document.getElementById('topbar-name');
+    if (nameEl) {
+      nameEl.textContent = p.username;
+    }
 
     renderDashboard();
   }
@@ -378,15 +381,8 @@
       });
     }
 
-    var switchBtn = document.getElementById('btn-switch-profile');
-    if (switchBtn) {
-      switchBtn.addEventListener('click', function() {
-        state.currentUser = null;
-        state.cabinet = null;
-        setLastUser(null);
-        showAuth();
-      });
-    }
+    // Sign-out is handled globally by shell.js (initSignOut), which also
+    // signs out of Firebase — not just this in-page state.
 
     var searchInput = document.getElementById('search-games');
     if (searchInput) {

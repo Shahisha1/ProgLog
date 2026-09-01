@@ -1,6 +1,4 @@
-// Proglog Authentication with Firebase
-
-// Ensure global functions are available
+// Authentication with Firebase
 if (typeof window.cacheSession === 'undefined') {
   window.cacheSession = function(session) {
     try {
@@ -32,7 +30,6 @@ if (typeof window.syncCabinetProfile === 'undefined') {
 
 if (typeof window.toast === 'undefined') {
   window.toast = function(msg) {
-    console.log('TOAST:', msg);
     var wrap = document.getElementById('toast-wrap');
     if (wrap) {
       var el = document.createElement('div');
@@ -55,8 +52,31 @@ if (typeof window.toast === 'undefined') {
 
   var btnSubmit = document.getElementById('btn-step1-submit');
 
+  function isApprovedEmail(email) {
+    var value = String(email || '').trim().toLowerCase();
+    if (!value || value.indexOf('@') === -1) return false;
+
+    var domain = value.split('@').pop();
+    if (!domain) return false;
+
+    var blockedDomains = [
+      'mailinator.com', 'tempmail.com', '10minutemail.com', 'guerrillamail.com', 'trashmail.com',
+      'dispostable.com', 'fakeinbox.com', 'yopmail.com', 'sharklasers.com', 'mintemail.com',
+      'getnada.com', 'maildrop.cc', 'temp-mail.org', 'mailnesia.com'
+    ];
+
+    var approvedDomains = [
+      'gmail.com', 'googlemail.com', 'yahoo.com', 'ymail.com', 'yahoomail.com'
+    ];
+
+    if (blockedDomains.indexOf(domain) !== -1 || blockedDomains.some(function(item) { return domain === item || domain.endsWith('.' + item); })) {
+      return false;
+    }
+
+    return approvedDomains.indexOf(domain) !== -1 || approvedDomains.some(function(item) { return domain === item || domain.endsWith('.' + item); });
+  }
+
   function init() {
-    console.log('Auth init started');
     
     var params = new URLSearchParams(window.location.search);
     if (params.get('mode') === 'login') {
@@ -71,10 +91,9 @@ if (typeof window.toast === 'undefined') {
     
     // Wait for Firebase to be ready
     if (window.proglogFirebase && window.proglogFirebase.auth) {
-      console.log('Firebase detected, checking auth state');
       checkAuthState();
     } else {
-      console.log('No Firebase, using local auth');
+      // No Firebase available yet; fall back to the local session.
       // Check local session
       refreshCurrentSession().then(function(session) {
         if (session && session.setupComplete) {
@@ -94,18 +113,14 @@ if (typeof window.toast === 'undefined') {
     // Check current user immediately
     var currentUser = auth.currentUser;
     if (currentUser) {
-      console.log('User already signed in:', currentUser.uid);
       handleAuthenticatedUser(currentUser);
       return;
     }
 
     // Listen for auth changes
     auth.onAuthStateChanged(function(user) {
-      console.log('Auth state changed:', user ? user.uid : 'null');
       if (user) {
         handleAuthenticatedUser(user);
-      } else {
-        console.log('No user signed in');
       }
     });
   }
@@ -118,14 +133,12 @@ if (typeof window.toast === 'undefined') {
       .then(function(doc) {
         if (doc.exists && doc.data().setupComplete) {
           // Profile complete, go to app
-          console.log('Profile complete, redirecting to app');
           var session = firebaseUserToSession(user, doc.data());
           window.cacheSession(session);
           window.syncCabinetProfile(session);
           window.pgGo('overview');
         } else {
           // Need to complete profile
-          console.log('Profile incomplete, showing step 2');
           var data = doc.exists ? doc.data() : {};
           var session = firebaseUserToSession(user, data);
           goToStep2(session);
@@ -210,33 +223,45 @@ if (typeof window.toast === 'undefined') {
     var confirmWrap = document.getElementById('field-confirm-wrap');
     var breadcrumbText = document.getElementById('auth-breadcrumb-text');
     var wizardSteps = document.getElementById('wizard-steps');
+    var forgotWrap = document.getElementById('forgot-password-wrap');
+    var confirmInput = document.getElementById('input-step1-confirm');
 
     if (signup) {
-      tabSignup.style.background = 'var(--bg-surface)';
-      tabSignup.style.color = 'var(--text-main)';
-      tabSignup.style.fontWeight = '700';
-      tabLogin.style.background = 'transparent';
-      tabLogin.style.color = 'var(--text-muted)';
-      tabLogin.style.fontWeight = 'normal';
+      if (tabSignup) {
+        tabSignup.style.background = 'var(--bg-surface)';
+        tabSignup.style.color = 'var(--text-main)';
+        tabSignup.style.fontWeight = '700';
+      }
+      if (tabLogin) {
+        tabLogin.style.background = 'transparent';
+        tabLogin.style.color = 'var(--text-muted)';
+        tabLogin.style.fontWeight = 'normal';
+      }
 
-      confirmWrap.style.display = 'block';
-      document.getElementById('input-step1-confirm').setAttribute('required', 'required');
+      if (confirmWrap) confirmWrap.style.display = 'block';
+      if (confirmInput) confirmInput.setAttribute('required', 'required');
       if (btnSubmit) btnSubmit.textContent = 'Create Account & Continue →';
       if (breadcrumbText) breadcrumbText.textContent = 'Sign Up';
       if (wizardSteps) wizardSteps.style.display = 'flex';
+      if (forgotWrap) forgotWrap.style.display = 'none';
     } else {
-      tabLogin.style.background = 'var(--bg-surface)';
-      tabLogin.style.color = 'var(--text-main)';
-      tabLogin.style.fontWeight = '700';
-      tabSignup.style.background = 'transparent';
-      tabSignup.style.color = 'var(--text-muted)';
-      tabSignup.style.fontWeight = 'normal';
+      if (tabLogin) {
+        tabLogin.style.background = 'var(--bg-surface)';
+        tabLogin.style.color = 'var(--text-main)';
+        tabLogin.style.fontWeight = '700';
+      }
+      if (tabSignup) {
+        tabSignup.style.background = 'transparent';
+        tabSignup.style.color = 'var(--text-muted)';
+        tabSignup.style.fontWeight = 'normal';
+      }
 
-      confirmWrap.style.display = 'none';
-      document.getElementById('input-step1-confirm').removeAttribute('required');
+      if (confirmWrap) confirmWrap.style.display = 'none';
+      if (confirmInput) confirmInput.removeAttribute('required');
       if (btnSubmit) btnSubmit.textContent = 'Sign In to Proglog →';
       if (breadcrumbText) breadcrumbText.textContent = 'Sign In';
       if (wizardSteps) wizardSteps.style.display = 'none';
+      if (forgotWrap) forgotWrap.style.display = 'block';
     }
   }
 
@@ -546,6 +571,11 @@ if (typeof window.toast === 'undefined') {
         var email = document.getElementById('input-step1-email').value.trim();
         var pass = document.getElementById('input-step1-pass').value;
 
+        if (!isApprovedEmail(email)) {
+          showAlert('Only approved Google or Yahoo email addresses are allowed. Proxy or disposable email domains are not permitted.');
+          return;
+        }
+
         if (state.isSignUp) {
           var confirm = document.getElementById('input-step1-confirm').value;
           if (pass !== confirm) {
@@ -563,16 +593,25 @@ if (typeof window.toast === 'undefined') {
             registerWithFirebase(email, pass)
               .then(function(session) {
                 if (session.needsEmailConfirmation) {
-                  showAlert('Account created! Please check your email to verify your account, then sign in.', true);
-                  setMode(false);
-                  document.getElementById('input-step1-email').value = email;
+                  var finish = function() {
+                    showAlert('Account created. Check your email to verify it, then sign in.', true);
+                    setMode(false);
+                    var emailEl = document.getElementById('input-step1-email');
+                    if (emailEl) emailEl.value = email;
+                    var passEl = document.getElementById('input-step1-pass');
+                    if (passEl) passEl.value = '';
+                  };
+                  if (window.proglogFirebase && window.proglogFirebase.auth) {
+                    return window.proglogFirebase.auth.signOut().then(finish);
+                  }
+                  finish();
                   return;
                 }
                 window.toast('Account created! Set up your profile next.');
                 goToStep2(session);
               })
               .catch(function(err) {
-                showAlert(err.message || 'Registration failed.');
+                showAlert(window.proglogApp ? window.proglogApp.friendlyError(err) : (err.message || 'Registration failed.'));
               })
               .finally(function() {
                 setLoading(btnSubmit, false, 'Create Account & Continue →');
@@ -604,7 +643,7 @@ if (typeof window.toast === 'undefined') {
                 }
               })
               .catch(function(err) {
-                showAlert(err.message || 'Login failed.');
+                showAlert(window.proglogApp ? window.proglogApp.friendlyError(err) : (err.message || 'Login failed.'));
               })
               .finally(function() {
                 setLoading(btnSubmit, false, 'Sign In to Proglog →');
@@ -630,6 +669,31 @@ if (typeof window.toast === 'undefined') {
       });
     }
 
+    var forgotBtn = document.getElementById('btn-forgot-password');
+    if (forgotBtn) {
+      forgotBtn.addEventListener('click', function() {
+        var emailEl = document.getElementById('input-step1-email');
+        var email = emailEl ? emailEl.value.trim() : '';
+        if (!email) {
+          showAlert('Enter your email address first.');
+          if (emailEl) emailEl.focus();
+          return;
+        }
+        if (!window.proglogFirebase || !window.proglogFirebase.auth) {
+          showAlert('Password reset is unavailable while cloud authentication is offline.');
+          return;
+        }
+        var btn = this;
+        var original = btn.textContent;
+        btn.disabled = true;
+        btn.textContent = 'Sending…';
+        window.proglogFirebase.auth.sendPasswordResetEmail(email)
+          .then(function() { showAlert('Password reset email sent. Check your inbox.', true); })
+          .catch(function(err) { showAlert(window.proglogApp ? window.proglogApp.friendlyError(err) : (err.message || 'Could not send reset email.')); })
+          .finally(function() { btn.disabled = false; btn.textContent = original; });
+      });
+    }
+
     // OAuth Buttons
     var googleBtn = document.getElementById('btn-oauth-google');
     if (googleBtn) {
@@ -649,7 +713,7 @@ if (typeof window.toast === 'undefined') {
             }
           })
           .catch(function(err) {
-            showAlert(err.message || 'Google sign-in failed.');
+            showAlert(window.proglogApp ? window.proglogApp.friendlyError(err) : (err.message || 'Google sign-in failed.'));
           })
           .finally(function() {
             setLoading(btn, false);
@@ -675,7 +739,7 @@ if (typeof window.toast === 'undefined') {
             }
           })
           .catch(function(err) {
-            showAlert(err.message || 'GitHub sign-in failed.');
+            showAlert(window.proglogApp ? window.proglogApp.friendlyError(err) : (err.message || 'GitHub sign-in failed.'));
           })
           .finally(function() {
             setLoading(btn, false);
@@ -747,7 +811,7 @@ if (typeof window.toast === 'undefined') {
             window.toast('Profile saved. Welcome to Proglog.');
             setTimeout(function() { window.pgGo('overview'); }, 350);
           }).catch(function(err) {
-            showAlert(err.message || 'Your profile could not be saved.');
+            showAlert(window.proglogApp ? window.proglogApp.friendlyError(err) : (err.message || 'Your profile could not be saved.'));
           }).finally(function() {
             setLoading(submit, false, 'Complete Setup & Open Proglog →');
           });

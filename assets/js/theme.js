@@ -2,14 +2,14 @@
 (function () {
   'use strict';
 
-  var DEFAULT = '#16a66f';
+  var DEFAULT = '#7126a6';
 
   function clamp(n, min, max) { return Math.max(min, Math.min(max, n)); }
   function hexToRgb(hex) {
     var h = String(hex || '').replace('#','');
     if (h.length === 3) h = h.split('').map(function(c){ return c+c; }).join('');
     var n = parseInt(h, 16);
-    if (!isFinite(n)) return {r:22,g:166,b:111};
+    if (!isFinite(n)) return {r:113,g:38,b:166};
     return { r:(n >> 16) & 255, g:(n >> 8) & 255, b:n & 255 };
   }
   function mix(a,b,t) { return Math.round(a + (b-a)*t); }
@@ -31,6 +31,7 @@
     root.style.setProperty('--brand-border', rgba(rgb,.30));
     root.style.setProperty('--brand-accent', c);
     root.style.setProperty('--brand-gradient', 'linear-gradient(135deg, '+c+' 0%, '+c+' 100%)');
+    root.style.setProperty('--accent-warm', '#f89b2c');
     root.style.setProperty('--brand-contrast', dark ? '#ffffff' : '#082016');
     root.dataset.accent = c;
     try { localStorage.setItem('proglog_preview_color', c); } catch(e) {}

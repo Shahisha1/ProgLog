@@ -1,4 +1,3 @@
-// Firebase version of auth functions
 // Proglog data + authentication store.
 // Production auth is handled by Firebase. Local storage remains for the game
 // vault because the current prototype's game model is intentionally client-side.
@@ -23,8 +22,6 @@ window.registerAccount = registerAccount;
 window.authenticateUser = authenticateUser;
 window.completeProfileSetup = completeProfileSetup;
 
-function supabaseReady() { return false; }
-
 function authReady() {
   if (window.proglogFirebase && window.proglogFirebase.auth) {
     var user = window.proglogFirebase.auth.currentUser;
@@ -34,6 +31,29 @@ function authReady() {
     return Promise.resolve({ data: { session: null }, error: null });
   }
   return Promise.resolve({ data: { session: null }, error: null });
+}
+
+function isApprovedEmail(email) {
+  var value = String(email || '').trim().toLowerCase();
+  if (!value || value.indexOf('@') === -1) return false;
+
+  var domain = value.split('@').pop();
+  if (!domain) return false;
+
+  var blockedDomains = [
+    'mailinator.com', 'tempmail.com', '10minutemail.com', 'guerrillamail.com', 'trashmail.com',
+    'dispostable.com', 'fakeinbox.com', 'yopmail.com', 'sharklasers.com', 'mintemail.com',
+    'getnada.com', 'maildrop.cc', 'temp-mail.org', 'mailnesia.com'
+  ];
+  var approvedDomains = [
+    'gmail.com', 'googlemail.com', 'yahoo.com', 'ymail.com', 'yahoomail.com'
+  ];
+
+  if (blockedDomains.indexOf(domain) !== -1 || blockedDomains.some(function (item) { return domain === item || domain.endsWith('.' + item); })) {
+    return false;
+  }
+
+  return approvedDomains.indexOf(domain) !== -1 || approvedDomains.some(function (item) { return domain === item || domain.endsWith('.' + item); });
 }
 
 // ==================== AUTH FUNCTIONS ====================
@@ -59,12 +79,18 @@ function cacheSession(session) {
 
 function getCurrentSession() {
   if (!storageWorks) return null;
+  // Firebase is the source of truth whenever its Auth SDK is available.
+  // Never treat a cached Firebase session as signed-in after a real sign-out.
+  if (window.proglogFirebase && window.proglogFirebase.auth && !window.proglogFirebase.auth.currentUser) {
+    try { localStorage.removeItem('proglog_session'); localStorage.removeItem('cabinet_last_user'); } catch (e) {}
+    return null;
+  }
   try {
     var raw = localStorage.getItem('proglog_session');
     if (!raw) return null;
     var s = JSON.parse(raw);
     // Check if session is expired (only for local sessions)
-    if (s.expiresAt && s.expiresAt < Date.now() && !window.proglogFirebase) {
+    if (s.expiresAt && s.expiresAt < Date.now() && !(window.proglogFirebase && window.proglogFirebase.auth)) {
       logoutSession();
       return null;
     }
@@ -91,7 +117,6 @@ function refreshCurrentSession() {
             color: data.color || '#16a66f',
             avatar: data.avatar || user.photoURL || null,
             setupComplete: data.setupComplete || false,
-            token: user.refreshToken,
             expiresAt: null
           };
           cacheSession(session);
@@ -106,7 +131,6 @@ function refreshCurrentSession() {
             color: '#16a66f',
             avatar: user.photoURL || null,
             setupComplete: false,
-            token: user.refreshToken,
             expiresAt: null
           };
           cacheSession(session);
@@ -184,6 +208,17 @@ function setCabinetData(username, data) {
   if (storageWorks && username) {
     try { localStorage.setItem('cabinet_data_' + username, JSON.stringify(data)); } catch (e) { }
   }
+  // Keep localStorage fast/offline, then mirror authenticated user data to Firestore.
+  try {
+    var firebaseUser = window.proglogFirebase && window.proglogFirebase.auth ? window.proglogFirebase.auth.currentUser : null;
+    var cloud = window.proglogCloud;
+    var activeName = data && data.profile && data.profile.username ? data.profile.username : username;
+    if (cloud && cloud.queueCabinetSync && firebaseUser && !data.showcase) {
+      cloud.queueCabinetSync(data, activeName);
+    }
+  } catch (e) {
+    console.warn('[Proglog] Cloud sync scheduling failed:', e);
+  }
 }
 
 function getLastUser() {
@@ -206,6 +241,10 @@ function setLastUser(username) {
 // ==================== LOCAL AUTH FALLBACK ====================
 
 function registerAccount(email, password) {
+  if (!isApprovedEmail(email)) {
+    return Promise.reject(new Error('Only approved Google or Yahoo email addresses are allowed. Proxy or disposable email domains are not permitted.'));
+  }
+
   // Check if Firebase is available
   if (window.proglogFirebase && window.proglogFirebase.auth) {
     return Promise.reject(new Error('Use Firebase auth instead'));
@@ -231,6 +270,10 @@ function registerAccount(email, password) {
 }
 
 function authenticateUser(email, password) {
+  if (!isApprovedEmail(email)) {
+    return Promise.reject(new Error('Only approved Google or Yahoo email addresses are allowed. Proxy or disposable email domains are not permitted.'));
+  }
+
   if (window.proglogFirebase && window.proglogFirebase.auth) {
     return Promise.reject(new Error('Use Firebase auth instead'));
   }
@@ -361,18 +404,45 @@ migrateLegacyStorage();
 window.storageWorks = storageWorks;
 window.authReady = authReady;
 
-console.log('Proglog store initialized. Firebase available:', !!(window.proglogFirebase && window.proglogFirebase.auth));
-
-
-function supabaseReady() { return false; }
-
 function authReady() {
-  if (window.proglogFirebase && window.proglogFirebase.auth) {
-    return window.proglogFirebase.auth.currentUser
-      ? Promise.resolve({ data: { session: { user: window.proglogFirebase.auth.currentUser } }, error: null })
-      : Promise.resolve({ data: { session: null }, error: null });
+  var auth = window.proglogFirebase && window.proglogFirebase.auth;
+  if (!auth) return Promise.resolve({ data: { session: null }, error: null });
+
+  function finish(user) {
+    return Promise.resolve().then(function () {
+      if (!user) return { data: { session: null }, error: null };
+      var cloud = window.proglogCloud;
+      var cloudLoad = cloud && cloud.restoreUser ? cloud.restoreUser(user) : Promise.resolve(null);
+      return cloudLoad.catch(function () { return null; }).then(function (cabinet) {
+        var profile = cabinet && cabinet.profile ? cabinet.profile : {};
+        var session = firebaseUserToSession(user);
+        session.username = profile.username || session.username;
+        session.color = profile.color || '#16a66f';
+        session.avatar = profile.avatar || user.photoURL || null;
+        session.setupComplete = profile.setupComplete !== false;
+        cacheSession(session);
+        return { data: { session: session }, error: null };
+      });
+    });
   }
-  return Promise.resolve({ data: { session: null }, error: null });
+
+  return new Promise(function (resolve) {
+    var unsubscribe = null;
+    var settled = false;
+    function done(value) {
+      if (settled) return;
+      settled = true;
+      if (unsubscribe) unsubscribe();
+      resolve(value);
+    }
+    try {
+      unsubscribe = auth.onAuthStateChanged(function (user) {
+        finish(user).then(done).catch(function () { done({ data: { session: user ? { user: user } : null }, error: null }); });
+      });
+    } catch (e) {
+      finish(auth.currentUser).then(done).catch(function () { done({ data: { session: null }, error: null }); });
+    }
+  });
 }
 
 function firebaseUserToSession(user) {
@@ -384,7 +454,6 @@ function firebaseUserToSession(user) {
     color: user.color || '#16a66f',
     avatar: user.photoURL || null,
     setupComplete: !!user.setupComplete,
-    token: user.refreshToken,
     expiresAt: null,
     provider: user.providerData && user.providerData[0] ? user.providerData[0].providerId : 'email'
   };
@@ -456,9 +525,7 @@ function completeProfileSetup(userId, profileData) {
     // Update user profile
     return user.updateProfile({
       displayName: profileData.username,
-      photoURL: avatarUrl || user.photoURL,
-      color: profileData.color,
-      setupComplete: true
+      photoURL: avatarUrl || user.photoURL
     }).then(function () {
       // Store in Firestore for additional data
       var db = window.proglogFirebase.db;
@@ -607,9 +674,3 @@ completeProfileSetup = function (userId, profileData) {
   return originalCompleteProfile(userId, profileData);
 };
 
-// Update HTML files to use Firebase CDN
-// Replace Supabase script with:
-// <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
-// <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
-// <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
-// <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-storage-compat.js"></script>

@@ -4,13 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Proglog — The Ultimate Trophy &amp; Achievement Journal</title>
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/png" href="assets/img/proglog-icon.png">
+  <link rel="apple-touch-icon" href="assets/img/proglog-icon.png">
+
   <link rel="stylesheet" href="assets/css/vars.css">
   <link rel="stylesheet" href="assets/css/reset.css">
   <link rel="stylesheet" href="assets/css/layout.css">
   <link rel="stylesheet" href="assets/css/components.css">
   <link rel="stylesheet" href="assets/css/pages.css">
   <link rel="stylesheet" href="assets/css/ui-refresh.css">
+  <link rel="stylesheet" href="assets/css/brand-refresh.css">
+  <link rel="stylesheet" href="assets/css/reliability.css">
+  <link rel="stylesheet" href="assets/css/phase45.css">
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#7126a6">
 </head>
 <body>
 
@@ -18,7 +25,7 @@
   <header id="site-nav">
     <div style="display:flex; align-items:center; gap:28px;">
       <a href="./" class="brand">
-        <svg class="brandmark" viewBox="0 0 32 32" fill="none" aria-label="Proglog logo"><path d="M7 26V6h9.5C22.3 6 26 9.2 26 13.6S22.3 21 16.5 21H12v5H7Zm5-9h4.3c3 0 4.7-1.2 4.7-3.4S19.3 10 16.3 10H12v7Z" fill="currentColor"/></svg>
+        <img class="brandmark" src="assets/img/proglog-logo.png" alt="Proglog logo">
         <span>Pro<span class="accent">glog</span></span>
       </a>
       <div class="nav-links">
@@ -38,23 +45,11 @@
 
   <section class="hero">
     <div class="wrap">
-      <div class="hero-mark">
-        <svg width="48" height="48" viewBox="0 0 32 32" fill="none" aria-label="Glowing Platinum Vault Crest">
-          <path d="M10 8H22V13C22 16.3 19.3 19 16 19C12.7 19 10 16.3 10 13V8Z" fill="url(#hero-grad)"/>
-          <path d="M14 19V23H18V19" stroke="var(--brand-primary)" stroke-width="2" stroke-linecap="round"/>
-          <rect x="11" y="23" width="10" height="2.5" rx="1" fill="var(--brand-primary)"/>
-          <path d="M10 10H7C6.4 10 6 10.4 6 11C6 12.3 7 13.5 8.5 13.5H10M22 10H25C25.6 10 26 10.4 26 11C26 12.3 25 13.5 23.5 13.5H22" stroke="var(--brand-primary)" stroke-width="2" stroke-linecap="round"/>
-          <defs>
-            <linearGradient id="hero-grad" x1="10" y1="8" x2="22" y2="19" gradientUnits="userSpaceOnUse">
-              <stop stop-color="var(--brand-primary)"/>
-              <stop offset="1" stop-color="var(--brand-primary)"/>
-            </linearGradient>
-          </defs>
-        </svg>
+      <div class="hero-mark hero-logo-mark">
+        <img src="assets/img/proglog-logo.png" alt="Proglog controller logo">
       </div>
-      <div><span class="eyebrow">Trophy Hunter's Essential Companion</span></div>
       <h1>Track Every Trophy. Master Every Game.</h1>
-      <p class="lede">Build your personal trophy showcase, track completion checklists across PlayStation, Steam, Xbox, and Nintendo, and follow step-by-step unlock guides inspired by PlatGet and PlayStationTrophies.</p>
+      <p class="lede">Keep your games, trophies, progress, and notes together in one place.</p>
       
       <div class="hero-actions">
         <a href="pages/overview/overview.html" class="btn btn-primary btn-lg">Open Your Vault</a>
@@ -65,7 +60,7 @@
       <div class="hero-showcase">
         <div class="showcase-header">
           <div>
-            <span class="platform-tag" style="margin-top:0;"><span class="platform-dot" style="background:#38bdf8;"></span>PlayStation</span>
+            <div class="showcase-platform">PlayStation</div>
             <div class="showcase-title">The Last of Us Part I</div>
           </div>
           <div style="text-align:right;">
@@ -93,14 +88,13 @@
     <div class="cell"><b>4</b><span>Trophy Tiers</span></div>
     <div class="cell"><b>∞</b><span>Platforms &amp; Titles</span></div>
     <div class="cell"><b>100%</b><span>Local &amp; Private</span></div>
-    <div class="cell"><b>0</b><span>Sign-up Hassle</span></div>
+    <div class="cell"><b>Free</b><span>To Use</span></div>
   </div>
 
   <!-- Features Grid -->
   <section class="feat-section" id="features">
     <div class="wrap">
       <div class="feat-head">
-        <span class="eyebrow">Trophy Hunting Refined</span>
         <h2>Everything You Need For The Platinum Journey</h2>
       </div>
       <div class="feat-grid">
@@ -127,7 +121,6 @@
   <section class="faq-section" id="faq">
     <div class="wrap">
       <div class="feat-head">
-        <span class="eyebrow">Frequently Asked Questions</span>
         <h2>Everything You Need to Know</h2>
       </div>
 
@@ -138,7 +131,7 @@
             <div class="faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
           </button>
           <div class="faq-answer">
-            Proglog functions as an independent, privacy-first journal. You don't need to share your PlayStation Network, Steam, or Xbox passwords or risk API downtime. You check off trophies as you earn them or import curated guides with 1 click.
+            Proglog keeps your tracking simple. Check off trophies as you earn them, add games to your vault, and use the guide links when you need a hand.
           </div>
         </div>
 
@@ -148,7 +141,7 @@
             <div class="faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
           </button>
           <div class="faq-answer">
-            Yes! All your hunter profiles, checklists, completion percentages, and personal notes are instantly stored in your browser's persistent <code>localStorage</code>. They remain safe between sessions and computer restarts.
+            Yes! Your hunter profiles, checklists, completion percentages, and personal notes are saved to your browser's persistent <code>localStorage</code> right away, so they survive sessions and computer restarts. If you create an account, they're also synced to the cloud so you can pick up on another device.
           </div>
         </div>
 
@@ -189,11 +182,10 @@
   <section class="cta-section" id="request-guide" style="padding-top:20px;">
     <div class="wrap">
       <div class="article-wrap" style="text-align:left; max-width:680px; margin:0 auto; background:var(--bg-surface);">
-        <span class="eyebrow" style="margin-bottom:8px;">Community Requests</span>
         <h2 style="font-size:24px; margin-bottom:8px;">Request a Trophy Guide or Submit Feedback</h2>
-        <p style="font-size:14px; color:var(--text-dim); margin-bottom:20px;">Missing a game you'd like to see in our curated roadmap catalog? Send us an enquiry and our team will add it!</p>
+        <p style="font-size:14px; color:var(--text-dim); margin-bottom:20px;">Missing a game? Add a custom title to your vault or request it for the catalog.</p>
 
-        <form action="thank-you.html" method="GET">
+        <form action="pages/thank-you/thank-you.html" method="GET">
           <div class="field">
             <label class="field-label">Game Title Requested</label>
             <input type="text" name="game" required placeholder="e.g. Silent Hill 2 Remake, Final Fantasy VII Rebirth" maxlength="80">
@@ -225,7 +217,7 @@
 
   <footer id="site-footer">
     <div class="wrap">
-      <span>Proglog — The Ultimate Trophy &amp; Achievement Journal.</span>
+      <span>Proglog — Game tracking, trophies, and guides in one place.</span>
       <div style="display:flex; gap:18px; font-size:13px; color:var(--text-muted); flex-wrap:wrap;">
         <a href="./">Home</a>
         <a href="pages/overview/overview.html">Overview</a>
@@ -238,6 +230,7 @@
   </footer>
 </div>
 
+<script src="assets/js/app-core.js"></script>
 <script>
   // FAQ Accordion Interaction
   document.querySelectorAll('.faq-question').forEach(function(btn) {
@@ -251,5 +244,6 @@
 </script>
 
 <script src="assets/js/theme.js"></script>
+<script src="assets/js/boot-guard.js"></script><script src="./assets/js/phase45.js"></script>
 </body>
 </html>

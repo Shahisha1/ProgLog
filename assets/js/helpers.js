@@ -1,4 +1,4 @@
-// Proglog Lookups, Trophy Badges, Sound Synth & Level Calculation Utilities
+// Utilities: colors, avatars, levels, sound
 
 var PLATFORMS = [
   { id: 'playstation', label: 'PlayStation', color: '#38bdf8' },
@@ -209,7 +209,13 @@ function getSoundEnabled() {
 }
 
 function setSoundEnabled(enabled) {
-  localStorage.setItem('proglog_sound', enabled ? 'true' : 'false');
+  try {
+    localStorage.setItem('proglog_sound', enabled ? 'true' : 'false');
+    localStorage.setItem('proglog_pref_sound', enabled ? 'true' : 'false');
+  } catch (e) {}
+  if (window.proglogCloud && window.proglogCloud.savePreferences) {
+    window.proglogCloud.savePreferences({ soundEnabled: !!enabled }).catch(function () {});
+  }
 }
 
 function playTrophyChime() {

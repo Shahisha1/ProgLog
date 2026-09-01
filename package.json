@@ -1,0 +1,9 @@
+{
+  "name": "proglog",
+  "private": true,
+  "version": "5.0.0",
+  "description": "Proglog gaming tracker \u2014 product-ready static web app",
+  "scripts": {
+    "validate": "node scripts/validate.mjs"
+  }
+}

@@ -1,4 +1,4 @@
-// Proglog Modal Controllers
+// Modal dialogs
 
 function openModal(html) {
   closeModal(); // kill any stale modal

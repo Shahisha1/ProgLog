@@ -1,9 +1,3 @@
-// Curated Game Catalog & Trophy Guides
-// Starter checklists in the style of sites like PlatGet and PlayStationTrophies.
-// These are written for this project, not pulled from those sites — treat specific
-// details (exact counts, safe codes, etc.) as a helpful starting point rather than
-// a verified source, and double-check anything mission-critical against the game itself.
-
 var GAME_CATALOG = [
   {
     id: 'tlou-part-1',
@@ -669,3 +663,5 @@ function getCatalogGame(id) {
   }
   return null;
 }
+
+try { window.dispatchEvent(new CustomEvent('proglog:catalog-ready')); } catch (e) {}

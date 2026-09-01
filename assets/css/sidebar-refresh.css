@@ -10,11 +10,11 @@
 .global-nav a:hover{background:rgba(255,255,255,.065);color:#fff}.global-nav a.active{background:var(--brand-primary);color:#fff;box-shadow:0 8px 18px var(--brand-glow)}.global-nav a.active span{color:#fff}
 .global-nav-divider{height:1px;background:rgba(255,255,255,.09);margin:18px 6px}.global-nav-secondary{margin-top:0}
 .global-sidebar-user{margin-top:auto;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.035);border-radius:12px;padding:10px 11px;display:flex;align-items:center;gap:10px;min-width:0}.global-user-avatar{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--brand-primary);color:#fff;font-weight:800;flex:0 0 36px;overflow:hidden}.global-sidebar-user strong,.global-sidebar-user small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.global-sidebar-user strong{font-size:11px}.global-sidebar-user small{font-size:9px;color:#92a19b;margin-top:3px}
-body.has-global-sidebar{padding-left:var(--global-sidebar-w);box-sizing:border-box}.has-global-sidebar>.topbar,.has-global-sidebar>#site-nav{width:calc(100% - var(--global-sidebar-w));margin-left:0}.has-global-sidebar>.container{max-width:none;margin:0;padding-left:42px;padding-right:42px}.has-global-sidebar>#screen-main{min-height:100vh}.has-global-sidebar #screen-main>.topbar{width:100%}
+body.has-global-sidebar{padding-left:var(--global-sidebar-w);box-sizing:border-box}.has-global-sidebar>.container{max-width:none;margin:0;padding-left:42px;padding-right:42px}.has-global-sidebar>#screen-main{min-height:100vh}
 .auth-page.has-global-sidebar>.container{max-width:920px;padding-top:34px}.auth-page.has-global-sidebar .auth-box{max-width:760px}.auth-page.has-global-sidebar .auth-card{max-width:none}
 .auth-page.has-global-sidebar #site-footer{margin-left:0}
-@media(max-width:900px){:root{--global-sidebar-w:78px}.global-sidebar{padding:22px 10px 14px}.global-brand{justify-content:center;padding:0 0 24px}.global-brand>span:last-child,.global-nav a b,.global-sidebar-user>div:not(.global-user-avatar){display:none}.global-nav a{justify-content:center;padding:0;gap:0}.global-nav a span{font-size:20px}.global-sidebar-user{justify-content:center;padding:8px}.has-global-sidebar>.topbar,.has-global-sidebar>#site-nav{width:calc(100% - var(--global-sidebar-w))}.has-global-sidebar>.container{padding-left:24px;padding-right:24px}.auth-page.has-global-sidebar>.container{max-width:760px}}
-@media(max-width:620px){:root{--global-sidebar-w:0px}.global-sidebar{position:sticky;top:0;inset:auto;width:100%;height:auto;min-height:62px;padding:8px 10px;flex-direction:row;align-items:center;border-right:0;border-bottom:1px solid var(--global-sidebar-border);overflow-x:auto}.global-brand{padding:0 10px;border-right:1px solid rgba(255,255,255,.1);margin-right:6px}.global-nav{flex-direction:row;gap:3px}.global-nav-secondary{display:none}.global-nav-divider,.global-sidebar-user{display:none}.global-nav a{width:44px;min-height:44px;flex:0 0 44px}.global-nav a span{font-size:18px}.has-global-sidebar>.topbar,.has-global-sidebar>#site-nav{width:100%}.has-global-sidebar>.container{padding-left:16px;padding-right:16px}.auth-page.has-global-sidebar>.container{padding-top:20px}}
+@media(max-width:900px){:root{--global-sidebar-w:78px}.global-sidebar{padding:22px 10px 14px}.global-brand{justify-content:center;padding:0 0 24px}.global-brand>span:last-child,.global-nav a b,.global-sidebar-user>div:not(.global-user-avatar){display:none}.global-nav a{justify-content:center;padding:0;gap:0}.global-nav a span{font-size:20px}.global-sidebar-user{justify-content:center;padding:8px}.has-global-sidebar>.container{padding-left:24px;padding-right:24px}.auth-page.has-global-sidebar>.container{max-width:760px}}
+@media(max-width:620px){:root{--global-sidebar-w:0px}.global-sidebar{position:sticky;top:0;inset:auto;width:100%;height:auto;min-height:62px;padding:8px 10px;flex-direction:row;align-items:center;border-right:0;border-bottom:1px solid var(--global-sidebar-border);overflow-x:auto}.global-brand{padding:0 10px;border-right:1px solid rgba(255,255,255,.1);margin-right:6px}.global-nav{flex-direction:row;gap:3px}.global-nav-secondary{display:none}.global-nav-divider,.global-sidebar-user{display:none}.global-nav a{width:44px;min-height:44px;flex:0 0 44px}.global-nav a span{font-size:18px}.has-global-sidebar>.container{padding-left:16px;padding-right:16px}.auth-page.has-global-sidebar>.container{padding-top:20px}}
 /* Profile creation: never allow the accent palette to collapse vertically. */
 .profile-setup-step .swatches{display:flex!important;flex-direction:row!important;flex-wrap:wrap!important;align-items:center!important;gap:12px!important;width:100%!important}.profile-setup-step .swatches>*{flex:0 0 38px!important}.profile-setup-step .swatch{margin:0!important}
 @media(max-width:520px){.profile-setup-step .swatches{gap:10px!important}.profile-setup-step .swatches>*{flex-basis:34px!important}.auth-page.has-global-sidebar .auth-card{padding:24px 18px!important}}
@@ -44,7 +44,8 @@ body.has-global-sidebar{padding-left:var(--global-sidebar-w);box-sizing:border-b
 .profile-creation-page.profile-setup-active .global-nav a[aria-disabled="true"]{cursor:not-allowed;opacity:.72}
 
 /* Single-shell navigation: the global sidebar is the only primary navigation.
-   Remove legacy duplicate horizontal bars that were appearing above the content. */
+   Safety net in case a legacy horizontal topbar/site-nav is ever reintroduced
+   into a page that already has the sidebar. */
 .has-global-sidebar > .topbar,
 .has-global-sidebar > #site-nav,
 .global-sidebar + .topbar {
@@ -64,12 +65,6 @@ body:has(> .global-sidebar):not(.has-global-sidebar) > .pg-page {
 
 /* Prevent flex/grid children from forcing horizontal overflow. */
 .global-sidebar, .global-sidebar * { min-width: 0; }
-
-@media (max-width: 620px) {
-  .has-global-sidebar > .topbar,
-  .has-global-sidebar > #site-nav,
-  .global-sidebar + .topbar { display:none !important; }
-}
 
 /* Profile switcher: horizontal cards, never a vertical stack. */
 #screen-auth .profile-list {
@@ -107,6 +102,23 @@ body:has(> .global-sidebar):not(.has-global-sidebar) > .pg-page {
 #screen-auth .profile-row .icon-btn.danger {
   flex: 0 0 32px;
 }
+#screen-auth .swatches {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  gap: 10px !important;
+  width: 100% !important;
+}
+#screen-auth .swatch {
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  min-height: 32px !important;
+  border-radius: 50% !important;
+  margin: 0 !important;
+  flex: 0 0 auto !important;
+}
 
 @media (max-width: 620px) {
   #screen-auth .profile-list { gap: 10px !important; }
@@ -131,3 +143,95 @@ body:has(> .global-sidebar):not(.has-global-sidebar) > .pg-page {
   outline: 2px solid var(--brand-primary, #18b47a);
   outline-offset: 2px;
 }
+
+/* Final shell hardening: one sidebar, one content area.
+   No !important needed below: body.has-global-sidebar and
+   body.has-global-sidebar > .global-sidebar already out-specify every
+   other rule that touches these same properties (verified against every
+   .global-sidebar/body rule in the stylesheet set), so plain declarations
+   win on the cascade alone. */
+body.has-global-sidebar {
+  min-height: 100vh;
+  background: var(--bg-main, #f6f8f7);
+}
+body.has-global-sidebar > .global-sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: auto;
+  bottom: 0;
+  width: var(--global-sidebar-w);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  transform: none;
+}
+body.has-global-sidebar #screen-main {
+  display: block;
+  min-height: 100vh;
+}
+body.has-global-sidebar #screen-main > .container {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 34px 42px 72px;
+}
+body.has-global-sidebar #site-footer {
+  margin-left: 0;
+}
+
+@media (max-width: 900px) {
+  body.has-global-sidebar #screen-main > .container { padding: 28px 24px 64px; }
+}
+@media (max-width: 620px) {
+  body.has-global-sidebar { padding-left: 0; }
+  body.has-global-sidebar > .global-sidebar {
+    position: sticky;
+    top: 0;
+    left: auto;
+    width: 100%;
+    height: auto;
+    min-height: 62px;
+    flex-direction: row;
+    align-items: center;
+    overflow-x: auto;
+  }
+  body.has-global-sidebar #screen-main > .container { padding: 18px 16px 52px; }
+}
+
+/* Never let a failed/unfinished render leave a page looking like an empty shell. */
+body.has-global-sidebar .container,
+body.has-global-sidebar .section-head,
+body.has-global-sidebar .toolbar,
+body.has-global-sidebar .game-grid,
+body.has-global-sidebar .catalog-page-grid,
+body.has-global-sidebar .stat-strip { min-width: 0; }
+
+
+/* Shared shell for utility pages using the global rail. */
+body.has-global-sidebar > .pg-page {
+  min-height: 100vh;
+  margin: 0;
+  padding: 34px 42px 72px;
+  box-sizing: border-box;
+}
+body.has-global-sidebar > .pg-page .pg-header { max-width: 1280px; margin: 0 auto 24px; }
+body.has-global-sidebar > .pg-page .pg-grid { max-width: 1280px; margin: 0 auto; }
+body.has-global-sidebar .nav-divider { height:1px; background:rgba(255,255,255,.09); margin:18px 6px; }
+body.has-global-sidebar .global-sidebar .sidebar-user { cursor:pointer; }
+@media(max-width:900px){ body.has-global-sidebar > .pg-page { padding:28px 24px 64px; } }
+@media(max-width:620px){ body.has-global-sidebar > .pg-page { padding:18px 16px 72px; } }
+
+/* Shell polish: keep the app shell from overflowing horizontally. */
+html, body { max-width: 100%; overflow-x: hidden; }
+.has-global-sidebar .container,
+.has-global-sidebar .pg-page,
+.has-global-sidebar .profile-main,
+.has-global-sidebar .game-main { min-width: 0; }
+.has-global-sidebar img, .has-global-sidebar svg, .has-global-sidebar video, .has-global-sidebar canvas { max-width: 100%; }
+.has-global-sidebar input, .has-global-sidebar textarea, .has-global-sidebar select, .has-global-sidebar button { max-width: 100%; }
+.global-sidebar-user, .sidebar-user { overflow: hidden; }
+.global-sidebar-user > div, .sidebar-user > div { min-width: 0; }
+.global-sidebar-user strong, .global-sidebar-user small, .sidebar-user strong, .sidebar-user small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

@@ -1,90 +1,74 @@
-# 🎮 Proglog
+# Proglog
 
-> A personal gaming tracker for games, trophies, achievements, stats, and completion progress.
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Static Site](https://img.shields.io/badge/Type-Static%20Site-7c5cff)](https://github.com)
+[![Firebase Ready](https://img.shields.io/badge/Firebase-Ready-ffca28)](https://firebase.google.com)
+[![PWA](https://img.shields.io/badge/PWA-Offline%20Ready-00c2a8)](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps)
 
-![Status](https://img.shields.io/badge/status-in%20development-F59E0B) ![Frontend](https://img.shields.io/badge/frontend-HTML%20%7C%20CSS%20%7C%20JavaScript-3178C6) ![Auth](https://img.shields.io/badge/auth-Firebase-FFCA28) ![Hosting](https://img.shields.io/badge/hosting-GitHub%20Pages-181717) ![License](https://img.shields.io/badge/license-MIT-green)
+A sleek gaming tracker for managing your game library, trophies, sessions, profile, and progress.
 
-## Features
+Proglog helps players keep momentum across their backlog, track time spent playing, and surface the information they actually care about in a clean, app-like experience.
 
-- 🔐 Firebase authentication
-- 🎮 Game vault and catalog
-- 🏆 Trophy / achievement tracking
-- 🔎 Game search and suggestions
-- 📊 Stats and completion views
-- 👤 Profiles with custom avatars
-- 🎨 User-controlled accent themes
-- 📱 Responsive UI
-- 🧭 Dedicated pages for Overview, Games, Trophies, Sessions, Friends, Stats, Profile, and Settings
+## 📸 Site preview
 
-## Structure
+<p align="center">
+  <img src="https://via.placeholder.com/1200x700?text=Proglog+Preview" alt="Proglog app preview" width="100%" />
+</p>
 
-```text
-proglog/
-├── index.html                 # Landing page
-├── 404.html
-├── pages/
-│   ├── auth/
-│   ├── overview/
-│   ├── games/
-│   ├── game/
-│   ├── trophies/
-│   ├── sessions/
-│   ├── friends/
-│   ├── stats/
-│   ├── profile/
-│   ├── settings/
-│   ├── privacy/
-│   └── thank-you/
-├── assets/
-│   ├── css/
-│   └── js/
-└── README.md
-```
+## ✨ Highlights
 
-## Run locally
+- Responsive desktop, tablet, and mobile interface
+- Personalized profile themes with accent colors
+- Trophy tracking, guides, and catalog browsing
+- Fast game and trophy search with keyboard shortcuts
+- Sessions, friends, stats, and activity monitoring
+- Offline-ready local storage with optional Firebase sync
+- PWA / offline fallback support
+- PlayStation and Steam catalog support without platform lock-in
 
-Use any static server from the project root:
+## 🧭 Project overview
+
+Proglog is a static web application designed to feel like a modern gaming dashboard. It brings together:
+
+- game discovery and library tracking
+- trophy progress and completion data
+- play session summaries and activity history
+- profile customization and preferences
+- social features for friends and comparing progress
+
+## 🚀 Run locally
+
+Serve the project with any static web server:
 
 ```bash
-python -m http.server 8000
+python -m http.server 5500
 ```
 
-Then open `http://localhost:8000`.
-
-## Deploy
-
-Push the repository to GitHub and enable **GitHub Pages** from the repository settings. The root `index.html` is the site entry point.
-
-## Data & integrations
-
-Proglog is designed to use Firebase Authentication + Firestore for cloud accounts and data. Platform trophy/achievement sources should be integrated through their permitted APIs or linked source pages rather than exposing private credentials in the frontend.
-
-## License
-
-MIT.
-
-
-## Project structure
+Then open:
 
 ```text
-proglog/
-├── index.html
-├── 404.html
-├── README.md
-├── pages/
-│   ├── auth/auth.html
-│   ├── overview/overview.html
-│   ├── games/games.html
-│   ├── game/game.html
-│   ├── trophies/trophies.html
-│   ├── sessions/sessions.html
-│   ├── friends/friends.html
-│   ├── stats/stats.html
-│   ├── profile/profile.html
-│   ├── settings/settings.html
-│   ├── privacy/privacy.html
-│   └── thank-you/thank-you.html
-└── assets/
-    ├── css/
-    └── js/
+http://localhost:5500/
 ```
+
+## 🧪 Validate
+
+```bash
+npm run validate
+```
+
+## 🌐 Deploy
+
+The app is structured for GitHub Pages or any static hosting provider. Firebase is optional and only used for cloud persistence features.
+
+## 📁 Structure
+
+- `pages/` — grouped page templates for core, games, user, social, activity, and legal views
+- `assets/` — CSS, JavaScript, and media assets
+- `scripts/` — validation and automation scripts
+- `index.html` — main app entry point
+- `manifest.webmanifest` — PWA manifest
+- `sw.js` — service worker for offline support
+
+## 💡 Why it stands out
+
+Proglog is designed to feel lightweight and personal while still supporting richer game-tracking workflows. Its structure keeps the app fast, easy to navigate, and flexible for future upgrades without requiring a heavy framework.

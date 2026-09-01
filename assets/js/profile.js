@@ -57,6 +57,10 @@
     var sideName = document.getElementById('profile-sidebar-name');
     if (sideName) sideName.textContent = p.username;
 
+    var nameInput = document.getElementById('edit-profile-name');
+    if (nameInput) nameInput.value = p.username || currentUser || 'Hunter';
+    drawProfileSwatches((p && p.color) || PROFILE_COLORS[0]);
+
     // Profile Hero
     document.getElementById('profile-hero-avatar').innerHTML = avatarHtml(p, 'avatar-lg');
     document.getElementById('profile-hero-name').textContent = p.username;
@@ -194,7 +198,118 @@
     legend.innerHTML = legendHtml;
   }
 
+  function drawProfileSwatches(selectedColor) {
+    var wrap = document.getElementById('edit-profile-swatches');
+    if (!wrap) return;
+    wrap.innerHTML = '';
+
+    PROFILE_COLORS.forEach(function(color) {
+      var sw = document.createElement('button');
+      sw.type = 'button';
+      sw.className = 'swatch' + (color === selectedColor ? ' selected' : '');
+      sw.title = 'Use ' + color + ' accent';
+      sw.style.background = color;
+      sw.style.borderRadius = '50%';
+      sw.style.width = '28px';
+      sw.style.height = '28px';
+      sw.style.border = '2px solid transparent';
+      sw.style.cursor = 'pointer';
+      sw.addEventListener('click', function() {
+        var input = document.getElementById('edit-profile-name');
+        var name = input ? input.value.trim() : (cabinet.profile && cabinet.profile.username) || currentUser || 'Hunter';
+        if (!name) name = 'Hunter';
+        if (cabinet.profile) cabinet.profile.color = color;
+        if (window.applyProglogTheme) window.applyProglogTheme(color);
+        drawProfileSwatches(color);
+        if (document.getElementById('profile-hero-name')) document.getElementById('profile-hero-name').textContent = name;
+      });
+      wrap.appendChild(sw);
+    });
+  }
+
+  function saveProfileEdits() {
+    if (!cabinet) return;
+
+    var nameInput = document.getElementById('edit-profile-name');
+    var nextName = nameInput ? nameInput.value.trim() : '';
+    if (!nextName) {
+      toast('Enter a display name before saving.');
+      if (nameInput) nameInput.focus();
+      return;
+    }
+
+    var selectedColor = document.querySelector('#edit-profile-swatches .swatch.selected');
+    var nextColor = selectedColor ? selectedColor.style.background : (cabinet.profile && cabinet.profile.color) || PROFILE_COLORS[0];
+    if (nextColor && typeof nextColor === 'string' && nextColor.indexOf('rgb') === 0) {
+      var rgb = nextColor.match(/\d+/g);
+      if (rgb) nextColor = '#' + Array.prototype.slice.call(rgb).map(function(v) { return Number(v).toString(16).padStart(2, '0'); }).join('');
+    }
+
+    if (!cabinet.profile) cabinet.profile = { username: currentUser, color: PROFILE_COLORS[0], createdAt: Date.now() };
+    cabinet.profile.username = nextName;
+    cabinet.profile.color = nextColor || PROFILE_COLORS[0];
+
+    var profileList = getProfiles();
+    profileList.forEach(function(p) {
+      if (p.username === currentUser || (cabinet.profile && p.username === cabinet.profile.username && p.username !== nextName)) {
+        p.username = nextName;
+        p.color = cabinet.profile.color;
+      }
+    });
+    if (!profileList.some(function(p) { return p.username === nextName; })) {
+      profileList.push({ username: nextName, color: cabinet.profile.color, avatar: cabinet.profile.avatar || null, createdAt: cabinet.profile.createdAt || Date.now() });
+    }
+    setProfiles(profileList);
+
+    var session = getCurrentSession();
+    if (session) {
+      session.username = nextName;
+      session.color = cabinet.profile.color;
+      cacheSession(session);
+    }
+
+    if (window.applyProglogTheme) window.applyProglogTheme(cabinet.profile.color);
+
+    if (window.proglogFirebase && window.proglogFirebase.auth && window.proglogFirebase.auth.currentUser) {
+      var authUser = window.proglogFirebase.auth.currentUser;
+      var updates = {
+        displayName: nextName,
+        photoURL: cabinet.profile.avatar || authUser.photoURL || null
+      };
+      authUser.updateProfile(updates).catch(function() {});
+      var db = window.proglogFirebase.db;
+      if (db && db.collection) {
+        db.collection('users').doc(authUser.uid).set({
+          username: nextName,
+          color: cabinet.profile.color,
+          avatar: cabinet.profile.avatar || authUser.photoURL || null,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true }).catch(function() {});
+      }
+    }
+
+    var oldUser = currentUser;
+    currentUser = nextName;
+    if (oldUser !== nextName) {
+      var renamedCab = getCabinetData(oldUser);
+      if (renamedCab && renamedCab.profile) {
+        renamedCab.profile = cabinet.profile;
+        setCabinetData(nextName, renamedCab);
+        localStorage.removeItem('cabinet_data_' + oldUser);
+      }
+    }
+
+    save();
+    render();
+    toast('Profile updated!');
+  }
+
   function bindEvents() {
+    var saveBtn = document.getElementById('btn-save-profile');
+    if (saveBtn) {
+      saveBtn.addEventListener('click', saveProfileEdits);
+    }
+
     // PFP file upload on profile page
     var pfpInput = document.getElementById('profile-pfp-file');
     if (pfpInput) {

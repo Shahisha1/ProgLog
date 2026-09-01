@@ -1,21 +1,19 @@
-// Verified TrueSteamAchievements source metadata. Full achievement lists remain sourced from the linked TSA pages until platform sync is connected.
+// Platform-aware source metadata. Counts are verified against TrueTrophies / TrueSteamAchievements.
 (function(){'use strict';
-var TSA_SOURCES = {
-  'tlou-part-1':{title:'The Last of Us Part I',total:29,achievementUrl:'https://truesteamachievements.com/game/The-Last-of-Us-Part-I/achievements',guideUrl:'https://truesteamachievements.com/game/The-Last-of-Us-Part-I/walkthrough',source:'TrueSteamAchievements',sourcePlatform:'Steam'},
-  'ghost-of-tsushima':{title:"Ghost of Tsushima DIRECTOR'S CUT",total:77,achievementUrl:'https://truesteamachievements.com/game/Ghost-of-Tsushima-DIRECTORS-CUT/achievements',guideUrl:'https://truesteamachievements.com/game/Ghost-of-Tsushima-DIRECTORS-CUT/walkthrough',source:'TrueSteamAchievements',sourcePlatform:'Steam'},
-  'elden-ring':{title:'ELDEN RING',total:42,achievementUrl:'https://truesteamachievements.com/game/ELDEN-RING/achievements',guideUrl:'https://truesteamachievements.com/game/ELDEN-RING/walkthrough',source:'TrueSteamAchievements',sourcePlatform:'Steam'},
-  'cyberpunk-2077':{title:'Cyberpunk 2077',total:57,achievementUrl:'https://truesteamachievements.com/game/Cyberpunk-2077/achievements',guideUrl:'https://truesteamachievements.com/game/Cyberpunk-2077/walkthrough',source:'TrueSteamAchievements',sourcePlatform:'Steam'},
-  'god-of-war-2018':{title:'God of War',total:37,achievementUrl:'https://truesteamachievements.com/game/God-of-War/achievements',guideUrl:'https://truesteamachievements.com/game/God-of-War/walkthrough',source:'TrueSteamAchievements',sourcePlatform:'Steam'},
-  'spiderman-remastered':{title:"Marvel's Spider-Man Remastered",total:78,achievementUrl:'https://truesteamachievements.com/game/Marvels-SpiderMan-Remastered/achievements',guideUrl:'https://truesteamachievements.com/game/Marvels-SpiderMan-Remastered/walkthrough',source:'TrueSteamAchievements',sourcePlatform:'Steam'},
-  'god-of-war-ragnarok':{title:'God of War Ragnarök',total:48,achievementUrl:'https://truesteamachievements.com/game/God-of-War-Ragnarok/achievements',guideUrl:'https://truesteamachievements.com/game/God-of-War-Ragnarok/walkthrough',source:'TrueSteamAchievements',sourcePlatform:'Steam'},
-  'horizon-forbidden-west':{title:'Horizon Forbidden West Complete Edition',total:80,achievementUrl:'https://truesteamachievements.com/game/Horizon-Forbidden-West-Complete-Edition/achievements',guideUrl:'https://truesteamachievements.com/game/Horizon-Forbidden-West-Complete-Edition/walkthrough',source:'TrueSteamAchievements',sourcePlatform:'Steam'},
-  'spider-man-2':{title:"Marvel's Spider-Man 2",total:43,achievementUrl:'https://truesteamachievements.com/game/Marvels-SpiderMan-2/achievements',guideUrl:'https://truesteamachievements.com/game/Marvels-SpiderMan-2/walkthrough',source:'TrueSteamAchievements',sourcePlatform:'Steam'},
-  'resident-evil-4-remake':{title:'Resident Evil 4',total:46,achievementUrl:'https://truesteamachievements.com/game/Resident-Evil-4-V2/achievements',guideUrl:'https://truesteamachievements.com/game/Resident-Evil-4-V2/walkthrough',source:'TrueSteamAchievements',sourcePlatform:'Steam'},
-  'hades':{title:'Hades',total:49,achievementUrl:'https://truesteamachievements.com/game/Hades/achievements',guideUrl:'https://truesteamachievements.com/game/Hades/walkthrough',source:'TrueSteamAchievements',sourcePlatform:'Steam'},
-  'hollow-knight':{title:'Hollow Knight',total:63,achievementUrl:'https://truesteamachievements.com/game/Hollow-Knight/achievements',guideUrl:'https://truesteamachievements.com/game/Hollow-Knight/walkthrough',source:'TrueSteamAchievements',sourcePlatform:'Steam'},
-  'cyberpunk-2077-ps5':{title:'Cyberpunk 2077',total:57,achievementUrl:'https://truesteamachievements.com/game/Cyberpunk-2077/achievements',guideUrl:'https://truesteamachievements.com/game/Cyberpunk-2077/walkthrough',source:'TrueSteamAchievements',sourcePlatform:'Steam'},
-  'stray':{title:'Stray',total:24,achievementUrl:'https://truesteamachievements.com/game/Stray/achievements',guideUrl:'https://truesteamachievements.com/game/Stray/walkthrough',source:'TrueSteamAchievements',sourcePlatform:'Steam'},
-  'death-stranding':{title:'DEATH STRANDING',total:63,achievementUrl:'https://truesteamachievements.com/game/DEATH-STRANDING/achievements',guideUrl:'https://truesteamachievements.com/game/DEATH-STRANDING/walkthrough',source:'TrueSteamAchievements',sourcePlatform:'Steam'},
-};
-if (typeof GAME_CATALOG !== 'undefined') { GAME_CATALOG.forEach(function(g){ var m=TSA_SOURCES[g.id]; if(!m)return; g.tsa=m; g.totalTrophies=m.total; g.catalogPreview=true; }); }
+  if (typeof GAME_CATALOG === 'undefined' || typeof GAME_DETAILS === 'undefined') return;
+  GAME_CATALOG.forEach(function(g){
+    var d = GAME_DETAILS[g.id];
+    if (!d) return;
+    g.totalTrophies = d.counts.total;
+    g.detail = d;
+    g.catalogPreview = true;
+    var isPS = d.platform === 'playstation';
+    g.trophySource = d.source;
+    g.trophySourceUrl = d.sourceUrl;
+    g.trophyGuideUrl = d.guideUrl;
+    g.baseTrophies = d.base;
+    g.dlcTrophies = d.dlc;
+    if (!g.roadmap) g.roadmap = {};
+    g.roadmap.time = d.completion || g.roadmap.time;
+  });
 })();

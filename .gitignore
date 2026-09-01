@@ -1,0 +1,17 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Local secrets / generated Firebase files
+.env
+.env.*
+service-account*.json
+firebase-adminsdk*.json
+rawg-config.js
+
+# Dependencies / build output
+node_modules/
+dist/
+build/

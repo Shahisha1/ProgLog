@@ -1,11 +1,11 @@
-/* Proglog static-site routing helper. Works on GitHub Pages project sites and custom domains. */
+// Static-site routing helper
 (function () {
   'use strict';
   var pages = {
-    home: '', overview: 'pages/overview/overview.html', auth: 'pages/auth/auth.html', games: 'pages/games/games.html',
-    game: 'pages/game/game.html', trophies: 'pages/trophies/trophies.html', sessions: 'pages/sessions/sessions.html',
-    friends: 'pages/friends/friends.html', stats: 'pages/stats/stats.html', profile: 'pages/profile/profile.html',
-    settings: 'pages/settings/settings.html', privacy: 'pages/privacy/privacy.html', thankYou: 'pages/thank-you/thank-you.html'
+    home: '', overview: 'pages/core/overview.html', auth: 'pages/core/auth.html', games: 'pages/games/games.html',
+    game: 'pages/games/game.html', trophies: 'pages/games/trophies.html', sessions: 'pages/activity/sessions.html',
+    friends: 'pages/social/friends.html', stats: 'pages/activity/stats.html', profile: 'pages/user/profile.html',
+    settings: 'pages/user/settings.html', privacy: 'pages/legal/privacy.html', thankYou: 'pages/legal/thank-you.html'
   };
   function siteBase() {
     var p = window.location.pathname || '/';
@@ -21,5 +21,13 @@
     if (name === 'home') return (base || '') + '/';
     return (base || '') + '/' + path + (suffix || '');
   };
-  window.pgGo = function (name, suffix) { window.location.href = pgRoute(name, suffix); };
+  window.pgGo = function (name, suffix) {
+    var extra = suffix;
+    if (suffix && typeof suffix === 'object') {
+      if (name === 'game' && suffix.id) extra = '#' + encodeURIComponent(suffix.id);
+      else if (suffix.query) extra = '?' + suffix.query;
+      else extra = '';
+    }
+    window.location.href = pgRoute(name, extra || '');
+  };
 })();
