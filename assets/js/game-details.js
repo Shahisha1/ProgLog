@@ -493,4 +493,4 @@ var GAME_DETAILS = {
   }
 };
 
-function getGameDetails(id){ return (typeof GAME_DETAILS !== 'undefined' && GAME_DETAILS[id]) ? GAME_DETAILS[id] : null; }
+function getGameDetails(id) { return (typeof GAME_DETAILS !== 'undefined' && GAME_DETAILS[id]) ? GAME_DETAILS[id] : null; }

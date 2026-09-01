@@ -28,7 +28,6 @@ Proglog helps players keep momentum across their backlog, track time spent playi
 
 ## Run locally
 
-
 ## 🧭 Project overview
 
 Proglog is a static web application designed to feel like a modern gaming dashboard. It brings together:

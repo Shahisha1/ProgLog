@@ -2,21 +2,26 @@
    Color tokens now live in vars.css (single source of truth, loaded first on
    every page) — this file only holds brand-specific styling rules. */
 
-html, body {
+html,
+body {
   background: var(--bg-main);
 }
 
 body {
   background-image:
-    radial-gradient(circle at 1px 1px, rgba(113,38,166,.055) 1px, transparent 0);
+    radial-gradient(circle at 1px 1px, rgba(113, 38, 166, .055) 1px, transparent 0);
   background-size: 22px 22px;
 }
 
-.brand, .global-brand, .profile-brand {
+.brand,
+.global-brand,
+.profile-brand {
   text-decoration: none;
 }
 
-.brandmark, .global-brand-mark, .profile-brand-mark {
+.brandmark,
+.global-brand-mark,
+.profile-brand-mark {
   object-fit: contain;
   display: block;
   flex: 0 0 auto;
@@ -48,7 +53,7 @@ body {
   border-radius: 20px;
   background: #ead5f8;
   border: 1px solid #d7b7ed;
-  box-shadow: 0 10px 24px rgba(113,38,166,.12);
+  box-shadow: 0 10px 24px rgba(113, 38, 166, .12);
   overflow: hidden;
 }
 
@@ -60,38 +65,42 @@ body {
 
 .global-sidebar {
   background: linear-gradient(180deg, #241238 0%, #1a0e2b 100%) !important;
-  border-right-color: rgba(255,255,255,.10) !important;
+  border-right-color: rgba(255, 255, 255, .10) !important;
 }
 
 .global-nav a.active {
   background: linear-gradient(135deg, #8c37c2, #7126a6) !important;
-  box-shadow: 0 8px 22px rgba(113,38,166,.28) !important;
+  box-shadow: 0 8px 22px rgba(113, 38, 166, .28) !important;
 }
 
 .global-sidebar-user {
-  background: rgba(234,213,248,.07) !important;
-  border-color: rgba(234,213,248,.13) !important;
+  background: rgba(234, 213, 248, .07) !important;
+  border-color: rgba(234, 213, 248, .13) !important;
 }
 
 .btn-primary {
   background: linear-gradient(135deg, var(--brand-primary), #9342bd) !important;
   border-color: transparent !important;
   color: #fff !important;
-  box-shadow: 0 8px 18px rgba(113,38,166,.18);
+  box-shadow: 0 8px 18px rgba(113, 38, 166, .18);
 }
 
 .btn-primary:hover {
   background: linear-gradient(135deg, var(--brand-hover), #7c2ea4) !important;
-  box-shadow: 0 10px 24px rgba(113,38,166,.24);
+  box-shadow: 0 10px 24px rgba(113, 38, 166, .24);
 }
 
-input:focus, textarea:focus, select:focus {
+input:focus,
+textarea:focus,
+select:focus {
   border-color: #a84fd0 !important;
-  box-shadow: 0 0 0 3px rgba(168,79,208,.12) !important;
+  box-shadow: 0 0 0 3px rgba(168, 79, 208, .12) !important;
 }
 
-.platform-tag, .pg-pill, .accent-note {
-  border-color: rgba(113,38,166,.18);
+.platform-tag,
+.pg-pill,
+.accent-note {
+  border-color: rgba(113, 38, 166, .18);
 }
 
 /* Pixel-inspired but restrained details. */
@@ -103,7 +112,13 @@ input:focus, textarea:focus, select:focus {
 }
 
 @media (max-width: 620px) {
-  .brandmark, .global-brand-mark, .profile-brand-mark { width: 31px; height: 31px; }
+
+  .brandmark,
+  .global-brand-mark,
+  .profile-brand-mark {
+    width: 31px;
+    height: 31px;
+  }
 }
 
 /* Homepage polish */
@@ -113,13 +128,15 @@ input:focus, textarea:focus, select:focus {
   margin-bottom: 20px;
   background: #ead8f8;
   border: 1px solid #d5b7eb;
-  box-shadow: 0 12px 28px rgba(113,38,166,.12);
+  box-shadow: 0 12px 28px rgba(113, 38, 166, .12);
 }
+
 .hero-mark.hero-logo-mark img {
   width: 82px;
   height: 82px;
   object-fit: contain;
 }
+
 .showcase-platform {
   display: inline-block;
   font-size: 12px;
@@ -127,42 +144,152 @@ input:focus, textarea:focus, select:focus {
   color: var(--text-muted);
   margin-bottom: 4px;
 }
-#site-nav .nav-links, #site-nav nav { min-width: 0; }
-@media (max-width: 900px) {
-  #site-nav { flex-wrap: wrap; gap: 12px; }
-  #site-nav > div:first-child { width: 100%; justify-content: space-between; }
+
+#site-nav .nav-links,
+#site-nav nav {
+  min-width: 0;
 }
+
+@media (max-width: 900px) {
+  #site-nav {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  #site-nav>div:first-child {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
 @media (max-width: 620px) {
-  #site-nav .nav-links { display: none; }
-  #site-nav nav { width: 100%; justify-content: flex-end; flex-wrap: wrap; }
-  .hero-mark.hero-logo-mark { width: 80px; height: 80px; }
-  .hero-mark.hero-logo-mark img { width: 72px; height: 72px; }
+  #site-nav .nav-links {
+    display: none;
+  }
+
+  #site-nav nav {
+    width: 100%;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+
+  .hero-mark.hero-logo-mark {
+    width: 80px;
+    height: 80px;
+  }
+
+  .hero-mark.hero-logo-mark img {
+    width: 72px;
+    height: 72px;
+  }
 }
 
 /* Final homepage cleanup */
-#page-landing { overflow-x: clip; }
-#site-nav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(14px); background: rgba(250,247,255,.92); border-bottom: 1px solid var(--line); }
-.hero { overflow: clip; }
-.hero .wrap { max-width: 1160px; }
-.hero h1 { max-width: 860px; letter-spacing: -.035em; text-wrap: balance; }
-.hero .lede { max-width: 700px; }
-.hero-actions { flex-wrap: wrap; }
-.hero-showcase { overflow: hidden; }
-.strip { overflow: hidden; }
-.feat-card, .faq-item, .article-wrap { min-width: 0; }
-.faq-question span { min-width: 0; overflow-wrap: anywhere; }
-.faq-answer { overflow-wrap: anywhere; }
-@media (max-width: 760px) {
-  #site-nav { position: relative; }
-  #site-nav > div:first-child { flex-wrap: wrap; }
-  #site-nav .nav-links { order: 3; width: 100%; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
-  #site-nav .nav-links::-webkit-scrollbar { display: none; }
-  #site-nav nav { width: 100%; justify-content: flex-end; }
-  .hero { padding-top: 52px; }
-  .hero-showcase { margin-top: 28px; }
+#page-landing {
+  overflow-x: clip;
 }
+
+#site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(14px);
+  background: rgba(250, 247, 255, .92);
+  border-bottom: 1px solid var(--line);
+}
+
+.hero {
+  overflow: clip;
+}
+
+.hero .wrap {
+  max-width: 1160px;
+}
+
+.hero h1 {
+  max-width: 860px;
+  letter-spacing: -.035em;
+  text-wrap: balance;
+}
+
+.hero .lede {
+  max-width: 700px;
+}
+
+.hero-actions {
+  flex-wrap: wrap;
+}
+
+.hero-showcase {
+  overflow: hidden;
+}
+
+.strip {
+  overflow: hidden;
+}
+
+.feat-card,
+.faq-item,
+.article-wrap {
+  min-width: 0;
+}
+
+.faq-question span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.faq-answer {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 760px) {
+  #site-nav {
+    position: relative;
+  }
+
+  #site-nav>div:first-child {
+    flex-wrap: wrap;
+  }
+
+  #site-nav .nav-links {
+    order: 3;
+    width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+  }
+
+  #site-nav .nav-links::-webkit-scrollbar {
+    display: none;
+  }
+
+  #site-nav nav {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .hero {
+    padding-top: 52px;
+  }
+
+  .hero-showcase {
+    margin-top: 28px;
+  }
+}
+
 @media (max-width: 520px) {
-  .hero-actions .btn { width: 100%; }
-  .showcase-header { gap: 12px; }
-  .gc-tiers { display: grid !important; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 8px; }
+  .hero-actions .btn {
+    width: 100%;
+  }
+
+  .showcase-header {
+    gap: 12px;
+  }
+
+  .gc-tiers {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
 }

@@ -1,17 +1,17 @@
 // Authentication with Firebase
 if (typeof window.cacheSession === 'undefined') {
-  window.cacheSession = function(session) {
+  window.cacheSession = function (session) {
     try {
       localStorage.setItem('proglog_session', JSON.stringify(session));
       if (session && session.username) {
         localStorage.setItem('cabinet_last_user', session.username);
       }
-    } catch(e) {}
+    } catch (e) { }
   };
 }
 
 if (typeof window.syncCabinetProfile === 'undefined') {
-  window.syncCabinetProfile = function(session) {
+  window.syncCabinetProfile = function (session) {
     // Simple version
     if (session && session.username) {
       try {
@@ -23,24 +23,24 @@ if (typeof window.syncCabinetProfile === 'undefined') {
           createdAt: cab.profile && cab.profile.createdAt ? cab.profile.createdAt : Date.now()
         };
         localStorage.setItem('cabinet_data_' + session.username, JSON.stringify(cab));
-      } catch(e) {}
+      } catch (e) { }
     }
   };
 }
 
 if (typeof window.toast === 'undefined') {
-  window.toast = function(msg) {
+  window.toast = function (msg) {
     var wrap = document.getElementById('toast-wrap');
     if (wrap) {
       var el = document.createElement('div');
       el.className = 'toast';
       el.textContent = msg;
       wrap.appendChild(el);
-      setTimeout(function() { el.remove(); }, 3000);
+      setTimeout(function () { el.remove(); }, 3000);
     }
   };
 }
-(function() {
+(function () {
   'use strict';
 
   var state = {
@@ -69,15 +69,15 @@ if (typeof window.toast === 'undefined') {
       'gmail.com', 'googlemail.com', 'yahoo.com', 'ymail.com', 'yahoomail.com'
     ];
 
-    if (blockedDomains.indexOf(domain) !== -1 || blockedDomains.some(function(item) { return domain === item || domain.endsWith('.' + item); })) {
+    if (blockedDomains.indexOf(domain) !== -1 || blockedDomains.some(function (item) { return domain === item || domain.endsWith('.' + item); })) {
       return false;
     }
 
-    return approvedDomains.indexOf(domain) !== -1 || approvedDomains.some(function(item) { return domain === item || domain.endsWith('.' + item); });
+    return approvedDomains.indexOf(domain) !== -1 || approvedDomains.some(function (item) { return domain === item || domain.endsWith('.' + item); });
   }
 
   function init() {
-    
+
     var params = new URLSearchParams(window.location.search);
     if (params.get('mode') === 'login') {
       setMode(false);
@@ -88,20 +88,20 @@ if (typeof window.toast === 'undefined') {
     }
 
     bindEvents();
-    
+
     // Wait for Firebase to be ready
     if (window.proglogFirebase && window.proglogFirebase.auth) {
       checkAuthState();
     } else {
       // No Firebase available yet; fall back to the local session.
       // Check local session
-      refreshCurrentSession().then(function(session) {
+      refreshCurrentSession().then(function (session) {
         if (session && session.setupComplete) {
           window.pgGo('overview');
         } else if (session && session.userId) {
           goToStep2(session);
         }
-      }).catch(function() {});
+      }).catch(function () { });
     }
   }
 
@@ -109,7 +109,7 @@ if (typeof window.toast === 'undefined') {
     if (!window.proglogFirebase || !window.proglogFirebase.auth) return;
 
     var auth = window.proglogFirebase.auth;
-    
+
     // Check current user immediately
     var currentUser = auth.currentUser;
     if (currentUser) {
@@ -118,7 +118,7 @@ if (typeof window.toast === 'undefined') {
     }
 
     // Listen for auth changes
-    auth.onAuthStateChanged(function(user) {
+    auth.onAuthStateChanged(function (user) {
       if (user) {
         handleAuthenticatedUser(user);
       }
@@ -127,10 +127,10 @@ if (typeof window.toast === 'undefined') {
 
   function handleAuthenticatedUser(user) {
     if (!user) return;
-    
+
     var db = window.proglogFirebase.db;
     db.collection('users').doc(user.uid).get()
-      .then(function(doc) {
+      .then(function (doc) {
         if (doc.exists && doc.data().setupComplete) {
           // Profile complete, go to app
           var session = firebaseUserToSession(user, doc.data());
@@ -144,7 +144,7 @@ if (typeof window.toast === 'undefined') {
           goToStep2(session);
         }
       })
-      .catch(function(err) {
+      .catch(function (err) {
         console.warn('Error checking profile:', err);
         // Try to proceed anyway
         var session = firebaseUserToSession(user, {});
@@ -158,12 +158,12 @@ if (typeof window.toast === 'undefined') {
     if (user) {
       var db = window.proglogFirebase.db;
       db.collection('users').doc(user.uid).get()
-        .then(function(doc) {
+        .then(function (doc) {
           var data = doc.exists ? doc.data() : {};
           var session = firebaseUserToSession(user, data);
           goToStep2(session);
         })
-        .catch(function() {
+        .catch(function () {
           var session = firebaseUserToSession(user, {});
           goToStep2(session);
         });
@@ -304,7 +304,7 @@ if (typeof window.toast === 'undefined') {
 
   function setProfileSetupNavigationLock(locked) {
     document.body.classList.toggle('profile-setup-active', !!locked);
-    document.querySelectorAll('.global-sidebar a[data-nav], .auth-nav-links a').forEach(function(link) {
+    document.querySelectorAll('.global-sidebar a[data-nav], .auth-nav-links a').forEach(function (link) {
       if (locked) {
         link.setAttribute('aria-disabled', 'true');
         link.addEventListener('click', profileNavGuard);
@@ -324,11 +324,11 @@ if (typeof window.toast === 'undefined') {
     var wrap = document.getElementById('step2-color-swatches');
     if (!wrap) return;
     wrap.innerHTML = '';
-    PROFILE_COLORS.forEach(function(c) {
+    PROFILE_COLORS.forEach(function (c) {
       var sw = document.createElement('div');
       sw.className = 'swatch' + (c === state.step2Color ? ' selected' : '');
       sw.style.background = c;
-      sw.addEventListener('click', function() {
+      sw.addEventListener('click', function () {
         state.step2Color = c;
         if (window.applyProglogTheme) window.applyProglogTheme(c);
         updateStep2Preview();
@@ -356,16 +356,16 @@ if (typeof window.toast === 'undefined') {
   function registerWithFirebase(email, password) {
     var auth = window.proglogFirebase.auth;
     return auth.createUserWithEmailAndPassword(email, password)
-      .then(function(result) {
+      .then(function (result) {
         var user = result.user;
         // Send verification email
         return user.sendEmailVerification()
-          .then(function() {
+          .then(function () {
             return user.updateProfile({
               displayName: email.split('@')[0]
             });
           })
-          .then(function() {
+          .then(function () {
             // Store in Firestore
             var db = window.proglogFirebase.db;
             return db.collection('users').doc(user.uid).set({
@@ -377,7 +377,7 @@ if (typeof window.toast === 'undefined') {
               createdAt: firebase.firestore.FieldValue.serverTimestamp()
             });
           })
-          .then(function() {
+          .then(function () {
             return {
               userId: user.uid,
               email: user.email,
@@ -394,18 +394,18 @@ if (typeof window.toast === 'undefined') {
   function loginWithFirebase(email, password) {
     var auth = window.proglogFirebase.auth;
     return auth.signInWithEmailAndPassword(email, password)
-      .then(function(result) {
+      .then(function (result) {
         var user = result.user;
         // Check email verification
         if (!user.emailVerified) {
-          return auth.signOut().then(function() {
+          return auth.signOut().then(function () {
             throw new Error('Please verify your email before logging in. Check your inbox.');
           });
         }
         // Load profile from Firestore
         var db = window.proglogFirebase.db;
         return db.collection('users').doc(user.uid).get()
-          .then(function(doc) {
+          .then(function (doc) {
             var profile = doc.data() || {};
             var session = {
               userId: user.uid,
@@ -439,12 +439,12 @@ if (typeof window.toast === 'undefined') {
     }
 
     return window.proglogFirebase.auth.signInWithPopup(authProvider)
-      .then(function(result) {
+      .then(function (result) {
         var user = result.user;
         var db = window.proglogFirebase.db;
-        
+
         return db.collection('users').doc(user.uid).get()
-          .then(function(doc) {
+          .then(function (doc) {
             if (doc.exists) {
               var data = doc.data();
               var session = {
@@ -469,7 +469,7 @@ if (typeof window.toast === 'undefined') {
                 avatar: user.photoURL || null,
                 setupComplete: false,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
-              }).then(function() {
+              }).then(function () {
                 var session = {
                   userId: user.uid,
                   email: user.email,
@@ -502,13 +502,13 @@ if (typeof window.toast === 'undefined') {
       avatarPromise = uploadAvatar(user.uid, profileData.avatar);
     }
 
-    return avatarPromise.then(function(avatarUrl) {
+    return avatarPromise.then(function (avatarUrl) {
       // Update user profile
       return user.updateProfile({
         displayName: profileData.username,
         photoURL: avatarUrl || user.photoURL
       });
-    }).then(function() {
+    }).then(function () {
       // Update Firestore
       var db = window.proglogFirebase.db;
       return db.collection('users').doc(user.uid).set({
@@ -518,10 +518,10 @@ if (typeof window.toast === 'undefined') {
         setupComplete: true,
         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
       }, { merge: true });
-    }).then(function() {
+    }).then(function () {
       // Reload user to get updated metadata
       return user.reload();
-    }).then(function() {
+    }).then(function () {
       var updatedUser = window.proglogFirebase.auth.currentUser;
       var session = {
         userId: updatedUser.uid,
@@ -542,13 +542,13 @@ if (typeof window.toast === 'undefined') {
   function uploadAvatar(uid, dataUrl) {
     var storage = window.proglogFirebase.storage;
     var ref = storage.ref('avatars/' + uid + '.jpg');
-    
+
     return fetch(dataUrl)
-      .then(function(res) { return res.blob(); })
-      .then(function(blob) {
+      .then(function (res) { return res.blob(); })
+      .then(function (blob) {
         return ref.put(blob, { contentType: 'image/jpeg' });
       })
-      .then(function(snapshot) {
+      .then(function (snapshot) {
         return snapshot.ref.getDownloadURL();
       });
   }
@@ -558,13 +558,13 @@ if (typeof window.toast === 'undefined') {
   function bindEvents() {
     var tabSignup = document.getElementById('tab-signup');
     var tabLogin = document.getElementById('tab-login');
-    if (tabSignup) tabSignup.addEventListener('click', function() { setMode(true); });
-    if (tabLogin) tabLogin.addEventListener('click', function() { setMode(false); });
+    if (tabSignup) tabSignup.addEventListener('click', function () { setMode(true); });
+    if (tabLogin) tabLogin.addEventListener('click', function () { setMode(false); });
 
     // Step 1 Form Handler
     var formStep1 = document.getElementById('form-step1');
     if (formStep1) {
-      formStep1.addEventListener('submit', function(e) {
+      formStep1.addEventListener('submit', function (e) {
         e.preventDefault();
         showAlert('');
 
@@ -588,12 +588,12 @@ if (typeof window.toast === 'undefined') {
           }
 
           setLoading(btnSubmit, true, 'Create Account & Continue →');
-          
+
           if (window.proglogFirebase && window.proglogFirebase.auth) {
             registerWithFirebase(email, pass)
-              .then(function(session) {
+              .then(function (session) {
                 if (session.needsEmailConfirmation) {
-                  var finish = function() {
+                  var finish = function () {
                     showAlert('Account created. Check your email to verify it, then sign in.', true);
                     setMode(false);
                     var emailEl = document.getElementById('input-step1-email');
@@ -610,58 +610,58 @@ if (typeof window.toast === 'undefined') {
                 window.toast('Account created! Set up your profile next.');
                 goToStep2(session);
               })
-              .catch(function(err) {
+              .catch(function (err) {
                 showAlert(window.proglogApp ? window.proglogApp.friendlyError(err) : (err.message || 'Registration failed.'));
               })
-              .finally(function() {
+              .finally(function () {
                 setLoading(btnSubmit, false, 'Create Account & Continue →');
               });
           } else {
             window.registerAccount(email, pass)
-              .then(function(session) {
+              .then(function (session) {
                 window.toast('Account created! Set up your profile next.');
                 goToStep2(session);
               })
-              .catch(function(err) {
+              .catch(function (err) {
                 showAlert(err.message || 'Registration failed.');
               })
-              .finally(function() {
+              .finally(function () {
                 setLoading(btnSubmit, false, 'Create Account & Continue →');
               });
           }
         } else {
           setLoading(btnSubmit, true, 'Sign In to Proglog →');
-          
+
           if (window.proglogFirebase && window.proglogFirebase.auth) {
             loginWithFirebase(email, pass)
-              .then(function(session) {
+              .then(function (session) {
                 window.toast('Welcome back, ' + session.username + '!');
                 if (session.setupComplete) {
-                  setTimeout(function() { window.pgGo('overview'); }, 350);
+                  setTimeout(function () { window.pgGo('overview'); }, 350);
                 } else {
                   goToStep2(session);
                 }
               })
-              .catch(function(err) {
+              .catch(function (err) {
                 showAlert(window.proglogApp ? window.proglogApp.friendlyError(err) : (err.message || 'Login failed.'));
               })
-              .finally(function() {
+              .finally(function () {
                 setLoading(btnSubmit, false, 'Sign In to Proglog →');
               });
           } else {
             window.authenticateUser(email, pass)
-              .then(function(session) {
+              .then(function (session) {
                 window.toast('Welcome back, ' + session.username + '!');
                 if (session.setupComplete) {
-                  setTimeout(function() { window.pgGo('overview'); }, 350);
+                  setTimeout(function () { window.pgGo('overview'); }, 350);
                 } else {
                   goToStep2(session);
                 }
               })
-              .catch(function(err) {
+              .catch(function (err) {
                 showAlert(err.message || 'Login failed.');
               })
-              .finally(function() {
+              .finally(function () {
                 setLoading(btnSubmit, false, 'Sign In to Proglog →');
               });
           }
@@ -671,7 +671,7 @@ if (typeof window.toast === 'undefined') {
 
     var forgotBtn = document.getElementById('btn-forgot-password');
     if (forgotBtn) {
-      forgotBtn.addEventListener('click', function() {
+      forgotBtn.addEventListener('click', function () {
         var emailEl = document.getElementById('input-step1-email');
         var email = emailEl ? emailEl.value.trim() : '';
         if (!email) {
@@ -688,16 +688,16 @@ if (typeof window.toast === 'undefined') {
         btn.disabled = true;
         btn.textContent = 'Sending…';
         window.proglogFirebase.auth.sendPasswordResetEmail(email)
-          .then(function() { showAlert('Password reset email sent. Check your inbox.', true); })
-          .catch(function(err) { showAlert(window.proglogApp ? window.proglogApp.friendlyError(err) : (err.message || 'Could not send reset email.')); })
-          .finally(function() { btn.disabled = false; btn.textContent = original; });
+          .then(function () { showAlert('Password reset email sent. Check your inbox.', true); })
+          .catch(function (err) { showAlert(window.proglogApp ? window.proglogApp.friendlyError(err) : (err.message || 'Could not send reset email.')); })
+          .finally(function () { btn.disabled = false; btn.textContent = original; });
       });
     }
 
     // OAuth Buttons
     var googleBtn = document.getElementById('btn-oauth-google');
     if (googleBtn) {
-      googleBtn.addEventListener('click', function() {
+      googleBtn.addEventListener('click', function () {
         if (!window.proglogFirebase || !window.proglogFirebase.auth) {
           showAlert('Social sign-in requires Firebase configuration.');
           return;
@@ -705,17 +705,17 @@ if (typeof window.toast === 'undefined') {
         var btn = this;
         setLoading(btn, true, 'Continue with Google');
         signInWithProvider('google')
-          .then(function(session) {
+          .then(function (session) {
             if (session.setupComplete) {
               window.pgGo('overview');
             } else {
               goToStep2(session);
             }
           })
-          .catch(function(err) {
+          .catch(function (err) {
             showAlert(window.proglogApp ? window.proglogApp.friendlyError(err) : (err.message || 'Google sign-in failed.'));
           })
-          .finally(function() {
+          .finally(function () {
             setLoading(btn, false);
           });
       });
@@ -723,7 +723,7 @@ if (typeof window.toast === 'undefined') {
 
     var githubBtn = document.getElementById('btn-oauth-github');
     if (githubBtn) {
-      githubBtn.addEventListener('click', function() {
+      githubBtn.addEventListener('click', function () {
         if (!window.proglogFirebase || !window.proglogFirebase.auth) {
           showAlert('Social sign-in requires Firebase configuration.');
           return;
@@ -731,17 +731,17 @@ if (typeof window.toast === 'undefined') {
         var btn = this;
         setLoading(btn, true, 'Continue with GitHub');
         signInWithProvider('github')
-          .then(function(session) {
+          .then(function (session) {
             if (session.setupComplete) {
               window.pgGo('overview');
             } else {
               goToStep2(session);
             }
           })
-          .catch(function(err) {
+          .catch(function (err) {
             showAlert(window.proglogApp ? window.proglogApp.friendlyError(err) : (err.message || 'GitHub sign-in failed.'));
           })
-          .finally(function() {
+          .finally(function () {
             setLoading(btn, false);
           });
       });
@@ -750,7 +750,7 @@ if (typeof window.toast === 'undefined') {
     // Step 2 Avatar file upload
     var pfpInput = document.getElementById('step2-file-input');
     if (pfpInput) {
-      pfpInput.addEventListener('change', function(e) {
+      pfpInput.addEventListener('change', function (e) {
         var file = e.target.files && e.target.files[0];
         if (file) {
           if (file.size > 2 * 1024 * 1024) {
@@ -758,9 +758,9 @@ if (typeof window.toast === 'undefined') {
             return;
           }
           var reader = new FileReader();
-          reader.onload = function(evt) {
+          reader.onload = function (evt) {
             var img = new Image();
-            img.onload = function() {
+            img.onload = function () {
               var size = 256;
               var scale = Math.min(size / img.width, size / img.height, 1);
               var canvas = document.createElement('canvas');
@@ -786,7 +786,7 @@ if (typeof window.toast === 'undefined') {
     // Step 2 Form Handler
     var formStep2 = document.getElementById('form-step2');
     if (formStep2) {
-      formStep2.addEventListener('submit', function(e) {
+      formStep2.addEventListener('submit', function (e) {
         e.preventDefault();
         var name = (document.getElementById('step2-hunter-name').value || '').trim();
         if (!name) return;
@@ -807,12 +807,12 @@ if (typeof window.toast === 'undefined') {
             username: name,
             color: state.step2Color,
             avatar: state.step2Avatar
-          }).then(function(session) {
+          }).then(function (session) {
             window.toast('Profile saved. Welcome to Proglog.');
-            setTimeout(function() { window.pgGo('overview'); }, 350);
-          }).catch(function(err) {
+            setTimeout(function () { window.pgGo('overview'); }, 350);
+          }).catch(function (err) {
             showAlert(window.proglogApp ? window.proglogApp.friendlyError(err) : (err.message || 'Your profile could not be saved.'));
-          }).finally(function() {
+          }).finally(function () {
             setLoading(submit, false, 'Complete Setup & Open Proglog →');
           });
         } else {
@@ -820,13 +820,13 @@ if (typeof window.toast === 'undefined') {
             username: name,
             color: state.step2Color,
             avatar: state.step2Avatar
-          }).then(function(completed) {
+          }).then(function (completed) {
             if (!completed) throw new Error('Your account could not be updated.');
             window.toast('Profile saved. Welcome to Proglog.');
-            setTimeout(function() { window.pgGo('overview'); }, 350);
-          }).catch(function(err) {
+            setTimeout(function () { window.pgGo('overview'); }, 350);
+          }).catch(function (err) {
             showAlert(err.message || 'Your profile could not be saved.');
-          }).finally(function() {
+          }).finally(function () {
             setLoading(submit, false, 'Complete Setup & Open Proglog →');
           });
         }

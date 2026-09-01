@@ -1,5 +1,5 @@
 // Proglog Hunter Profile & Stats Controller
-(function() {
+(function () {
   'use strict';
 
   var currentUser = null;
@@ -108,8 +108,8 @@
     var countLbl = document.getElementById('showcase-count-label');
 
     var plats = [];
-    games.forEach(function(g) {
-      (g.achievements || []).forEach(function(a) {
+    games.forEach(function (g) {
+      (g.achievements || []).forEach(function (a) {
         if (a.tier === 'platinum' && a.unlocked) {
           plats.push({ game: g, achievement: a });
         }
@@ -125,12 +125,12 @@
     }
     emptyEl.classList.add('hidden');
 
-    showcaseGrid.innerHTML = plats.map(function(item) {
+    showcaseGrid.innerHTML = plats.map(function (item) {
       return '<div class="showcase-card">' +
         tierSvg('platinum') +
         '<div class="showcase-game-title">' + esc(item.game.title) + '</div>' +
         '<span style="font-size:10.5px; color:var(--platinum); font-weight:700;">100% MASTERED</span>' +
-      '</div>';
+        '</div>';
     }).join('');
   }
 
@@ -139,15 +139,15 @@
     var emptyEl = document.getElementById('activity-empty');
 
     var history = [];
-    games.forEach(function(g) {
-      (g.achievements || []).forEach(function(a) {
+    games.forEach(function (g) {
+      (g.achievements || []).forEach(function (a) {
         if (a.unlocked && a.unlockedAt) {
           history.push({ game: g, achievement: a, time: a.unlockedAt });
         }
       });
     });
 
-    history.sort(function(a, b) { return b.time - a.time; });
+    history.sort(function (a, b) { return b.time - a.time; });
     var topRecent = history.slice(0, 10);
 
     if (topRecent.length === 0) {
@@ -157,16 +157,16 @@
     }
     emptyEl.classList.add('hidden');
 
-    list.innerHTML = topRecent.map(function(item) {
+    list.innerHTML = topRecent.map(function (item) {
       var d = new Date(item.time).toLocaleDateString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
       return '<div class="activity-item">' +
         tierSvg(item.achievement.tier) +
         '<div class="achv-info">' +
-          '<div class="achv-name">' + esc(item.achievement.name) + '</div>' +
-          '<div class="achv-game">' + esc(item.game.title) + '</div>' +
+        '<div class="achv-name">' + esc(item.achievement.name) + '</div>' +
+        '<div class="achv-game">' + esc(item.game.title) + '</div>' +
         '</div>' +
         '<div class="achv-time">' + d + '</div>' +
-      '</div>';
+        '</div>';
     }).join('');
   }
 
@@ -185,7 +185,7 @@
     var segmentsHtml = '';
     var legendHtml = '';
 
-    PLATFORMS.forEach(function(plat) {
+    PLATFORMS.forEach(function (plat) {
       var count = platformCounts[plat.id] || 0;
       if (count > 0) {
         var pct = Math.round((count / total) * 100);
@@ -203,7 +203,7 @@
     if (!wrap) return;
     wrap.innerHTML = '';
 
-    PROFILE_COLORS.forEach(function(color) {
+    PROFILE_COLORS.forEach(function (color) {
       var sw = document.createElement('button');
       sw.type = 'button';
       sw.className = 'swatch' + (color === selectedColor ? ' selected' : '');
@@ -214,7 +214,7 @@
       sw.style.height = '28px';
       sw.style.border = '2px solid transparent';
       sw.style.cursor = 'pointer';
-      sw.addEventListener('click', function() {
+      sw.addEventListener('click', function () {
         var input = document.getElementById('edit-profile-name');
         var name = input ? input.value.trim() : (cabinet.profile && cabinet.profile.username) || currentUser || 'Hunter';
         if (!name) name = 'Hunter';
@@ -242,7 +242,7 @@
     var nextColor = selectedColor ? selectedColor.style.background : (cabinet.profile && cabinet.profile.color) || PROFILE_COLORS[0];
     if (nextColor && typeof nextColor === 'string' && nextColor.indexOf('rgb') === 0) {
       var rgb = nextColor.match(/\d+/g);
-      if (rgb) nextColor = '#' + Array.prototype.slice.call(rgb).map(function(v) { return Number(v).toString(16).padStart(2, '0'); }).join('');
+      if (rgb) nextColor = '#' + Array.prototype.slice.call(rgb).map(function (v) { return Number(v).toString(16).padStart(2, '0'); }).join('');
     }
 
     if (!cabinet.profile) cabinet.profile = { username: currentUser, color: PROFILE_COLORS[0], createdAt: Date.now() };
@@ -250,13 +250,13 @@
     cabinet.profile.color = nextColor || PROFILE_COLORS[0];
 
     var profileList = getProfiles();
-    profileList.forEach(function(p) {
+    profileList.forEach(function (p) {
       if (p.username === currentUser || (cabinet.profile && p.username === cabinet.profile.username && p.username !== nextName)) {
         p.username = nextName;
         p.color = cabinet.profile.color;
       }
     });
-    if (!profileList.some(function(p) { return p.username === nextName; })) {
+    if (!profileList.some(function (p) { return p.username === nextName; })) {
       profileList.push({ username: nextName, color: cabinet.profile.color, avatar: cabinet.profile.avatar || null, createdAt: cabinet.profile.createdAt || Date.now() });
     }
     setProfiles(profileList);
@@ -276,7 +276,7 @@
         displayName: nextName,
         photoURL: cabinet.profile.avatar || authUser.photoURL || null
       };
-      authUser.updateProfile(updates).catch(function() {});
+      authUser.updateProfile(updates).catch(function () { });
       var db = window.proglogFirebase.db;
       if (db && db.collection) {
         db.collection('users').doc(authUser.uid).set({
@@ -284,7 +284,7 @@
           color: cabinet.profile.color,
           avatar: cabinet.profile.avatar || authUser.photoURL || null,
           updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-        }, { merge: true }).catch(function() {});
+        }, { merge: true }).catch(function () { });
       }
     }
 
@@ -313,7 +313,7 @@
     // PFP file upload on profile page
     var pfpInput = document.getElementById('profile-pfp-file');
     if (pfpInput) {
-      pfpInput.addEventListener('change', function(e) {
+      pfpInput.addEventListener('change', function (e) {
         var file = e.target.files && e.target.files[0];
         if (file) {
           if (file.size > 2 * 1024 * 1024) {
@@ -321,12 +321,12 @@
             return;
           }
           var reader = new FileReader();
-          reader.onload = function(evt) {
+          reader.onload = function (evt) {
             if (!cabinet.profile) cabinet.profile = { username: currentUser };
             cabinet.profile.avatar = evt.target.result;
             // Also update in profiles list
             var profiles = getProfiles();
-            profiles.forEach(function(p) {
+            profiles.forEach(function (p) {
               if (p.username === currentUser) p.avatar = evt.target.result;
             });
             setProfiles(profiles);
@@ -342,7 +342,7 @@
     // Export JSON Backup
     var exportBtn = document.getElementById('btn-export-backup');
     if (exportBtn) {
-      exportBtn.addEventListener('click', function() {
+      exportBtn.addEventListener('click', function () {
         var dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(cabinet, null, 2));
         var downloadAnchor = document.createElement('a');
         downloadAnchor.setAttribute('href', dataStr);
@@ -357,11 +357,11 @@
     // Restore JSON Backup
     var restoreInput = document.getElementById('input-restore-file');
     if (restoreInput) {
-      restoreInput.addEventListener('change', function(e) {
+      restoreInput.addEventListener('change', function (e) {
         var file = e.target.files && e.target.files[0];
         if (file) {
           var reader = new FileReader();
-          reader.onload = function(evt) {
+          reader.onload = function (evt) {
             try {
               var parsed = JSON.parse(evt.target.result);
               if (parsed && Array.isArray(parsed.games)) {
@@ -384,7 +384,7 @@
     // Preferences sound toggle
     var soundToggle = document.getElementById('pref-sound-toggle');
     if (soundToggle) {
-      soundToggle.addEventListener('change', function(e) {
+      soundToggle.addEventListener('change', function (e) {
         setSoundEnabled(e.target.checked);
         if (e.target.checked) playTrophyChime();
         toast('Trophy sound ' + (e.target.checked ? 'enabled 🔔' : 'disabled 🔕'));
@@ -392,6 +392,6 @@
     }
   }
 
-  authReady().then(function() { init(); });
+  authReady().then(function () { init(); });
 })();
 

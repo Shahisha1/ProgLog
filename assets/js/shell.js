@@ -6,7 +6,7 @@
     if (typeof window.pgGo === 'function') { window.pgGo('profile'); return; }
     var path = window.location.pathname || '';
     var prefix = path.indexOf('/pages/') >= 0 ? path.slice(0, path.indexOf('/pages/')) : path.replace(/\/[^\/]*$/, '');
-    window.location.href = (prefix || '') + '/pages/profile/profile.html';
+    window.location.href = (prefix || '') + '/pages/user/profile.html';
   }
 
   function initUserLinks() {
@@ -42,7 +42,7 @@
     var session = null;
     try {
       session = typeof window.getCurrentSession === 'function' ? window.getCurrentSession() : null;
-    } catch (e) {}
+    } catch (e) { }
     var name = (session && (session.username || session.email)) || 'Hunter';
     var avatar = session && session.avatar;
     var nameEls = document.querySelectorAll('#global-sidebar-name, #profile-sidebar-name');
@@ -57,7 +57,7 @@
         img.alt = '';
         img.loading = 'lazy';
         img.referrerPolicy = 'no-referrer';
-        img.addEventListener('error', function(){ if(window.proglogApp) window.proglogApp.imageFallback(img); }, { once:true });
+        img.addEventListener('error', function () { if (window.proglogApp) window.proglogApp.imageFallback(img); }, { once: true });
         img.style.width = '100%';
         img.style.height = '100%';
         img.style.objectFit = 'cover';
@@ -84,11 +84,11 @@
       try {
         if (typeof window.setLastUser === 'function') window.setLastUser(null);
         if (typeof window.logoutSession === 'function') window.logoutSession();
-      } catch (e) {}
+      } catch (e) { }
       if (typeof window.pgGo === 'function') {
         window.pgGo('auth');
       } else {
-        window.location.href = '../../pages/auth/auth.html';
+        window.location.href = '../../pages/core/auth.html';
       }
     });
   }

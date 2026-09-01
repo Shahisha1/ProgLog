@@ -562,4 +562,4 @@ var TROPHY_DATABASE = {
   ]
 };
 
-function getBundledTrophies(id){ return (TROPHY_DATABASE && TROPHY_DATABASE[id]) ? TROPHY_DATABASE[id] : []; }
+function getBundledTrophies(id) { return (TROPHY_DATABASE && TROPHY_DATABASE[id]) ? TROPHY_DATABASE[id] : []; }

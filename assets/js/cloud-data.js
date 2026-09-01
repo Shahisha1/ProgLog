@@ -27,7 +27,7 @@
   }
 
   function localSet(username, cabinet) {
-    try { localStorage.setItem('cabinet_data_' + username, JSON.stringify(cabinet)); } catch (e) {}
+    try { localStorage.setItem('cabinet_data_' + username, JSON.stringify(cabinet)); } catch (e) { }
   }
 
   function localProfiles() {
@@ -35,7 +35,7 @@
   }
 
   function localSetProfiles(items) {
-    try { localStorage.setItem('cabinet_profiles', JSON.stringify(items)); } catch (e) {}
+    try { localStorage.setItem('cabinet_profiles', JSON.stringify(items)); } catch (e) { }
   }
 
   function syncLocalProfile(cabinet) {
@@ -210,7 +210,7 @@
           try {
             localStorage.setItem('proglog_pref_sound', meta.preferences.soundEnabled ? 'true' : 'false');
             localStorage.setItem('proglog_sound', meta.preferences.soundEnabled ? 'true' : 'false');
-          } catch (e) {}
+          } catch (e) { }
         }
         return normalized;
       });
@@ -224,7 +224,7 @@
     var user = signedInUser();
     if (!user || !cabinet || cabinet.showcase) return;
     clearTimeout(timers[user.uid]);
-    writes[user.uid] = Promise.resolve(writes[user.uid]).catch(function () {}).then(function () {
+    writes[user.uid] = Promise.resolve(writes[user.uid]).catch(function () { }).then(function () {
       return new Promise(function (resolve) {
         timers[user.uid] = setTimeout(function () {
           pushCabinet(user, cabinet).then(resolve);

@@ -11,9 +11,9 @@
         auth = firebase.auth();
         db = firebase.firestore();
         storage = firebase.storage();
-        
+
       } else {
-        
+
       }
     } catch (e) {
       console.warn('Firebase initialization failed:', e);

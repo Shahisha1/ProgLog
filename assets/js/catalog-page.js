@@ -1,5 +1,5 @@
 // Catalog page controller
-(function() {
+(function () {
   'use strict';
 
   var currentUser = null;
@@ -31,18 +31,18 @@
 
     if (searchQuery.trim()) {
       var q = searchQuery.trim().toLowerCase();
-      list = list.filter(function(g) {
+      list = list.filter(function (g) {
         return (g.title || '').toLowerCase().indexOf(q) !== -1 ||
-               ((g.roadmap && g.roadmap.summary) || '').toLowerCase().indexOf(q) !== -1;
+          ((g.roadmap && g.roadmap.summary) || '').toLowerCase().indexOf(q) !== -1;
       });
     }
 
     if (platformFilter !== 'all') {
-      list = list.filter(function(g) { return g.platform === platformFilter; });
+      list = list.filter(function (g) { return g.platform === platformFilter; });
     }
 
     if (difficultyFilter !== 'all') {
-      list = list.filter(function(g) {
+      list = list.filter(function (g) {
         var num = parseInt(g.roadmap ? g.roadmap.difficulty : '5', 10);
         if (difficultyFilter === 'easy') return num <= 3;
         if (difficultyFilter === 'medium') return num >= 4 && num <= 6;
@@ -61,12 +61,12 @@
 
     var ownedIds = {};
     if (cabinet && cabinet.games) {
-      cabinet.games.forEach(function(g) {
+      cabinet.games.forEach(function (g) {
         ownedIds[g.title.toLowerCase()] = true;
       });
     }
 
-    grid.innerHTML = list.map(function(item) {
+    grid.innerHTML = list.map(function (item) {
       var plat = platformById(item.platform);
       var rm = item.roadmap || {};
       var achvs = item.achievements || [];
@@ -74,47 +74,47 @@
       var isOwned = ownedIds[item.title.toLowerCase()];
 
       var tierCounts = { platinum: 0, gold: 0, silver: 0, bronze: 0 };
-      achvs.forEach(function(a) {
+      achvs.forEach(function (a) {
         if (tierCounts[a.tier] !== undefined) tierCounts[a.tier]++;
       });
 
       return '<div class="catalog-card" style="padding:24px;">' +
         '<div class="catalog-card-head">' +
-          '<div>' +
-            '<span class="platform-tag" style="margin-top:0;"><span class="platform-dot" style="background:' + plat.color + '"></span>' + plat.label + '</span>' +
-            '<div class="catalog-title" style="font-size:20px; margin-top:4px;">' + esc(item.title) + '</div>' +
-          '</div>' +
-          (isOwned
-            ? '<button class="btn btn-ghost btn-sm btn-view-cat-game" data-id="' + item.id + '">View Details</button>'
-            : '<div style="display:flex;gap:8px;align-items:center;"><button class="btn btn-ghost btn-sm btn-view-cat-game" data-id="' + item.id + '">Details</button><button class="btn btn-primary btn-sm btn-add-cat-game" data-id="' + item.id + '">+ Add to Vault</button></div>') +
+        '<div>' +
+        '<span class="platform-tag" style="margin-top:0;"><span class="platform-dot" style="background:' + plat.color + '"></span>' + plat.label + '</span>' +
+        '<div class="catalog-title" style="font-size:20px; margin-top:4px;">' + esc(item.title) + '</div>' +
+        '</div>' +
+        (isOwned
+          ? '<button class="btn btn-ghost btn-sm btn-view-cat-game" data-id="' + item.id + '">View Details</button>'
+          : '<div style="display:flex;gap:8px;align-items:center;"><button class="btn btn-ghost btn-sm btn-view-cat-game" data-id="' + item.id + '">Details</button><button class="btn btn-primary btn-sm btn-add-cat-game" data-id="' + item.id + '">+ Add to Vault</button></div>') +
         '</div>' +
         '<div class="roadmap-strip" style="margin-top:4px;">' +
-          (rm.difficulty ? '<div class="roadmap-item"><span class="roadmap-label">Difficulty</span><span class="roadmap-val">' + esc(rm.difficulty) + '</span></div>' : '') +
-          (rm.time ? '<div class="roadmap-item"><span class="roadmap-label">Time</span><span class="roadmap-val">' + esc(rm.time) + '</span></div>' : '') +
-          (rm.playthroughs ? '<div class="roadmap-item"><span class="roadmap-label">Playthroughs</span><span class="roadmap-val">' + esc(rm.playthroughs) + '</span></div>' : '') +
-          (rm.missable ? '<div class="roadmap-item"><span class="roadmap-label">Missables</span><span class="roadmap-val">' + esc(rm.missable) + '</span></div>' : '') +
+        (rm.difficulty ? '<div class="roadmap-item"><span class="roadmap-label">Difficulty</span><span class="roadmap-val">' + esc(rm.difficulty) + '</span></div>' : '') +
+        (rm.time ? '<div class="roadmap-item"><span class="roadmap-label">Time</span><span class="roadmap-val">' + esc(rm.time) + '</span></div>' : '') +
+        (rm.playthroughs ? '<div class="roadmap-item"><span class="roadmap-label">Playthroughs</span><span class="roadmap-val">' + esc(rm.playthroughs) + '</span></div>' : '') +
+        (rm.missable ? '<div class="roadmap-item"><span class="roadmap-label">Missables</span><span class="roadmap-val">' + esc(rm.missable) + '</span></div>' : '') +
         '</div>' +
         '<div class="gc-tiers" style="padding:2px 0;">' +
-          '<span>' + tierSvg('platinum') + ' ' + tierCounts.platinum + '</span>' +
-          '<span>' + tierSvg('gold') + ' ' + tierCounts.gold + '</span>' +
-          '<span>' + tierSvg('silver') + ' ' + tierCounts.silver + '</span>' +
-          '<span>' + tierSvg('bronze') + ' ' + tierCounts.bronze + '</span>' +
-          '<span style="margin-left:auto; font-weight:700; color:var(--text-main);">' + (item.totalTrophies || achvs.length) + ' Total ' + (item.platform === 'playstation' ? 'Trophies' : 'Achievements') + '</span>' +
+        '<span>' + tierSvg('platinum') + ' ' + tierCounts.platinum + '</span>' +
+        '<span>' + tierSvg('gold') + ' ' + tierCounts.gold + '</span>' +
+        '<span>' + tierSvg('silver') + ' ' + tierCounts.silver + '</span>' +
+        '<span>' + tierSvg('bronze') + ' ' + tierCounts.bronze + '</span>' +
+        '<span style="margin-left:auto; font-weight:700; color:var(--text-main);">' + (item.totalTrophies || achvs.length) + ' Total ' + (item.platform === 'playstation' ? 'Trophies' : 'Achievements') + '</span>' +
         '</div>' +
         (rm.summary ? '<div class="catalog-desc">' + esc(rm.summary) + '</div>' : '') +
         (item.catalogPreview ? '<div class="catalog-data-note">Verified total from ' + esc(item.trophySource || (item.detail && item.detail.source) || 'platform source') + ' · complete list linked on the detail page.</div>' : '') +
-      '</div>';
+        '</div>';
     }).join('');
 
-    grid.querySelectorAll('.btn-add-cat-game').forEach(function(btn) {
-      btn.addEventListener('click', function(e) {
+    grid.querySelectorAll('.btn-add-cat-game').forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
         e.stopPropagation();
         var id = btn.getAttribute('data-id');
         addGameToVault(id);
       });
     });
-    grid.querySelectorAll('.btn-view-cat-game').forEach(function(btn) {
-      btn.addEventListener('click', function(e) {
+    grid.querySelectorAll('.btn-view-cat-game').forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
         e.stopPropagation();
         var id = btn.getAttribute('data-id');
         window.location.href = window.pgRoute('game') + '#' + encodeURIComponent(id);
@@ -128,7 +128,7 @@
 
     if (!currentUser) {
       toast('Please create or enter a hunter profile first.');
-      setTimeout(function() { window.pgGo('overview'); }, 1000);
+      setTimeout(function () { window.pgGo('overview'); }, 1000);
       return;
     }
 
@@ -147,7 +147,7 @@
       createdAt: Date.now(),
       roadmap: catGame.roadmap ? JSON.parse(JSON.stringify(catGame.roadmap)) : null,
       notes: '',
-      achievements: (catGame.achievements || []).map(function(a) {
+      achievements: (catGame.achievements || []).map(function (a) {
         return {
           id: uid(),
           name: a.name,
@@ -170,12 +170,12 @@
   function bindEvents() {
     var searchInput = document.getElementById('search-catalog');
     if (searchInput) {
-      searchInput.addEventListener('input', function(e) {
+      searchInput.addEventListener('input', function (e) {
         searchQuery = e.target.value;
         render();
       });
 
-      document.addEventListener('keydown', function(e) {
+      document.addEventListener('keydown', function (e) {
         if (e.key === '/' && document.activeElement !== searchInput) {
           e.preventDefault();
           searchInput.focus();
@@ -185,7 +185,7 @@
 
     var platSelect = document.getElementById('filter-cat-platform');
     if (platSelect) {
-      platSelect.addEventListener('change', function(e) {
+      platSelect.addEventListener('change', function (e) {
         platformFilter = e.target.value;
         render();
       });
@@ -193,7 +193,7 @@
 
     var diffSelect = document.getElementById('filter-cat-difficulty');
     if (diffSelect) {
-      diffSelect.addEventListener('change', function(e) {
+      diffSelect.addEventListener('change', function (e) {
         difficultyFilter = e.target.value;
         render();
       });

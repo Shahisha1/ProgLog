@@ -664,4 +664,4 @@ function getCatalogGame(id) {
   return null;
 }
 
-try { window.dispatchEvent(new CustomEvent('proglog:catalog-ready')); } catch (e) {}
+try { window.dispatchEvent(new CustomEvent('proglog:catalog-ready')); } catch (e) { }

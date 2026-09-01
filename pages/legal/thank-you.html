@@ -1,85 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Proglog — Transmission Received</title>
-  <link rel="icon" type="image/png" href="../../../assets/img/proglog-icon.png">
-  <link rel="stylesheet" href="../../../assets/css/vars.css">
-  <link rel="stylesheet" href="../../../assets/css/reset.css">
-  <link rel="stylesheet" href="../../../assets/css/layout.css">
-  <link rel="stylesheet" href="../../../assets/css/components.css">
-  <link rel="stylesheet" href="../../../assets/css/pages.css">
-  <link rel="stylesheet" href="../../../assets/css/ui-refresh.css">
-  <link rel="stylesheet" href="../../../assets/css/brand-refresh.css">
-  <link rel="apple-touch-icon" href="../../../assets/img/proglog-icon.png">
+  <link rel="icon" type="image/png" href="../../assets/img/proglog-icon.png">
+  <link rel="stylesheet" href="../../assets/css/vars.css">
+  <link rel="stylesheet" href="../../assets/css/reset.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/pages.css">
+  <link rel="stylesheet" href="../../assets/css/ui-refresh.css">
+  <link rel="stylesheet" href="../../assets/css/brand-refresh.css">
+  <link rel="apple-touch-icon" href="../../assets/img/proglog-icon.png">
 
-  <link rel="stylesheet" href="../../../assets/css/reliability.css">
-  <link rel="stylesheet" href="../../../assets/css/phase45.css">
-<link rel="manifest" href="../../../manifest.webmanifest">
-<meta name="theme-color" content="#7126a6">
+  <link rel="stylesheet" href="../../assets/css/reliability.css">
+  <link rel="stylesheet" href="../../assets/css/phase45.css">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <meta name="theme-color" content="#7126a6">
 </head>
+
 <body>
 
-<header id="site-nav">
-  <div style="display:flex; align-items:center; gap:28px;">
-    <a href="../../../" class="brand">
-      <img class="brandmark" src="../../../assets/img/proglog-logo.png" alt="Proglog logo">
-      <span>Pro<span class="accent">glog</span></span>
-    </a>
-    <div class="nav-links">
-      <a href="../core/overview.html" class="nav-link">Overview</a>
-      <a href="../games/games.html" class="nav-link">Catalog</a>
-      <a href="../user/profile.html" class="nav-link">Profile</a>
+  <header id="site-nav">
+    <div style="display:flex; align-items:center; gap:28px;">
+      <a href="../../" class="brand">
+        <img class="brandmark" src="../../assets/img/proglog-logo.png" alt="Proglog logo">
+        <span>Prog<span class="accent">log</span></span>
+      </a>
+      <div class="nav-links">
+        <a href="../core/overview.html" class="nav-link">Overview</a>
+        <a href="../games/games.html" class="nav-link">Catalog</a>
+        <a href="../user/profile.html" class="nav-link">Profile</a>
+      </div>
+    </div>
+
+    <nav style="display:flex; align-items:center; gap:16px;">
+      <a href="../core/overview.html" class="btn btn-primary btn-sm">Open Proglog</a>
+    </nav>
+  </header>
+
+  <div class="container" style="text-align:center; padding-top:60px;">
+    <nav class="breadcrumbs" style="justify-content:center;">
+      <a href="../../">Home</a>
+      <span class="breadcrumb-sep">/</span>
+      <span class="breadcrumb-current">Enquiry Submitted</span>
+    </nav>
+
+    <div class="article-wrap" style="text-align:center; max-width:600px;">
+      <div
+        style="width:64px; height:64px; border-radius:50%; background:rgba(16,185,129,0.15); border:2px solid var(--success); display:flex; align-items:center; justify-content:center; margin:0 auto 20px; box-shadow:0 0 25px rgba(16,185,129,0.3);">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3"
+          stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12" />
+        </svg>
+      </div>
+
+      <span class="eyebrow"
+        style="margin-bottom:12px; color:var(--success); background:rgba(16,185,129,0.1); border-color:rgba(16,185,129,0.3);">Quest
+        Submitted</span>
+      <h1 style="font-size:28px; font-weight:800; margin-bottom:12px;">Transmission Received</h1>
+      <p style="color:var(--text-dim); font-size:15px; line-height:1.6; margin-bottom:28px;">
+        Thanks for the suggestion. This demo doesn't have a backend yet, so nothing was actually sent anywhere &mdash;
+        but this is where a real submission confirmation would go once a form handler is wired up.
+      </p>
+
+      <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
+        <a href="../games/games.html" class="btn btn-primary">Browse Trophy Catalog</a>
+        <a href="../core/overview.html" class="btn btn-ghost">Return to Overview</a>
+      </div>
     </div>
   </div>
 
-  <nav style="display:flex; align-items:center; gap:16px;">
-    <a href="../core/overview.html" class="btn btn-primary btn-sm">Open Proglog</a>
-  </nav>
-</header>
-
-<div class="container" style="text-align:center; padding-top:60px;">
-  <nav class="breadcrumbs" style="justify-content:center;">
-    <a href="../../../">Home</a>
-    <span class="breadcrumb-sep">/</span>
-    <span class="breadcrumb-current">Enquiry Submitted</span>
-  </nav>
-
-  <div class="article-wrap" style="text-align:center; max-width:600px;">
-    <div style="width:64px; height:64px; border-radius:50%; background:rgba(16,185,129,0.15); border:2px solid var(--success); display:flex; align-items:center; justify-content:center; margin:0 auto 20px; box-shadow:0 0 25px rgba(16,185,129,0.3);">
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+  <footer id="site-footer" style="margin-top:60px;">
+    <div class="wrap">
+      <span>Proglog — Game tracking, trophies, and guides in one place.</span>
+      <div style="display:flex; gap:18px; font-size:13px; color:var(--text-muted);">
+        <a href="../../">Home</a>
+        <a href="../core/overview.html">Overview</a>
+        <a href="../games/games.html">Catalog</a>
+        <a href="../user/profile.html">Profile</a>
+        <a href="../legal/privacy.html">Privacy Policy</a>
+      </div>
     </div>
+  </footer>
 
-    <span class="eyebrow" style="margin-bottom:12px; color:var(--success); background:rgba(16,185,129,0.1); border-color:rgba(16,185,129,0.3);">Quest Submitted</span>
-    <h1 style="font-size:28px; font-weight:800; margin-bottom:12px;">Transmission Received</h1>
-    <p style="color:var(--text-dim); font-size:15px; line-height:1.6; margin-bottom:28px;">
-      Thanks for the suggestion. This demo doesn't have a backend yet, so nothing was actually sent anywhere &mdash; but this is where a real submission confirmation would go once a form handler is wired up.
-    </p>
-
-    <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
-      <a href="../games/games.html" class="btn btn-primary">Browse Trophy Catalog</a>
-      <a href="../core/overview.html" class="btn btn-ghost">Return to Overview</a>
-    </div>
-  </div>
-</div>
-
-<footer id="site-footer" style="margin-top:60px;">
-  <div class="wrap">
-    <span>Proglog — Game tracking, trophies, and guides in one place.</span>
-    <div style="display:flex; gap:18px; font-size:13px; color:var(--text-muted);">
-      <a href="../../../">Home</a>
-      <a href="../core/overview.html">Overview</a>
-      <a href="../games/games.html">Catalog</a>
-      <a href="../user/profile.html">Profile</a>
-      <a href="../legal/privacy.html">Privacy Policy</a>
-    </div>
-  </div>
-</footer>
-
-<script src="../../../assets/js/app-core.js"></script>
-<script src="../../../assets/js/theme.js"></script>
-<script src="../../../assets/js/showcase.js"></script><script src="../../../assets/js/shell.js"></script><script src="../../../assets/js/boot-guard.js"></script><script src="../../../assets/js/phase45.js"></script>
+  <script src="../../assets/js/app-core.js"></script>
+  <script src="../../assets/js/theme.js"></script>
+  <script src="../../assets/js/showcase.js"></script>
+  <script src="../../assets/js/shell.js"></script>
+  <script src="../../assets/js/boot-guard.js"></script>
+  <script src="../../assets/js/phase45.js"></script>
 </body>
-</html>
 
+</html>

@@ -5,7 +5,7 @@ function openModal(html) {
   var overlay = document.createElement('div');
   overlay.className = 'modal-overlay';
   overlay.innerHTML = html;
-  overlay.addEventListener('mousedown', function(e) {
+  overlay.addEventListener('mousedown', function (e) {
     if (e.target === overlay) closeModal();
   });
   document.body.appendChild(overlay);
@@ -19,7 +19,7 @@ function closeModal() {
   document.body.style.overflow = '';
 }
 
-document.addEventListener('keydown', function(e) {
+document.addEventListener('keydown', function (e) {
   if (e.key === 'Escape') closeModal();
 });
 
@@ -31,56 +31,56 @@ function showGameModal(existing, onSave) {
 
   var overlay = openModal(
     '<div class="modal modal-game">' +
-      '<div class="modal-head">' +
-        '<div>' +
-          '<h3>' + (existing ? 'Edit Game' : 'Add Game to Vault') + '</h3>' +
-          '<div class="modal-subtitle">' + (existing ? 'Update this entry in your game library.' : 'Search the catalog or add a custom game.') + '</div>' +
-        '</div>' +
-        '<button class="modal-close" id="modal-close-btn" aria-label="Close">' +
-          '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>' +
-        '</button>' +
-      '</div>' +
-      '<div class="modal-body">' +
-        '<div class="field game-search-field">' +
-          '<label class="field-label" for="input-game-title">Game Title</label>' +
-          '<div class="game-search-box">' +
-            '<svg class="game-search-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>' +
-            '<input type="text" id="input-game-title" maxlength="80" autocomplete="off" placeholder="Search for a game…" value="' + (existing ? esc(existing.title) : '') + '">' +
-            '<span class="search-loader hidden" id="game-search-loader" aria-hidden="true"></span>' +
-          '</div>' +
-          '<div class="game-suggestions hidden" id="game-suggestions" role="listbox" aria-label="Game suggestions"></div>' +
-          '<div class="selected-game-note hidden" id="selected-game-note"></div>' +
-        '</div>' +
-        '<div class="field">' +
-          '<label class="field-label">Platform</label>' +
-          '<select id="input-game-platform">' +
-            PLATFORMS.map(function(p) {
-              return '<option value="' + p.id + '"' + (p.id === selectedPlatform ? ' selected' : '') + '>' + p.label + '</option>';
-            }).join('') +
-          '</select>' +
-        '</div>' +
-        '<div class="field">' +
-          '<label class="field-label">Theme Color</label>' +
-          '<div class="color-picker" id="game-color-picker"></div>' +
-        '</div>' +
-      '</div>' +
-      '<div class="modal-foot">' +
-        '<button class="btn btn-ghost" id="modal-cancel-btn">Cancel</button>' +
-        '<button class="btn btn-primary" id="modal-save-btn">' + (existing ? 'Save Changes' : 'Add to Vault') + '</button>' +
-      '</div>' +
+    '<div class="modal-head">' +
+    '<div>' +
+    '<h3>' + (existing ? 'Edit Game' : 'Add Game to Vault') + '</h3>' +
+    '<div class="modal-subtitle">' + (existing ? 'Update this entry in your game library.' : 'Search the catalog or add a custom game.') + '</div>' +
+    '</div>' +
+    '<button class="modal-close" id="modal-close-btn" aria-label="Close">' +
+    '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>' +
+    '</button>' +
+    '</div>' +
+    '<div class="modal-body">' +
+    '<div class="field game-search-field">' +
+    '<label class="field-label" for="input-game-title">Game Title</label>' +
+    '<div class="game-search-box">' +
+    '<svg class="game-search-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>' +
+    '<input type="text" id="input-game-title" maxlength="80" autocomplete="off" placeholder="Search for a game…" value="' + (existing ? esc(existing.title) : '') + '">' +
+    '<span class="search-loader hidden" id="game-search-loader" aria-hidden="true"></span>' +
+    '</div>' +
+    '<div class="game-suggestions hidden" id="game-suggestions" role="listbox" aria-label="Game suggestions"></div>' +
+    '<div class="selected-game-note hidden" id="selected-game-note"></div>' +
+    '</div>' +
+    '<div class="field">' +
+    '<label class="field-label">Platform</label>' +
+    '<select id="input-game-platform">' +
+    PLATFORMS.map(function (p) {
+      return '<option value="' + p.id + '"' + (p.id === selectedPlatform ? ' selected' : '') + '>' + p.label + '</option>';
+    }).join('') +
+    '</select>' +
+    '</div>' +
+    '<div class="field">' +
+    '<label class="field-label">Theme Color</label>' +
+    '<div class="color-picker" id="game-color-picker"></div>' +
+    '</div>' +
+    '</div>' +
+    '<div class="modal-foot">' +
+    '<button class="btn btn-ghost" id="modal-cancel-btn">Cancel</button>' +
+    '<button class="btn btn-primary" id="modal-save-btn">' + (existing ? 'Save Changes' : 'Add to Vault') + '</button>' +
+    '</div>' +
     '</div>'
   );
 
   var colorPicker = overlay.querySelector('#game-color-picker');
   function drawColors() {
     colorPicker.innerHTML = '';
-    PROFILE_COLORS.forEach(function(c) {
+    PROFILE_COLORS.forEach(function (c) {
       var sw = document.createElement('button');
       sw.type = 'button';
       sw.className = 'swatch' + (c === selectedColor ? ' selected' : '');
       sw.style.background = c;
       sw.setAttribute('aria-label', 'Choose ' + c + '');
-      sw.addEventListener('click', function() {
+      sw.addEventListener('click', function () {
         selectedColor = c;
         drawColors();
       });
@@ -109,7 +109,7 @@ function showGameModal(existing, onSave) {
     if (t.indexOf(q) === 0) return 900 - Math.min(100, t.length - q.length);
     if (t.indexOf(q) !== -1) return 700 - t.indexOf(q);
     var tokens = q.split(/\s+/).filter(Boolean);
-    var matched = tokens.filter(function(token) { return t.indexOf(token) !== -1; }).length;
+    var matched = tokens.filter(function (token) { return t.indexOf(token) !== -1; }).length;
     if (matched) return 500 + (matched / tokens.length) * 100;
     // Small typo tolerance for short searches.
     var compactQ = q.replace(/[^a-z0-9]/g, '');
@@ -132,10 +132,10 @@ function showGameModal(existing, onSave) {
       suggestions.classList.add('hidden');
       return;
     }
-    var results = GAME_CATALOG.map(function(item) {
+    var results = GAME_CATALOG.map(function (item) {
       return { item: item, score: similarityScore(query, item.title) };
-    }).filter(function(x) { return x.score > 0; })
-      .sort(function(a, b) { return b.score - a.score; })
+    }).filter(function (x) { return x.score > 0; })
+      .sort(function (a, b) { return b.score - a.score; })
       .slice(0, 6);
 
     if (!results.length) {
@@ -144,7 +144,7 @@ function showGameModal(existing, onSave) {
       return;
     }
 
-    suggestions.innerHTML = results.map(function(result, index) {
+    suggestions.innerHTML = results.map(function (result, index) {
       var item = result.item;
       var plat = platformById(item.platform);
       var count = (item.achievements || []).length;
@@ -152,12 +152,12 @@ function showGameModal(existing, onSave) {
         '<span class="game-suggestion-art" style="background:' + esc(item.color || selectedColor) + '">' + esc(initials(item.title)) + '</span>' +
         '<span class="game-suggestion-copy"><strong>' + esc(item.title) + '</strong><span><i style="background:' + esc(plat.color) + '"></i>' + esc(plat.label) + (count ? ' · ' + count + ' trophies' : '') + '</span></span>' +
         '<span class="game-suggestion-arrow">↵</span>' +
-      '</button>';
+        '</button>';
     }).join('');
     suggestions.classList.remove('hidden');
 
-    suggestions.querySelectorAll('.game-suggestion').forEach(function(btn) {
-      btn.addEventListener('click', function() {
+    suggestions.querySelectorAll('.game-suggestion').forEach(function (btn) {
+      btn.addEventListener('click', function () {
         var result = results[Number(btn.getAttribute('data-index'))];
         if (!result) return;
         selectCatalogGame(result.item);
@@ -174,7 +174,7 @@ function showGameModal(existing, onSave) {
     suggestions.classList.add('hidden');
     loader.classList.remove('hidden');
     selectedNote.classList.add('hidden');
-    setTimeout(function() {
+    setTimeout(function () {
       loader.classList.add('hidden');
       var count = (item.achievements || []).length;
       selectedNote.innerHTML = '<span class="selected-game-check">✓</span><span><strong>Catalog game selected</strong><small>' + esc(platformById(item.platform).label) + (count ? ' · ' + count + ' trophies will be added' : '') + '</small></span>';
@@ -185,14 +185,14 @@ function showGameModal(existing, onSave) {
   overlay.querySelector('#modal-close-btn').addEventListener('click', closeModal);
   overlay.querySelector('#modal-cancel-btn').addEventListener('click', closeModal);
 
-  titleInput.addEventListener('input', function() {
+  titleInput.addEventListener('input', function () {
     if (selectedCatalog && titleInput.value.trim() !== selectedCatalog.title) clearSelectedCatalog();
     renderSuggestions(titleInput.value);
   });
-  titleInput.addEventListener('focus', function() {
+  titleInput.addEventListener('focus', function () {
     if (titleInput.value.trim()) renderSuggestions(titleInput.value);
   });
-  titleInput.addEventListener('keydown', function(e) {
+  titleInput.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') {
       suggestions.classList.add('hidden');
       return;
@@ -212,7 +212,7 @@ function showGameModal(existing, onSave) {
 
   titleInput.focus();
 
-  overlay.querySelector('#modal-save-btn').addEventListener('click', function() {
+  overlay.querySelector('#modal-save-btn').addEventListener('click', function () {
     var title = titleInput.value.trim();
     if (!title) {
       titleInput.focus();
@@ -238,60 +238,60 @@ function showAchvModal(existing, onSave) {
 
   var overlay = openModal(
     '<div class="modal">' +
-      '<div class="modal-head">' +
-        '<h3>' + (existing ? 'Edit Trophy' : 'Add New Trophy') + '</h3>' +
-        '<button class="modal-close" id="modal-close-btn" aria-label="Close">' +
-          '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>' +
-        '</button>' +
-      '</div>' +
-      '<div class="modal-body">' +
-        '<div class="field">' +
-          '<label class="field-label">Trophy Name</label>' +
-          '<input type="text" id="input-achv-name" maxlength="80" placeholder="e.g. It can\'t be for nothing" value="' + (existing ? esc(existing.name) : '') + '">' +
-        '</div>' +
-        '<div class="field">' +
-          '<label class="field-label">Description / Requirement</label>' +
-          '<textarea id="input-achv-desc" maxlength="240" placeholder="What is required to earn this trophy?">' + (existing ? esc(existing.description || '') : '') + '</textarea>' +
-        '</div>' +
-        '<div class="field">' +
-          '<label class="field-label">Unlock Guide / Strategy (Optional)</label>' +
-          '<textarea id="input-achv-guide" maxlength="400" placeholder="Step-by-step tips or chapter locations">' + (existing ? esc(existing.guide || '') : '') + '</textarea>' +
-        '</div>' +
-        '<div class="field">' +
-          '<label class="field-label">Trophy Tier</label>' +
-          '<div class="tier-select" id="tier-select"></div>' +
-        '</div>' +
-        '<div class="field">' +
-          '<label class="field-label">Category Tag</label>' +
-          '<select id="input-achv-tag">' +
-            TAG_OPTIONS.map(function(t) {
-              return '<option value="' + t + '"' + (t === selectedTag ? ' selected' : '') + '>' + t + '</option>';
-            }).join('') +
-          '</select>' +
-        '</div>' +
-        '<div class="field" style="margin-bottom:0;">' +
-          '<label style="display:flex; align-items:center; gap:10px; cursor:pointer;">' +
-            '<input type="checkbox" id="input-achv-unlocked" style="width:auto;" ' + (existing && existing.unlocked ? 'checked' : '') + '>' +
-            '<span style="font-size:14px; font-weight:600;">Mark as already unlocked</span>' +
-          '</label>' +
-        '</div>' +
-      '</div>' +
-      '<div class="modal-foot">' +
-        '<button class="btn btn-ghost" id="modal-cancel-btn">Cancel</button>' +
-        '<button class="btn btn-primary" id="modal-save-btn">' + (existing ? 'Save Changes' : 'Add Trophy') + '</button>' +
-      '</div>' +
+    '<div class="modal-head">' +
+    '<h3>' + (existing ? 'Edit Trophy' : 'Add New Trophy') + '</h3>' +
+    '<button class="modal-close" id="modal-close-btn" aria-label="Close">' +
+    '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>' +
+    '</button>' +
+    '</div>' +
+    '<div class="modal-body">' +
+    '<div class="field">' +
+    '<label class="field-label">Trophy Name</label>' +
+    '<input type="text" id="input-achv-name" maxlength="80" placeholder="e.g. It can\'t be for nothing" value="' + (existing ? esc(existing.name) : '') + '">' +
+    '</div>' +
+    '<div class="field">' +
+    '<label class="field-label">Description / Requirement</label>' +
+    '<textarea id="input-achv-desc" maxlength="240" placeholder="What is required to earn this trophy?">' + (existing ? esc(existing.description || '') : '') + '</textarea>' +
+    '</div>' +
+    '<div class="field">' +
+    '<label class="field-label">Unlock Guide / Strategy (Optional)</label>' +
+    '<textarea id="input-achv-guide" maxlength="400" placeholder="Step-by-step tips or chapter locations">' + (existing ? esc(existing.guide || '') : '') + '</textarea>' +
+    '</div>' +
+    '<div class="field">' +
+    '<label class="field-label">Trophy Tier</label>' +
+    '<div class="tier-select" id="tier-select"></div>' +
+    '</div>' +
+    '<div class="field">' +
+    '<label class="field-label">Category Tag</label>' +
+    '<select id="input-achv-tag">' +
+    TAG_OPTIONS.map(function (t) {
+      return '<option value="' + t + '"' + (t === selectedTag ? ' selected' : '') + '>' + t + '</option>';
+    }).join('') +
+    '</select>' +
+    '</div>' +
+    '<div class="field" style="margin-bottom:0;">' +
+    '<label style="display:flex; align-items:center; gap:10px; cursor:pointer;">' +
+    '<input type="checkbox" id="input-achv-unlocked" style="width:auto;" ' + (existing && existing.unlocked ? 'checked' : '') + '>' +
+    '<span style="font-size:14px; font-weight:600;">Mark as already unlocked</span>' +
+    '</label>' +
+    '</div>' +
+    '</div>' +
+    '<div class="modal-foot">' +
+    '<button class="btn btn-ghost" id="modal-cancel-btn">Cancel</button>' +
+    '<button class="btn btn-primary" id="modal-save-btn">' + (existing ? 'Save Changes' : 'Add Trophy') + '</button>' +
+    '</div>' +
     '</div>'
   );
 
   var tierSelect = overlay.querySelector('#tier-select');
   function drawTiers() {
     tierSelect.innerHTML = '';
-    TIERS.forEach(function(t) {
+    TIERS.forEach(function (t) {
       var opt = document.createElement('div');
       opt.className = 'tier-opt' + (t.id === selectedTier ? ' selected' : '');
       opt.style.color = t.color;
       opt.innerHTML = tierSvg(t.id) + '<span>' + t.label + '</span>';
-      opt.addEventListener('click', function() {
+      opt.addEventListener('click', function () {
         selectedTier = t.id;
         drawTiers();
       });
@@ -306,7 +306,7 @@ function showAchvModal(existing, onSave) {
   var nameInput = overlay.querySelector('#input-achv-name');
   nameInput.focus();
 
-  overlay.querySelector('#modal-save-btn').addEventListener('click', function() {
+  overlay.querySelector('#modal-save-btn').addEventListener('click', function () {
     var name = nameInput.value.trim();
     if (!name) {
       nameInput.focus();
@@ -334,58 +334,58 @@ function showAchvModal(existing, onSave) {
 function showCatalogModal(onSelectGame) {
   var catalogList = typeof GAME_CATALOG !== 'undefined' ? GAME_CATALOG : [];
 
-  var cardsHtml = catalogList.map(function(item) {
+  var cardsHtml = catalogList.map(function (item) {
     var plat = platformById(item.platform);
     var achvCount = (item.achievements || []).length;
     var rm = item.roadmap || {};
 
     return '<div class="catalog-card" data-cat-id="' + item.id + '">' +
       '<div class="catalog-card-head">' +
-        '<div>' +
-          '<div class="catalog-title">' +
-            esc(item.title) +
-          '</div>' +
-          '<span class="platform-tag"><span class="platform-dot" style="background:' + plat.color + '"></span>' + plat.label + '</span>' +
-        '</div>' +
-        '<button class="btn btn-primary btn-sm btn-import-cat" data-id="' + item.id + '">' +
-          '+ Add to Vault' +
-        '</button>' +
+      '<div>' +
+      '<div class="catalog-title">' +
+      esc(item.title) +
+      '</div>' +
+      '<span class="platform-tag"><span class="platform-dot" style="background:' + plat.color + '"></span>' + plat.label + '</span>' +
+      '</div>' +
+      '<button class="btn btn-primary btn-sm btn-import-cat" data-id="' + item.id + '">' +
+      '+ Add to Vault' +
+      '</button>' +
       '</div>' +
       '<div class="catalog-stats-row">' +
-        '<span><b>' + achvCount + '</b> Trophies</span>' +
-        (rm.difficulty ? '<span>Difficulty: <b>' + rm.difficulty + '</b></span>' : '') +
-        (rm.time ? '<span>Time: <b>' + rm.time + '</b></span>' : '') +
-        (rm.playthroughs ? '<span><b>' + rm.playthroughs + '</b></span>' : '') +
+      '<span><b>' + achvCount + '</b> Trophies</span>' +
+      (rm.difficulty ? '<span>Difficulty: <b>' + rm.difficulty + '</b></span>' : '') +
+      (rm.time ? '<span>Time: <b>' + rm.time + '</b></span>' : '') +
+      (rm.playthroughs ? '<span><b>' + rm.playthroughs + '</b></span>' : '') +
       '</div>' +
       (rm.summary ? '<div class="catalog-desc">' + esc(rm.summary) + '</div>' : '') +
-    '</div>';
+      '</div>';
   }).join('');
 
   var overlay = openModal(
     '<div class="modal" style="max-width:560px;">' +
-      '<div class="modal-head">' +
-        '<div>' +
-          '<h3>Trophy Guide Catalog</h3>' +
-          '<div style="font-size:12px; color:var(--text-muted); margin-top:2px;">Starter roadmap checklists in the style of PlatGet &amp; PlayStationTrophies</div>' +
-        '</div>' +
-        '<button class="modal-close" id="modal-close-btn" aria-label="Close">' +
-          '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>' +
-        '</button>' +
-      '</div>' +
-      '<div class="modal-body">' +
-        '<div class="catalog-list">' + cardsHtml + '</div>' +
-      '</div>' +
-      '<div class="modal-foot">' +
-        '<button class="btn btn-ghost" id="modal-cancel-btn">Close</button>' +
-      '</div>' +
+    '<div class="modal-head">' +
+    '<div>' +
+    '<h3>Trophy Guide Catalog</h3>' +
+    '<div style="font-size:12px; color:var(--text-muted); margin-top:2px;">Starter roadmap checklists in the style of PlatGet &amp; PlayStationTrophies</div>' +
+    '</div>' +
+    '<button class="modal-close" id="modal-close-btn" aria-label="Close">' +
+    '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>' +
+    '</button>' +
+    '</div>' +
+    '<div class="modal-body">' +
+    '<div class="catalog-list">' + cardsHtml + '</div>' +
+    '</div>' +
+    '<div class="modal-foot">' +
+    '<button class="btn btn-ghost" id="modal-cancel-btn">Close</button>' +
+    '</div>' +
     '</div>'
   );
 
   overlay.querySelector('#modal-close-btn').addEventListener('click', closeModal);
   overlay.querySelector('#modal-cancel-btn').addEventListener('click', closeModal);
 
-  overlay.querySelectorAll('.btn-import-cat').forEach(function(btn) {
-    btn.addEventListener('click', function(e) {
+  overlay.querySelectorAll('.btn-import-cat').forEach(function (btn) {
+    btn.addEventListener('click', function (e) {
       e.stopPropagation();
       var id = btn.getAttribute('data-id');
       var chosen = getCatalogGame(id);

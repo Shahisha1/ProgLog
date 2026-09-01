@@ -1,5 +1,5 @@
 // Dashboard controller
-(function() {
+(function () {
   'use strict';
 
   var state = {
@@ -33,7 +33,7 @@
 
     // check if there is an active session
     var last = getLastUser();
-    if (last && state.profiles.some(function(p) { return p.username === last; })) {
+    if (last && state.profiles.some(function (p) { return p.username === last; })) {
       var data = getCabinetData(last);
       if (data) {
         state.currentUser = last;
@@ -85,11 +85,11 @@
     var wrap = document.getElementById('color-swatches');
     if (!wrap) return;
     wrap.innerHTML = '';
-    PROFILE_COLORS.forEach(function(c) {
+    PROFILE_COLORS.forEach(function (c) {
       var sw = document.createElement('div');
       sw.className = 'swatch' + (c === state.newProfileColor ? ' selected' : '');
       sw.style.background = c;
-      sw.addEventListener('click', function() {
+      sw.addEventListener('click', function () {
         state.newProfileColor = c;
         updatePfpPreview();
         drawSwatches();
@@ -122,32 +122,32 @@
     }
     if (emptyNote) emptyNote.classList.add('hidden');
 
-    state.profiles.forEach(function(p) {
+    state.profiles.forEach(function (p) {
       var row = document.createElement('div');
       row.className = 'profile-row';
       row.innerHTML =
         '<button class="enter" data-u="' + esc(p.username) + '">' +
-          avatarHtml(p) +
-          '<div><div class="pname">' + esc(p.username) + '</div><div class="pmeta">Open Vault</div></div>' +
+        avatarHtml(p) +
+        '<div><div class="pname">' + esc(p.username) + '</div><div class="pmeta">Open Vault</div></div>' +
         '</button>' +
         '<button class="icon-btn danger" data-rm="' + esc(p.username) + '" title="Remove profile">' +
-          '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0l-1 14a2 2 0 01-2 2H7a2 2 0 01-2-2L4 6"/></svg>' +
+        '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0l-1 14a2 2 0 01-2 2H7a2 2 0 01-2-2L4 6"/></svg>' +
         '</button>';
       wrap.appendChild(row);
     });
 
-    wrap.querySelectorAll('button.enter').forEach(function(btn) {
-      btn.addEventListener('click', function() {
+    wrap.querySelectorAll('button.enter').forEach(function (btn) {
+      btn.addEventListener('click', function () {
         enterProfile(btn.getAttribute('data-u'));
       });
     });
 
-    wrap.querySelectorAll('button[data-rm]').forEach(function(btn) {
-      btn.addEventListener('click', function(e) {
+    wrap.querySelectorAll('button[data-rm]').forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
         e.stopPropagation();
         var name = btn.getAttribute('data-rm');
         if (confirm('Delete "' + name + '" and everything in their vault? This cannot be undone.')) {
-          state.profiles = state.profiles.filter(function(p) { return p.username !== name; });
+          state.profiles = state.profiles.filter(function (p) { return p.username !== name; });
           setProfiles(state.profiles);
           if (storageWorks) localStorage.removeItem('cabinet_data_' + name);
           drawProfiles();
@@ -159,7 +159,7 @@
   function enterProfile(username) {
     var cab = getCabinetData(username);
     if (!cab) {
-      var meta = state.profiles.filter(function(p) { return p.username === username; })[0];
+      var meta = state.profiles.filter(function (p) { return p.username === username; })[0];
       cab = {
         profile: meta || { username: username, color: PROFILE_COLORS[0], createdAt: Date.now() },
         games: []
@@ -175,10 +175,10 @@
     var sel = document.getElementById('filter-platform');
     if (!sel) return;
     var used = {};
-    (state.cabinet.games || []).forEach(function(g) { used[g.platform] = true; });
+    (state.cabinet.games || []).forEach(function (g) { used[g.platform] = true; });
 
     sel.innerHTML = '<option value="all">All Platforms</option>' +
-      PLATFORMS.filter(function(p) { return used[p.id]; }).map(function(p) {
+      PLATFORMS.filter(function (p) { return used[p.id]; }).map(function (p) {
         return '<option value="' + p.id + '">' + p.label + '</option>';
       }).join('');
     sel.value = state.platformFilter;
@@ -212,20 +212,20 @@
 
     if (state.search.trim()) {
       var q = state.search.trim().toLowerCase();
-      list = list.filter(function(g) { return g.title.toLowerCase().indexOf(q) !== -1; });
+      list = list.filter(function (g) { return g.title.toLowerCase().indexOf(q) !== -1; });
     }
     if (state.platformFilter !== 'all') {
-      list = list.filter(function(g) { return g.platform === state.platformFilter; });
+      list = list.filter(function (g) { return g.platform === state.platformFilter; });
     }
 
     if (state.sortBy === 'name') {
-      list.sort(function(a, b) { return a.title.localeCompare(b.title); });
+      list.sort(function (a, b) { return a.title.localeCompare(b.title); });
     } else if (state.sortBy === 'progress-desc') {
-      list.sort(function(a, b) { return gameProgress(b).pct - gameProgress(a).pct; });
+      list.sort(function (a, b) { return gameProgress(b).pct - gameProgress(a).pct; });
     } else if (state.sortBy === 'progress-asc') {
-      list.sort(function(a, b) { return gameProgress(a).pct - gameProgress(b).pct; });
+      list.sort(function (a, b) { return gameProgress(a).pct - gameProgress(b).pct; });
     } else {
-      list.sort(function(a, b) { return (b.createdAt || 0) - (a.createdAt || 0); });
+      list.sort(function (a, b) { return (b.createdAt || 0) - (a.createdAt || 0); });
     }
 
     var grid = document.getElementById('game-grid');
@@ -243,14 +243,14 @@
       return;
     }
 
-    grid.innerHTML = list.map(function(g) {
+    grid.innerHTML = list.map(function (g) {
       var prog = gameProgress(g);
       var plat = platformById(g.platform);
       var r = 24;
       var circumference = 2 * Math.PI * r;
       var offset = ringDashoffset(prog.pct, r);
       var tierCounts = { platinum: 0, gold: 0, silver: 0, bronze: 0 };
-      (g.achievements || []).forEach(function(a) {
+      (g.achievements || []).forEach(function (a) {
         if (a.unlocked && tierCounts[a.tier] !== undefined) tierCounts[a.tier]++;
       });
       var accessionNum = games.indexOf(g) + 1;
@@ -258,33 +258,33 @@
       return '<div class="game-card" data-id="' + g.id + '">' +
         '<div class="accession">No. ' + pad3(accessionNum) + '</div>' +
         '<div class="gc-top">' +
-          '<div class="medallion">' +
-            '<svg viewBox="0 0 58 58">' +
-              '<circle class="ring-bg" cx="29" cy="29" r="' + r + '"/>' +
-              '<circle class="ring-fg" cx="29" cy="29" r="' + r + '" stroke-dasharray="' + circumference + '" stroke-dashoffset="' + offset + '"/>' +
-            '</svg>' +
-            '<div class="pct">' + prog.pct + '%</div>' +
-          '</div>' +
-          '<div class="gc-title-wrap">' +
-            '<div class="gc-title" title="' + esc(g.title) + '">' + esc(g.title) + '</div>' +
-            '<div class="platform-tag"><span class="platform-dot" style="background:' + plat.color + '"></span>' + plat.label + '</div>' +
-          '</div>' +
+        '<div class="medallion">' +
+        '<svg viewBox="0 0 58 58">' +
+        '<circle class="ring-bg" cx="29" cy="29" r="' + r + '"/>' +
+        '<circle class="ring-fg" cx="29" cy="29" r="' + r + '" stroke-dasharray="' + circumference + '" stroke-dashoffset="' + offset + '"/>' +
+        '</svg>' +
+        '<div class="pct">' + prog.pct + '%</div>' +
+        '</div>' +
+        '<div class="gc-title-wrap">' +
+        '<div class="gc-title" title="' + esc(g.title) + '">' + esc(g.title) + '</div>' +
+        '<div class="platform-tag"><span class="platform-dot" style="background:' + plat.color + '"></span>' + plat.label + '</div>' +
+        '</div>' +
         '</div>' +
         '<div>' +
-          '<div class="gc-progress-text"><b>' + prog.unlocked + '</b> / ' + prog.total + ' unlocked (' + prog.points + ' pts)</div>' +
-          '<div class="gc-bar"><div class="gc-bar-fill" style="width:' + prog.pct + '%"></div></div>' +
+        '<div class="gc-progress-text"><b>' + prog.unlocked + '</b> / ' + prog.total + ' unlocked (' + prog.points + ' pts)</div>' +
+        '<div class="gc-bar"><div class="gc-bar-fill" style="width:' + prog.pct + '%"></div></div>' +
         '</div>' +
         '<div class="gc-tiers">' +
-          '<span>' + tierSvg('platinum') + ' ' + tierCounts.platinum + '</span>' +
-          '<span>' + tierSvg('gold') + ' ' + tierCounts.gold + '</span>' +
-          '<span>' + tierSvg('silver') + ' ' + tierCounts.silver + '</span>' +
-          '<span>' + tierSvg('bronze') + ' ' + tierCounts.bronze + '</span>' +
+        '<span>' + tierSvg('platinum') + ' ' + tierCounts.platinum + '</span>' +
+        '<span>' + tierSvg('gold') + ' ' + tierCounts.gold + '</span>' +
+        '<span>' + tierSvg('silver') + ' ' + tierCounts.silver + '</span>' +
+        '<span>' + tierSvg('bronze') + ' ' + tierCounts.bronze + '</span>' +
         '</div>' +
-      '</div>';
+        '</div>';
     }).join('');
 
-    grid.querySelectorAll('.game-card').forEach(function(card) {
-      card.addEventListener('click', function() {
+    grid.querySelectorAll('.game-card').forEach(function (card) {
+      card.addEventListener('click', function () {
         var id = card.getAttribute('data-id');
         window.pgGo('game', '#' + id);
       });
@@ -301,7 +301,7 @@
       color: catGame.color || PROFILE_COLORS[0],
       createdAt: Date.now(),
       roadmap: catGame.roadmap ? JSON.parse(JSON.stringify(catGame.roadmap)) : null,
-      achievements: (catGame.achievements || []).map(function(a) {
+      achievements: (catGame.achievements || []).map(function (a) {
         return {
           id: uid(),
           name: a.name,
@@ -324,7 +324,7 @@
   function bindEvents() {
     var pfpInput = document.getElementById('pfp-file-input');
     if (pfpInput) {
-      pfpInput.addEventListener('change', function(e) {
+      pfpInput.addEventListener('change', function (e) {
         var file = e.target.files && e.target.files[0];
         if (file) {
           if (file.size > 2 * 1024 * 1024) {
@@ -332,7 +332,7 @@
             return;
           }
           var reader = new FileReader();
-          reader.onload = function(evt) {
+          reader.onload = function (evt) {
             state.newProfileAvatar = evt.target.result;
             updatePfpPreview();
           };
@@ -343,21 +343,21 @@
 
     var nameInput = document.getElementById('new-profile-name');
     if (nameInput) {
-      nameInput.addEventListener('input', function() {
+      nameInput.addEventListener('input', function () {
         updatePfpPreview();
       });
     }
 
     var createBtn = document.getElementById('btn-create-profile');
     if (createBtn) {
-      createBtn.addEventListener('click', function() {
+      createBtn.addEventListener('click', function () {
         var input = document.getElementById('new-profile-name');
         var name = input.value.trim();
         if (!name) {
           input.focus();
           return;
         }
-        if (state.profiles.some(function(p) { return p.username.toLowerCase() === name.toLowerCase(); })) {
+        if (state.profiles.some(function (p) { return p.username.toLowerCase() === name.toLowerCase(); })) {
           toast('Profile name taken. Try another.');
           return;
         }
@@ -386,14 +386,14 @@
 
     var searchInput = document.getElementById('search-games');
     if (searchInput) {
-      searchInput.addEventListener('input', function(e) {
+      searchInput.addEventListener('input', function (e) {
         state.search = e.target.value;
         renderDashboard();
       });
     }
 
     // Keyboard shortcut: '/' focuses search
-    document.addEventListener('keydown', function(e) {
+    document.addEventListener('keydown', function (e) {
       if (e.key === '/' && document.activeElement !== searchInput && !document.querySelector('.modal-overlay')) {
         e.preventDefault();
         if (searchInput) searchInput.focus();
@@ -402,7 +402,7 @@
 
     var platFilter = document.getElementById('filter-platform');
     if (platFilter) {
-      platFilter.addEventListener('change', function(e) {
+      platFilter.addEventListener('change', function (e) {
         state.platformFilter = e.target.value;
         renderDashboard();
       });
@@ -410,14 +410,14 @@
 
     var sortSel = document.getElementById('sort-games');
     if (sortSel) {
-      sortSel.addEventListener('change', function(e) {
+      sortSel.addEventListener('change', function (e) {
         state.sortBy = e.target.value;
         renderDashboard();
       });
     }
 
     function onAddGameClick() {
-      showGameModal(null, function(formData) {
+      showGameModal(null, function (formData) {
         var catalog = formData.catalogGame;
         var newGame = {
           id: uid(),
@@ -454,5 +454,5 @@
   }
 
   // start
-  authReady().then(function() { init(); });
+  authReady().then(function () { init(); });
 })();

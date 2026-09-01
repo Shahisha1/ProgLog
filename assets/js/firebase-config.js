@@ -16,7 +16,7 @@
   if (typeof firebase === 'undefined' || typeof firebase.initializeApp !== 'function') {
     window.proglogFirebase = { auth: null, db: null, storage: null, ready: false };
     window.PROGLOG_FIREBASE_READY = false;
-    try { window.dispatchEvent(new CustomEvent('proglog:firebase-ready', { detail: { ready:false } })); } catch (e) {}
+    try { window.dispatchEvent(new CustomEvent('proglog:firebase-ready', { detail: { ready: false } })); } catch (e) { }
     return;
   }
 
@@ -27,19 +27,19 @@
     var db = firebase.firestore();
     var storage = firebase.storage();
 
-    auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(function () {});
+    auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(function () { });
     try {
       db.settings({ cacheSizeBytes: firebase.firestore.CACHE_SIZE_UNLIMITED });
-      db.enablePersistence().catch(function () {});
-    } catch (e) {}
+      db.enablePersistence().catch(function () { });
+    } catch (e) { }
 
     window.PROGLOG_FIREBASE = { auth: auth, db: db, storage: storage };
     window.proglogFirebase = { auth: auth, db: db, storage: storage, ready: true };
     window.PROGLOG_FIREBASE_READY = true;
-    try { window.dispatchEvent(new CustomEvent('proglog:firebase-ready', { detail: { ready:true } })); } catch (e) {}
+    try { window.dispatchEvent(new CustomEvent('proglog:firebase-ready', { detail: { ready: true } })); } catch (e) { }
   } catch (error) {
     window.proglogFirebase = { auth: null, db: null, storage: null, ready: false };
     window.PROGLOG_FIREBASE_READY = false;
-    try { window.dispatchEvent(new CustomEvent('proglog:firebase-ready', { detail: { ready:false } })); } catch (e) {}
+    try { window.dispatchEvent(new CustomEvent('proglog:firebase-ready', { detail: { ready: false } })); } catch (e) { }
   }
 })();

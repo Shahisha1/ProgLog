@@ -82,7 +82,7 @@ function getCurrentSession() {
   // Firebase is the source of truth whenever its Auth SDK is available.
   // Never treat a cached Firebase session as signed-in after a real sign-out.
   if (window.proglogFirebase && window.proglogFirebase.auth && !window.proglogFirebase.auth.currentUser) {
-    try { localStorage.removeItem('proglog_session'); localStorage.removeItem('cabinet_last_user'); } catch (e) {}
+    try { localStorage.removeItem('proglog_session'); localStorage.removeItem('cabinet_last_user'); } catch (e) { }
     return null;
   }
   try {
@@ -617,7 +617,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (session.setupComplete) {
           window.pgGo('overview');
         } else {
-          window.pgGo('auth','?mode=profile');
+          window.pgGo('auth', '?mode=profile');
         }
       }).catch(function (err) {
         toast('Sign in failed: ' + err.message);
@@ -632,7 +632,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (session.setupComplete) {
           window.pgGo('overview');
         } else {
-          window.pgGo('auth','?mode=profile');
+          window.pgGo('auth', '?mode=profile');
         }
       }).catch(function (err) {
         toast('Sign in failed: ' + err.message);

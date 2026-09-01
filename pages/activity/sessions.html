@@ -4,15 +4,15 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <link rel="icon" type="image/png" href="../../../assets/img/proglog-icon.png">
-  <link rel="apple-touch-icon" href="../../../assets/img/proglog-icon.png">
+  <link rel="icon" type="image/png" href="../../assets/img/proglog-icon.png">
+  <link rel="apple-touch-icon" href="../../assets/img/proglog-icon.png">
   <title>Sessions — Proglog</title>
-  <link rel="stylesheet" href="../../../assets/css/reset.css">
-  <link rel="stylesheet" href="../../../assets/css/vars.css">
-  <link rel="stylesheet" href="../../../assets/css/layout.css">
-  <link rel="stylesheet" href="../../../assets/css/components.css">
-  <link rel="stylesheet" href="../../../assets/css/ui-refresh.css">
-  <link rel="stylesheet" href="../../../assets/css/sidebar-refresh.css">
+  <link rel="stylesheet" href="../../assets/css/reset.css">
+  <link rel="stylesheet" href="../../assets/css/vars.css">
+  <link rel="stylesheet" href="../../assets/css/layout.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/ui-refresh.css">
+  <link rel="stylesheet" href="../../assets/css/sidebar-refresh.css">
   <style>
     .pg-page {
       max-width: 1400px;
@@ -179,18 +179,18 @@
       }
     }
   </style>
-  <link rel="stylesheet" href="../../../assets/css/brand-refresh.css">
+  <link rel="stylesheet" href="../../assets/css/brand-refresh.css">
 
-  <link rel="stylesheet" href="../../../assets/css/reliability.css">
-  <link rel="stylesheet" href="../../../assets/css/phase45.css">
-  <link rel="manifest" href="../../../manifest.webmanifest">
+  <link rel="stylesheet" href="../../assets/css/reliability.css">
+  <link rel="stylesheet" href="../../assets/css/phase45.css">
+  <link rel="manifest" href="../../manifest.webmanifest">
   <meta name="theme-color" content="#7126a6">
 </head>
 
 <body class="has-global-sidebar" data-page="sessions">
   <aside class="global-sidebar" aria-label="Primary navigation">
-    <a href="../core/overview.html" class="global-brand" aria-label="Proglog home"><img
-        class="global-brand-mark" src="../../../assets/img/proglog-logo.png" alt="Proglog logo"><span>proglog</span></a>
+    <a href="../core/overview.html" class="global-brand" aria-label="Proglog home"><img class="global-brand-mark"
+        src="../../assets/img/proglog-logo.png" alt="Proglog logo"><span>proglog</span></a>
     <nav class="global-nav">
       <a href="../core/overview.html" data-nav="overview"><span>⌂</span><b>Overview</b></a>
       <a href="../games/games.html" data-nav="games"><span>◈</span><b>Games</b></a>
@@ -249,30 +249,33 @@
   <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-storage-compat.js"></script>
-  <script src="../../../assets/js/firebase-config.js"></script>
-  <script src="../../../assets/js/firebase-client.js"></script>
-  <script src="../../../assets/js/data-schema.js"></script>
-  <script src="../../../assets/js/cloud-data.js"></script>
-  <script src="../../../assets/js/app-core.js"></script>
-  <script src="../../../assets/js/routes.js"></script>
-  <script src="../../../assets/js/store.js"></script>
-  <script src="../../../assets/js/theme.js"></script>
-  <script src="../../../assets/js/helpers.js"></script>
-  <script src="../../../assets/js/catalog.js"></script>
-  <script src="../../../assets/js/catalog-extra.js"></script>
-  <script src="../../../assets/js/showcase.js"></script>
+  <script src="../../assets/js/firebase-config.js"></script>
+  <script src="../../assets/js/firebase-client.js"></script>
+  <script src="../../assets/js/data-schema.js"></script>
+  <script src="../../assets/js/cloud-data.js"></script>
+  <script src="../../assets/js/app-core.js"></script>
+  <script src="../../assets/js/routes.js"></script>
+  <script src="../../assets/js/store.js"></script>
+  <script src="../../assets/js/theme.js"></script>
+  <script src="../../assets/js/helpers.js"></script>
+  <script src="../../assets/js/catalog.js"></script>
+  <script src="../../assets/js/catalog-extra.js"></script>
+  <script src="../../assets/js/showcase.js"></script>
   <script>
-  (function () { try { var u = getLastUser && getLastUser(); 
-  var c = u && getCabinetData ? getCabinetData(u) : null; 
-  var p = c && c.profile || {}; 
-  if (window.applyProglogTheme && p.color) window.applyProglogTheme(p.color); 
-  } catch (e) { } }) ()
-  ;
+    (function () {
+      try {
+        var u = getLastUser && getLastUser();
+        var c = u && getCabinetData ? getCabinetData(u) : null;
+        var p = c && c.profile || {};
+        if (window.applyProglogTheme && p.color) window.applyProglogTheme(p.color);
+      } catch (e) { }
+    })()
+      ;
   </script>
-  <script src="../../../assets/js/sessions.js"></script>
-  <script src="../../../assets/js/shell.js"></script>
-  <script src="../../../assets/js/boot-guard.js"></script>
-  <script src="../../../assets/js/phase45.js"></script>
+  <script src="../../assets/js/sessions.js"></script>
+  <script src="../../assets/js/shell.js"></script>
+  <script src="../../assets/js/boot-guard.js"></script>
+  <script src="../../assets/js/phase45.js"></script>
 </body>
 
 </html>
