@@ -74,3 +74,34 @@ The app is structured for GitHub Pages or any static hosting provider. Firebase 
 ## 💡 Why it stands out
 
 Proglog is designed to feel lightweight and personal while still supporting richer game-tracking workflows. Its structure keeps the app fast, easy to navigate, and flexible for future upgrades without requiring a heavy framework.
+
+## Community feeds
+
+The landing page now includes larger Reddit, YouTube, and Twitch sections with refresh controls.
+
+- Reddit: public `r/gaming` JSON feed.
+- YouTube: public channel RSS feeds aggregated without a browser API key.
+- Twitch: uses the Firebase Function `twitchStreams` so OAuth credentials never reach the browser.
+
+For Twitch, configure `TWITCH_CLIENT_ID` and `TWITCH_CLIENT_SECRET` as Firebase Functions environment variables/secrets before deployment. The frontend calls `/api/twitchStreams` automatically when deployed through Firebase Hosting.
+
+## Reliable external feeds
+
+ProgLog now uses Firebase Functions as a proxy for TheGamesDB, Reddit, and YouTube. This avoids common browser CORS/rate-limit failures and adds retries, timeouts, caching, and image fallbacks.
+
+For production Firebase deployment, configure the server-side TheGamesDB key and Twitch credentials:
+
+```bash
+firebase functions:secrets:set TheGamesDB_API_KEY
+firebase functions:secrets:set TWITCH_CLIENT_ID
+firebase functions:secrets:set TWITCH_CLIENT_SECRET
+firebase deploy --only functions,hosting
+```
+
+The browser retains the TheGamesDB key as a fallback for local/static hosting. For the most secure production setup, remove the fallback key from `assets/js/tgdb-config.js` after confirming the `/api/tgdb` function is deployed.
+
+
+## Game data sources
+- TheGamesDB: primary game metadata, artwork, platform and store information.
+- RAWG: achievements, screenshots and YouTube game videos/guides.
+- Configure `THEGAMESDB_API_KEY` and `RAWG_API_KEY` as Firebase Functions secrets before deployment.

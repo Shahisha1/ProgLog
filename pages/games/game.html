@@ -21,6 +21,7 @@
   <link rel="stylesheet" href="../../assets/css/phase45.css">
   <link rel="manifest" href="../../manifest.webmanifest">
   <meta name="theme-color" content="#7c5cff">
+  <link rel="stylesheet" href="../../assets/css/site-v3.css">
 </head>
 
 <body class="game-detail-page" data-page="games">
@@ -119,6 +120,7 @@
               <option value="tier">Tier: Platinum → Bronze</option>
               <option value="name">Name: A → Z</option>
             </select>
+            <button class="btn btn-ghost tgdb-import-btn" id="btn-import-rawg-achievements" type="button"> ↥ Import from RAWG</button>
             <button class="btn btn-primary bulk-trophy-btn" id="btn-mark-all" type="button">✓ Mark all unlocked</button>
             <button class="btn btn-ghost" id="btn-more-trophy-actions" type="button"
               aria-label="More trophy actions">⋮</button>
@@ -129,7 +131,7 @@
           <div id="catalog-source-note" class="catalog-source-note hidden"></div>
           <div id="achv-empty" class="empty-state hidden">
             <h3>No trophies found</h3>
-            <p>Add trophies manually or connect a platform account to sync the full list.</p>
+            <p>Import the game's achievement list from RAWG, or add trophies manually. TheGamesDB provides game metadata and artwork; RAWG provides achievements, screenshots, and YouTube videos.</p>
             <button class="btn btn-primary" id="btn-add-achievement-empty">+ Add Trophy</button>
           </div>
         </section>
@@ -145,6 +147,20 @@
               <h3>Game notes</h3><span>Auto-saved locally</span>
             </div><textarea id="game-notes-input" class="notes-box"
               placeholder="Add notes, routes, collectibles, or reminders..."></textarea>
+          </div>
+          <div class="tgdb-media-card">
+            <div class="tgdb-section-head">
+              <h3>Community video guides</h3>
+              <span>RAWG + YouTube</span>
+            </div>
+            <div id="tgdb-youtube" class="tgdb-video-grid"></div>
+          </div>
+          <div class="tgdb-media-card" style="margin-top:18px;">
+            <div class="tgdb-section-head">
+              <h3>Game screenshots</h3>
+              <span>RAWG</span>
+            </div>
+            <div id="tgdb-screenshots" class="tgdb-video-grid"></div>
           </div>
         </section>
         <section id="game-panel-stats" class="game-tab-panel hidden">
@@ -186,6 +202,10 @@
   <script src="../../assets/js/auth-firebase.js"></script>
   <script src="../../assets/js/catalog.js"></script>
   <script src="../../assets/js/catalog-extra.js"></script>
+  <script src="../../assets/js/tgdb-config.js"></script>
+  <script src="../../assets/js/tgdb-client.js"></script>
+  <script src="../../assets/js/rawg-config.js"></script>
+  <script src="../../assets/js/rawg-client.js"></script>
   <script src="../../assets/js/game-details.js"></script>
   <script src="../../assets/js/trophy-sources.js"></script>
   <script src="../../assets/js/modals.js"></script>

@@ -260,6 +260,86 @@
     gap: 18px
 }
 
+.tgdb-media-card {
+    margin-top: 22px;
+    background: #fff;
+    border: 1px solid #dfe7e2;
+    border-radius: 16px;
+    padding: 18px 18px 14px;
+    box-shadow: 0 12px 28px rgba(16, 24, 20, 0.04);
+}
+
+.tgdb-section-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.tgdb-section-head h3 {
+    margin: 0;
+    font-size: 18px;
+    letter-spacing: -.02em;
+}
+
+.tgdb-section-head span {
+    color: #5b7269;
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.tgdb-video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+}
+
+.tgdb-video-card {
+    display: block;
+    border: 1px solid #deece4;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #f8fbfa;
+    color: inherit;
+    text-decoration: none;
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+
+.tgdb-video-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(17, 98, 70, 0.3);
+    box-shadow: 0 16px 22px rgba(17, 98, 70, 0.09);
+}
+
+.tgdb-video-card img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    background: #ddeae4;
+}
+
+.tgdb-video-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px 12px 14px;
+}
+
+.tgdb-video-meta strong {
+    font-size: 14px;
+    line-height: 1.35;
+    color: #16201d;
+}
+
+.tgdb-video-meta small {
+    font-size: 11.5px;
+    color: #5f726b;
+}
+
 .game-meta-grid div {
     display: flex;
     flex-direction: column;
@@ -1107,4 +1187,87 @@
     .catalog-preview-notice strong {
         white-space: normal
     }
+}
+/* ================================================================
+   Shared Proglog visual system
+   The original game screen used a separate green/dark shell. These
+   overrides bring it back into the same purple/light visual language.
+   ================================================================ */
+.game-detail-page {
+    background: var(--bg-main) !important;
+    color: var(--text-main) !important;
+}
+.game-shell { background: var(--bg-main); }
+.game-sidebar {
+    width: 238px;
+    flex-basis: 238px;
+    background: var(--bg-card);
+    color: var(--text-main);
+    border-right: 1px solid var(--line);
+    box-shadow: 4px 0 20px rgba(57,28,76,.035);
+}
+.game-brand { color: var(--text-main); padding-bottom: 30px; }
+.game-brand svg { fill: var(--brand-primary); }
+.game-side-link { color: var(--text-dim); border: 1px solid transparent; }
+.game-side-link:hover { background: var(--brand-soft); color: var(--brand-primary); }
+.game-side-link.active { background: var(--brand-soft); color: var(--brand-primary); border-color: var(--brand-border); }
+.game-side-divider { background: var(--line); }
+.game-side-user { border-top-color: var(--line); color: var(--text-main); }
+.game-side-user-copy small { color: var(--text-muted); }
+.game-topbar { background: rgba(255,255,255,.9); border-bottom-color: var(--line); backdrop-filter: blur(14px); }
+.round-back { border-color: var(--line-strong); color: var(--text-main); }
+.top-icon { color: var(--text-dim); }
+.game-content { max-width: 1320px; padding: 30px 34px 64px; }
+.back-games { color: var(--brand-primary); }
+.game-hero-card { gap: 28px; }
+.game-cover-art { border-radius: var(--radius-lg); box-shadow: var(--shadow); }
+.game-hero-copy h1 { color: var(--text-main); letter-spacing: -.035em; }
+.game-tags .game-pill { background: var(--brand-soft); border-color: var(--brand-border); color: var(--brand-primary); }
+.game-summary-card, .game-hero-copy, .game-panel, .game-tabs, .game-tab-panel, .info-card, .panel-placeholder, .achievement-source, .catalog-preview-notice {
+    border-color: var(--line) !important;
+}
+.game-summary-card, .game-panel, .game-tab-panel, .info-card, .panel-placeholder { background: var(--bg-card) !important; }
+.game-tabs { background: var(--bg-card); border-radius: var(--radius) var(--radius) 0 0; overflow: hidden; }
+.game-tab { color: var(--text-muted); border-color: transparent; }
+.game-tab:hover { color: var(--brand-primary); background: var(--brand-soft); }
+.game-tab.active { color: var(--brand-primary); border-bottom-color: var(--brand-primary); }
+.progress-track { background: var(--bg-surface); }
+.progress-track > span { background: var(--brand-primary) !important; }
+.tgdb-media-card { margin-top: 18px; padding: 20px; background: var(--bg-card); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-sm); }
+.tgdb-section-head { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:14px; }
+.tgdb-section-head h3 { margin:0; font-size:16px; }
+.tgdb-section-head span { font-size:11px; font-weight:800; color:var(--brand-primary); background:var(--brand-soft); border:1px solid var(--brand-border); padding:5px 8px; border-radius:999px; }
+.tgdb-video-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
+.tgdb-video-card { display:block; border:1px solid var(--line); border-radius:12px; overflow:hidden; background:var(--bg-surface); color:var(--text-main); text-decoration:none; transition:.18s ease; }
+.tgdb-video-card:hover { transform:translateY(-2px); border-color:var(--brand-border); box-shadow:var(--shadow-sm); }
+.tgdb-video-card img { width:100%; aspect-ratio:16/9; object-fit:cover; display:block; }
+.tgdb-video-meta { display:flex; flex-direction:column; gap:4px; padding:11px 12px 13px; }
+.tgdb-video-meta strong { font-size:12px; line-height:1.35; }
+.tgdb-video-meta small { color:var(--text-muted); font-size:10px; }
+.game-footer-actions { padding-top:8px; }
+@media (max-width: 900px) { .tgdb-video-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width: 520px) { .game-content { padding:22px 16px 70px; } .tgdb-video-grid { grid-template-columns:1fr; } }
+
+/* TheGamesDB achievement import */
+.tgdb-import-btn {
+  white-space: nowrap;
+}
+.tgdb-import-btn:disabled {
+  opacity: .65;
+  cursor: wait;
+}
+.game-achv-list .achv-image {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  border-radius: 10px;
+  object-fit: cover;
+  background: rgba(113,38,166,.08);
+  border: 1px solid rgba(113,38,166,.12);
+}
+.game-achv-list .achv-top-line {
+  align-items: center;
+}
+@media (max-width: 720px) {
+  .tgdb-import-btn { order: 4; width: 100%; }
 }

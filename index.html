@@ -18,13 +18,15 @@
   <link rel="stylesheet" href="assets/css/phase45.css">
   <link rel="manifest" href="./manifest.webmanifest">
   <meta name="theme-color" content="#7126a6">
+  <link rel="stylesheet" href="assets/css/site-v3.css">
 </head>
 
 <body>
 
   <div id="page-landing">
     <header id="site-nav">
-      <div style="display:flex; align-items:center; gap:28px;">
+      <div class="landing-nav-inner">
+      <div class="landing-nav-left">
         <a href="./" class="brand">
           <img class="brandmark" src="assets/img/proglog-logo.png" alt="Proglog logo">
           <span>Prog<span class="accent">log</span></span>
@@ -36,29 +38,35 @@
         </div>
       </div>
 
-      <nav style="display:flex; align-items:center; gap:14px;">
-        <a href="#faq" style="font-size:13.5px; font-weight:600; color:var(--text-muted);">FAQ</a>
-        <a href="#request-guide" style="font-size:13.5px; font-weight:600; color:var(--text-muted);">Request Guide</a>
-        <a href="pages/core/auth.html" class="btn btn-ghost btn-sm">Sign In</a>
+      <nav class="landing-nav-actions">
+        <a href="#faq">FAQ</a>
+        <a href="#community-feed">Community</a>
+        <a href="pages/core/auth.html" class="nav-signin">Sign In</a>
         <a href="pages/core/overview.html" class="btn btn-primary btn-sm">Open Proglog</a>
       </nav>
+      </div>
     </header>
 
     <section class="hero">
-      <div class="wrap">
-        <div class="hero-mark hero-logo-mark">
-          <img src="assets/img/proglog-logo.png" alt="Proglog controller logo">
-        </div>
-        <h1>Track Every Trophy. Master Every Game.</h1>
-        <p class="lede">Keep your games, trophies, progress, and notes together in one place.</p>
+      <div class="wrap hero-layout">
+        <div class="hero-copy">
+          <div class="eyebrow hero-kicker">◉ Welcome to ProgLog</div>
+          <h1>Track. Play.<br><span>Conquer.</span></h1>
+          <p class="lede">Your all-in-one platform to track games, earn trophies, connect with gamers, and stay updated with the gaming world.</p>
 
-        <div class="hero-actions">
-          <a href="pages/core/overview.html" class="btn btn-primary btn-lg">Open Your Vault</a>
-          <a href="pages/games/games.html" class="btn btn-ghost btn-lg">Browse Guides</a>
+          <div class="hero-actions">
+            <a href="pages/core/overview.html" class="btn btn-primary btn-lg">Explore Games</a>
+            <a href="pages/core/auth.html" class="btn btn-ghost btn-lg">Join Community</a>
+          </div>
+
+          <div class="mini-proof-row">
+            <div><strong>100%</strong><span>Vault views</span></div>
+            <div><strong>4</strong><span>Trophy tiers</span></div>
+            <div><strong>∞</strong><span>Games tracked</span></div>
+          </div>
         </div>
 
-        <!-- Interactive Hero Showcase -->
-        <div class="hero-showcase">
+        <div class="hero-showcase hero-spotlight">
           <div class="showcase-header">
             <div>
               <div class="showcase-platform">PlayStation</div>
@@ -86,6 +94,11 @@
             <span>🥈 7 Silver</span>
             <span>🥉 14 Bronze</span>
           </div>
+          <div class="hero-list-preview">
+            <div><span>Vault</span><strong>24 games</strong></div>
+            <div><span>Unlocked</span><strong>412 trophies</strong></div>
+            <div><span>Progress</span><strong>78.4%</strong></div>
+          </div>
         </div>
       </div>
     </section>
@@ -100,28 +113,76 @@
     <!-- Features Grid -->
     <section class="feat-section" id="features">
       <div class="wrap">
-        <div class="feat-head">
-          <h2>Everything You Need For The Platinum Journey</h2>
+        <div class="feat-head landing-section-head">
+          <div class="eyebrow">Built for completionists</div>
+          <h2>Why Gamers Choose ProgLog</h2>
+          <p>Everything you need to turn a scattered backlog into a clear, rewarding gaming journey.</p>
         </div>
         <div class="feat-grid">
           <div class="feat-card">
-            <div class="num">01 / UNIVERSAL SHELF</div>
-            <h3>Multi-Platform Tracking</h3>
-            <p>Organize games from PlayStation, Steam, Xbox, Nintendo, or PC into one unified, elegant showcase. No
-              third-party API lock-in.</p>
+            <div class="feature-icon">⌘</div>
+            <div class="num">01</div>
+            <h3>Track Everything</h3>
+            <p>Track your games, trophies, progress, sessions, and completion all in one place.</p>
           </div>
           <div class="feat-card">
-            <div class="num">02 / ROADMAPS &amp; GUIDES</div>
-            <h3>PlatGet &amp; Guide Integration</h3>
-            <p>Each game includes difficulty ratings, estimated completion hours, missable trophy warnings, and
-              step-by-step walkthrough notes.</p>
+            <div class="feature-icon">◈</div>
+            <div class="num">02</div>
+            <h3>Discover Games</h3>
+            <p>Explore new games, view details, guides, reviews, videos, and community opinions.</p>
           </div>
           <div class="feat-card">
-            <div class="num">03 / HUNTER RANK &amp; SHOWCASE</div>
-            <h3>Hunter Rank &amp; XP System</h3>
-            <p>Level up from Novice to Mythic Legend, showcase all earned Platinum trophies in your cabinet, and export
-              complete JSON backups.</p>
+            <div class="feature-icon">▶</div>
+            <div class="num">03</div>
+            <h3>Stay Updated</h3>
+            <p>Get the latest gaming news, Reddit posts, Twitch streams, and YouTube videos.</p>
           </div>
+          <div class="feat-card">
+            <div class="feature-icon">♧</div>
+            <div class="num">04</div>
+            <h3>Connect</h3>
+            <p>Build your profile, showcase achievements, and connect with gamers worldwide.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Community Feed -->
+    <section class="community-section" id="community-feed">
+      <div class="wrap community-wrap">
+        <div class="community-head">
+          <div>
+            <div class="eyebrow">Live gaming pulse</div>
+            <h2>What the gaming community is talking about</h2>
+            <p>Fresh posts, videos, and live streams in one clean dashboard.</p>
+          </div>
+          <a href="pages/games/games.html" class="btn btn-ghost btn-sm">Explore your catalog →</a>
+        </div>
+
+        <div class="community-grid">
+          <article class="community-panel community-reddit">
+            <div class="community-panel-head">
+              <div><span class="community-icon">R</span><div><h3>Reddit</h3><p>Latest from r/gaming</p></div></div>
+              <div class="feed-head-actions"><span id="reddit-feed-status" class="feed-status">Loading</span><button class="feed-refresh" type="button" data-feed-refresh="reddit" aria-label="Refresh Reddit feed">↻</button></div>
+            </div>
+            <div id="community-reddit-list" class="community-feed-list"></div>
+          </article>
+
+          <article class="community-panel community-twitch">
+            <div class="community-panel-head">
+              <div><span class="community-icon">T</span><div><h3>Twitch</h3><p>Live gaming streams</p></div></div>
+              <div class="feed-head-actions"><span id="twitch-feed-status" class="feed-status">Loading</span><button class="feed-refresh" type="button" data-feed-refresh="twitch" aria-label="Refresh Twitch feed">↻</button></div>
+            </div>
+            <div id="community-twitch-list" class="community-feed-list"></div>
+          </article>
+
+          <article class="community-panel community-youtube">
+            <div class="community-panel-head">
+              <div><span class="community-icon">▶</span><div><h3>YouTube</h3><p>Latest gaming videos</p></div></div>
+              <div class="feed-head-actions"><span id="youtube-feed-status" class="feed-status">Loading</span><button class="feed-refresh" type="button" data-feed-refresh="youtube" aria-label="Refresh YouTube feed">↻</button></div>
+            </div>
+            <div id="community-youtube-list" class="community-feed-list"></div>
+          </article>
         </div>
       </div>
     </section>
@@ -280,6 +341,8 @@
     });
   </script>
 
+  <script src="assets/js/content-feeds-config.js"></script>
+  <script src="assets/js/content-feeds.js"></script>
   <script src="assets/js/theme.js"></script>
   <script src="assets/js/boot-guard.js"></script>
   <script src="./assets/js/phase45.js"></script>

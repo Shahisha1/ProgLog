@@ -15,10 +15,11 @@
     var gameId = decodeURIComponent(rawHash.replace(/^#\/?/, '').trim());
     if (!gameId) { window.pgGo('games'); return; }
 
-    currentUser = getLastUser();
-    if (!currentUser) { window.pgGo('auth'); return; }
-    cabinet = getCabinetData(currentUser);
-    if (!cabinet || !cabinet.games) { window.pgGo('overview'); return; }
+    currentUser = getLastUser() || 'guest';
+    var existingCabinet = currentUser && currentUser !== 'guest' ? getCabinetData(currentUser) : null;
+    cabinet = existingCabinet || { profile: { username: 'Guest', color: PROFILE_COLORS[0] }, games: [] };
+    if (!cabinet.games) cabinet.games = [];
+    if (!cabinet.profile) cabinet.profile = { username: currentUser === 'guest' ? 'Guest' : currentUser, color: PROFILE_COLORS[0] };
 
     game = cabinet.games.filter(function (g) { return g.id === gameId; })[0];
     var catalogGame = (typeof getCatalogGame === 'function') ? getCatalogGame(gameId) : null;
@@ -39,14 +40,14 @@
     searchQuery = '';
     sortMode = 'default';
 
-    var p = cabinet.profile || { username: currentUser, color: PROFILE_COLORS[0] };
+    var p = cabinet.profile || { username: currentUser === 'guest' ? 'Guest' : currentUser, color: PROFILE_COLORS[0] };
     var avatar = avatarHtml(p);
     var topAvatar = document.getElementById('topbar-avatar-slot');
     var sideAvatar = document.getElementById('side-avatar-slot');
     if (topAvatar) topAvatar.innerHTML = avatar;
     if (sideAvatar) sideAvatar.innerHTML = avatarHtml(p, 'avatar-sm');
     var sideName = document.getElementById('side-user-name');
-    if (sideName) sideName.textContent = p.username || currentUser;
+    if (sideName) sideName.textContent = p.username || (currentUser === 'guest' ? 'Guest' : currentUser);
 
     var notes = document.getElementById('game-notes-input');
     if (notes) notes.value = game.notes || '';
@@ -58,7 +59,7 @@
   }
 
   function save() {
-    if (currentUser && cabinet) setCabinetData(currentUser, cabinet);
+    if (currentUser && currentUser !== 'guest' && cabinet) setCabinetData(currentUser, cabinet);
   }
 
   function catalogTotal() {
@@ -67,60 +68,66 @@
     return Number((d && d.counts && d.counts.total) || game.totalTrophies || 0);
   }
 
+  function makeCoverFallback() {
+    var cover = document.getElementById('game-cover-art');
+    if (!cover || !game) return;
+    cover.style.setProperty('background-image', 'linear-gradient(145deg,' + darken(game.color || '#7126a6', 0.55) + ',#1b1025 55%,' + (game.color || '#7126a6') + ')', 'important');
+    cover.style.backgroundSize = 'cover'; cover.style.backgroundPosition = 'center';
+    cover.dataset.imageState = 'fallback';
+    var title = cover.querySelector('.cover-title');
+    if (!title) { title=document.createElement('div'); title.className='cover-title'; cover.appendChild(title); }
+    title.textContent = game.title || 'Game';
+  }
+  function applyCoverImage(imageUrl) {
+    var cover = document.getElementById('game-cover-art');
+    if (!cover || !imageUrl) return;
+    var url = String(imageUrl);
+    var img = new Image();
+    img.onload = function () {
+      cover.style.setProperty('background-image', 'url("' + url.replace(/"/g, '%22') + '")', 'important');
+      cover.style.backgroundSize='cover'; cover.style.backgroundPosition='center'; cover.style.backgroundAttachment='scroll';
+      cover.dataset.imageState='loaded'; cover.dataset.tgdbImage=url;
+      var title=cover.querySelector('.cover-title');
+      if (!title) { title=document.createElement('div'); title.className='cover-title'; cover.appendChild(title); }
+      title.textContent=game.title || 'Game';
+    };
+    img.onerror=function(){ makeCoverFallback(); };
+    img.onabort=function(){ makeCoverFallback(); };
+    img.src=url;
+  }
   function loadCoverImage() {
-    if (!window.rawgClient || !game || !game.title) return;
-    window.rawgClient.searchGames(game.title, function (results, error) {
-      if (!error && results && results.length && results[0].background_image) {
-        var cover = document.getElementById('game-cover-art');
-        if (cover) {
-          var imageUrl = results[0].background_image;
-          cover.style.backgroundImage = 'url(' + imageUrl + ')';
-          cover.style.backgroundSize = 'cover';
-          cover.style.backgroundPosition = 'center';
-          cover.style.backgroundAttachment = 'fixed';
-          var overlay = document.createElement('div');
-          overlay.style.position = 'absolute';
-          overlay.style.inset = '0';
-          overlay.style.background = 'linear-gradient(135deg, rgba(' +
-            darken(game.color || '#16a66f', 0.55).replace('#', '').match(/.{1,2}/g).map(function (x) { return parseInt(x, 16); }).join(',') +
-            ', 0.75), rgba(17,24,21, 0.85))';
-          overlay.style.pointerEvents = 'none';
-          while (cover.firstChild) cover.removeChild(cover.firstChild);
-          cover.appendChild(overlay);
-          var title = document.createElement('div');
-          title.className = 'cover-title';
-          title.style.position = 'relative';
-          title.style.zIndex = '1';
-          title.textContent = game.title;
-          cover.appendChild(title);
-        }
-
-        // Fetch full game details from RAWG
-        if (results[0].id) {
-          window.rawgClient.getGameDetails(results[0].id, function (details, err) {
-            if (!err && details) {
-              game._rawgData = details;
-              renderRAWGInfo();
-              renderRAWGScreenshots(results[0].id);
-              renderSimilarGames(results[0].id);
-              renderGameSeries(results[0].id);
-            }
-          });
-        }
-      }
+    if (!game || !game.title) return;
+    var existing = game._tgdbData && (game._tgdbData.background_image || game._tgdbData.background_image_additional);
+    if (existing) { applyCoverImage(existing); return; }
+    if (!window.tgdbClient || typeof window.tgdbClient.searchGames !== 'function') { makeCoverFallback(); return; }
+    if (game._tgdbLookupPending) return;
+    game._tgdbLookupPending=true;
+    window.tgdbClient.searchGames(game.title, function(results, error) {
+      game._tgdbLookupPending=false;
+      if (error || !results || !results.length) { makeCoverFallback(); return; }
+      var match=results[0];
+      if (!match) { makeCoverFallback(); return; }
+      game._tgdbId=match.id;
+      if (match.background_image) applyCoverImage(match.background_image);
+      window.tgdbClient.getGameDetails(match.id, function(details, err) {
+        if (err || !details) { if (!match.background_image) makeCoverFallback(); return; }
+        game._tgdbData=details;
+        if (details.background_image || details.background_image_additional) applyCoverImage(details.background_image || details.background_image_additional);
+        renderTheGamesDBInfo(); renderSimilarGames(match.id); renderGameSeries(match.id); loadRawgMedia();
+      });
     });
   }
 
-  function renderRAWGInfo() {
-    if (!game._rawgData) return;
-    var data = game._rawgData;
+  function renderTheGamesDBInfo() {
+    if (!game._tgdbData) return;
+    var data = game._tgdbData;
 
     // Display ratings
-    if (data.rating) setText('rawg-rating', (data.rating || 0).toFixed(1) + ' / 5');
-    if (data.metacritic) setText('rawg-metacritic', data.metacritic);
+    if (data.rating) setText('tgdb-rating', (data.rating || 0).toFixed(1) + ' / 5');
+    if (data.metacritic) setText('tgdb-metacritic', data.metacritic);
 
     // Display genres
-    var genreEl = document.getElementById('rawg-genres');
+    var genreEl = document.getElementById('tgdb-genres');
     if (genreEl && data.genres && data.genres.length) {
       genreEl.innerHTML = data.genres.map(function (g) {
         return '<span class="game-pill">' + esc(g) + '</span>';
@@ -128,7 +135,7 @@
     }
 
     // Display platforms
-    var platformEl = document.getElementById('rawg-platforms');
+    var platformEl = document.getElementById('tgdb-platforms');
     if (platformEl && data.platforms && data.platforms.length) {
       platformEl.innerHTML = data.platforms.slice(0, 5).map(function (p) {
         return '<span class="game-pill">' + esc(p) + '</span>';
@@ -136,19 +143,19 @@
     }
 
     // Display developers
-    if (data.developers && data.developers.length) setText('rawg-developer', data.developers.slice(0, 3).join(', '));
+    if (data.developers && data.developers.length) setText('tgdb-developer', data.developers.slice(0, 3).join(', '));
 
     // Display publishers
-    if (data.publishers && data.publishers.length) setText('rawg-publisher', data.publishers.slice(0, 2).join(', '));
+    if (data.publishers && data.publishers.length) setText('tgdb-publisher', data.publishers.slice(0, 2).join(', '));
 
     // Display ESRB rating
-    if (data.esrb_rating) setText('rawg-esrb', data.esrb_rating);
+    if (data.esrb_rating) setText('tgdb-esrb', data.esrb_rating);
 
     // Display playtime average
-    if (data.playtime) setText('rawg-playtime', data.playtime + ' hrs average');
+    if (data.playtime) setText('tgdb-playtime', data.playtime + ' hrs average');
 
     // Display stores
-    var storesEl = document.getElementById('rawg-stores');
+    var storesEl = document.getElementById('tgdb-stores');
     if (storesEl && data.stores && data.stores.length) {
       storesEl.innerHTML = data.stores.slice(0, 5).map(function (s) {
         return '<a class="btn btn-sm btn-ghost" href="' + esc(s.url) + '" target="_blank" rel="noopener noreferrer">' + esc(s.name) + ' ↗</a>';
@@ -156,42 +163,104 @@
     }
   }
 
-  function renderRAWGScreenshots(gameId) {
-    if (!window.rawgClient) return;
-    window.rawgClient.getGameScreenshots(gameId, function (screenshots, error) {
-      if (!error && screenshots && screenshots.length) {
-        var galEl = document.getElementById('rawg-screenshots');
-        if (galEl) {
-          galEl.innerHTML = screenshots.map(function (s, i) {
-            return '<img src="' + esc(s.image) + '" alt="Screenshot ' + (i + 1) + '" loading="lazy" style="width:100%;border-radius:8px;cursor:pointer;" data-screenshot="' + esc(s.image) + '">';
-          }).join('');
-          galEl.querySelectorAll('img').forEach(function (img) {
-            img.addEventListener('click', function () {
-              var modal = document.getElementById('screenshot-modal');
-              if (!modal) {
-                modal = document.createElement('div');
-                modal.id = 'screenshot-modal';
-                modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.9);display:flex;align-items:center;justify-content:center;z-index:9999;';
-                document.body.appendChild(modal);
-              }
-              var fullImg = document.createElement('img');
-              fullImg.src = img.getAttribute('data-screenshot');
-              fullImg.style.cssText = 'max-width:90%;max-height:90%;object-fit:contain;';
-              modal.innerHTML = '';
-              modal.appendChild(fullImg);
-              modal.addEventListener('click', function () { modal.style.display = 'none'; });
-            });
-          });
+  function renderTheGamesDBScreenshots(gameId) {
+    // TheGamesDB remains the metadata/artwork source. Media screenshots come from RAWG.
+    loadRawgMedia();
+  }
+
+  function renderYouTubeVideos(gameId) {
+    renderRawgVideos();
+  }
+
+  function rawgGuideScore(video) {
+    var title = String(video && video.name || '').toLowerCase();
+    var guideWords = ['guide', 'walkthrough', 'tips', 'achievement', 'trophy', 'collectible', 'boss', 'location', 'how to', '100%'];
+    var score = 0;
+    guideWords.forEach(function (w) { if (title.indexOf(w) >= 0) score += 10; });
+    if (title.indexOf('trailer') >= 0 || title.indexOf('review') >= 0 || title.indexOf('reaction') >= 0) score -= 8;
+    return score;
+  }
+
+  function renderRawgScreenshots() {
+    var screenshots = game && game._rawgData && game._rawgData.screenshots || [];
+    var galEl = document.getElementById('tgdb-screenshots');
+    if (!galEl) return;
+    if (!screenshots.length) {
+      galEl.innerHTML = '<div class="panel-placeholder"><strong>No screenshots found</strong><span>RAWG did not return screenshots for this game.</span></div>';
+      return;
+    }
+    galEl.innerHTML = screenshots.slice(0, 12).map(function (s, i) {
+      return '<img src="' + esc(s.image) + '" alt="Screenshot ' + (i + 1) + '" loading="lazy" onerror="this.style.display=\'none\'" style="width:100%;border-radius:10px;cursor:pointer;aspect-ratio:16/9;object-fit:cover;" data-screenshot="' + esc(s.image) + '">';
+    }).join('');
+    galEl.querySelectorAll('img').forEach(function (img) {
+      img.addEventListener('click', function () {
+        var modal = document.getElementById('screenshot-modal');
+        if (!modal) {
+          modal = document.createElement('div');
+          modal.id = 'screenshot-modal';
+          modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.9);display:flex;align-items:center;justify-content:center;z-index:9999;';
+          document.body.appendChild(modal);
         }
-      }
+        var fullImg = document.createElement('img');
+        fullImg.src = img.getAttribute('data-screenshot');
+        fullImg.style.cssText = 'max-width:90%;max-height:90%;object-fit:contain;';
+        modal.innerHTML = '';
+        modal.appendChild(fullImg);
+        modal.style.display = 'flex';
+        modal.onclick = function () { modal.style.display = 'none'; };
+      });
+    });
+  }
+
+  function renderRawgVideos() {
+    var videos = game && game._rawgData && game._rawgData.videos || [];
+    var ytEl = document.getElementById('tgdb-youtube');
+    if (!ytEl) return;
+    if (!videos.length) {
+      ytEl.innerHTML = '<div class="panel-placeholder"><strong>No YouTube guides found</strong><span>RAWG did not return videos for this game.</span></div>';
+      return;
+    }
+    var ranked = videos.slice().sort(function (a, b) { return rawgGuideScore(b) - rawgGuideScore(a); });
+    var guides = ranked.filter(function (v) { return rawgGuideScore(v) > 0; });
+    var selected = guides.length >= 4 ? guides.slice(0, 8) : ranked.slice(0, 8);
+    ytEl.innerHTML = selected.map(function (video) {
+      var href = video.videoId ? 'https://www.youtube.com/watch?v=' + encodeURIComponent(video.videoId) : (video.url || '#');
+      var image = video.image || '';
+      return '<a class="tgdb-video-card" href="' + esc(href) + '" target="_blank" rel="noopener noreferrer">' +
+        '<img src="' + esc(image) + '" alt="' + esc(video.name || 'YouTube guide') + '" loading="lazy">' +
+        '<span class="tgdb-video-meta"><strong>' + esc(video.name || 'YouTube guide') + '</strong><small>' + esc(video.channel || 'YouTube') + '</small></span>' +
+        '</a>';
+    }).join('');
+  }
+
+  function loadRawgMedia() {
+    if (!window.rawgClient || typeof window.rawgClient.resolveGame !== 'function' || !game || !game.title || game._rawgLookupPending) return;
+    if (game._rawgData && (game._rawgData.screenshots || game._rawgData.videos)) {
+      renderRawgScreenshots(); renderRawgVideos(); return;
+    }
+    game._rawgLookupPending = true;
+    var preferredPlatform = game.platform || game.platformName || game.console || '';
+    window.rawgClient.resolveGame(game.title, { platform: preferredPlatform }, function (match, error) {
+      if (error || !match || !match.id) { game._rawgLookupPending = false; renderRawgScreenshots(); renderRawgVideos(); return; }
+      game._rawgId = match.id;
+      game._rawgData = { id: match.id, name: match.name, slug: match.slug || '', screenshots: [], videos: [], achievements: [] };
+      window.rawgClient.getGameScreenshots(match.id, function (screenshots) {
+        game._rawgData.screenshots = screenshots || [];
+        renderRawgScreenshots();
+        window.rawgClient.getGameVideos(match.id, function (videos) {
+          game._rawgData.videos = videos || [];
+          game._rawgLookupPending = false;
+          renderRawgVideos();
+        });
+      });
     });
   }
 
   function renderSimilarGames(gameId) {
-    if (!window.rawgClient) return;
-    window.rawgClient.getSimilarGames(gameId, function (games, error) {
+    if (!window.tgdbClient) return;
+    window.tgdbClient.getSimilarGames(gameId, function (games, error) {
       if (!error && games && games.length) {
-        var simEl = document.getElementById('rawg-similar');
+        var simEl = document.getElementById('tgdb-similar');
         if (simEl) {
           simEl.innerHTML = games.map(function (g) {
             return '<div style="text-align:center;"><img src="' + esc(g.background_image || '') + '" alt="' + esc(g.name) + '" style="width:100%;height:150px;object-fit:cover;border-radius:8px;"><p style="margin:8px 0 0;font-size:12px;">' + esc(g.name) + '</p><span class="pg-pill" style="font-size:11px;">★ ' + (g.rating || 0).toFixed(1) + '</span></div>';
@@ -202,10 +271,10 @@
   }
 
   function renderGameSeries(gameId) {
-    if (!window.rawgClient) return;
-    window.rawgClient.getGameSeries(gameId, function (games, error) {
+    if (!window.tgdbClient) return;
+    window.tgdbClient.getGameSeries(gameId, function (games, error) {
       if (!error && games && games.length) {
-        var serEl = document.getElementById('rawg-series');
+        var serEl = document.getElementById('tgdb-series');
         if (serEl) {
           serEl.innerHTML = games.map(function (g) {
             return '<div class="game-pill">' + esc(g.name) + ' (' + (g.released ? g.released.split('-')[0] : '—') + ')</div>';
@@ -264,12 +333,8 @@
     setText('detail-description', desc);
 
     var cover = document.getElementById('game-cover-art');
-    if (cover) {
-      cover.style.background = 'linear-gradient(145deg,' + darken(game.color || '#16a66f', 0.55) + ',#111815 55%,' + (game.color || '#16a66f') + ')';
-      cover.innerHTML = '<div class="cover-title">' + esc(game.title) + '</div>';
-    }
-
-    // Fetch and load cover image from RAWG.io
+    if (cover && !cover.dataset.imageState) makeCoverFallback();
+    // Fetch/load TheGamesDB media without resetting an already-loaded image.
     loadCoverImage();
 
     var verifiedCounts = (game.detail && game.detail.counts) || (typeof getGameDetails === 'function' && getGameDetails(game.id) ? getGameDetails(game.id).counts : null);
@@ -371,7 +436,7 @@
       var date = a.unlockedAt ? new Date(a.unlockedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) + ' · ' + new Date(a.unlockedAt).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' }) : '';
       return '<div class="achv-row ' + (a.unlocked ? 'unlocked' : '') + '" data-id="' + esc(a.id) + '">' +
         '<button class="achv-check" data-toggle="' + esc(a.id) + '" title="' + (a.unlocked ? 'Mark locked' : 'Mark unlocked') + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path d="M4 12l6 6L20 6"/></svg></button>' +
-        '<div class="achv-body"><div class="achv-top-line">' + tierSvg(a.tier) + '<div class="achv-copy"><div class="achv-name">' + esc(a.name) + '</div><div class="achv-desc">' + esc(a.description || '') + '</div>' + (a.guide ? '<div class="achv-guide"><b>Guide:</b> ' + esc(a.guide) + '</div>' : '') + '</div>' + (a.tag ? '<span class="achv-tag">' + esc(a.tag) + '</span>' : '') + '</div>' + (((game.detail && game.detail.sourceUrl) || game.trophySourceUrl) ? '<a class="achv-source-link" href="' + esc((game.detail && game.detail.sourceUrl) || game.trophySourceUrl) + '" target="_blank" rel="noopener noreferrer">' + esc((game.detail && game.detail.source) || game.trophySource || 'Source') + ' ↗</a>' : '') + '</div>' +
+        '<div class="achv-body"><div class="achv-top-line">' + (a.image ? '<img class="achv-image" src="' + esc(a.image) + '" alt="" loading="lazy" onerror="this.style.display=\'none\'">' : '') + tierSvg(a.tier) + '<div class="achv-copy"><div class="achv-name">' + esc(a.name) + '</div><div class="achv-desc">' + esc(a.description || '') + '</div>' + (a.guide ? '<div class="achv-guide"><b>Guide:</b> ' + esc(a.guide) + '</div>' : '') + '</div>' + (a.tag ? '<span class="achv-tag">' + esc(a.tag) + '</span>' : '') + '</div>' + (((game.detail && game.detail.sourceUrl) || game.trophySourceUrl) ? '<a class="achv-source-link" href="' + esc((game.detail && game.detail.sourceUrl) || game.trophySourceUrl) + '" target="_blank" rel="noopener noreferrer">' + esc((game.detail && game.detail.source) || game.trophySource || 'Source') + ' ↗</a>' : '') + '</div>' +
         '<div class="achv-rarity"><strong>' + rarity + '</strong>' + (percentage ? '<span>' + percentage + '</span>' : '') + '</div>' +
         '<div class="achv-status">' + (a.unlocked ? '<strong>✓ Unlocked</strong><span>' + date + '</span>' : '<strong>Locked</strong><span>Not yet unlocked</span>') + '</div>' +
         '<div class="achv-actions"><button class="icon-btn" data-edit="' + esc(a.id) + '" title="Edit">✎</button><button class="icon-btn danger" data-remove="' + esc(a.id) + '" title="Delete">×</button></div>' +
@@ -413,11 +478,110 @@
     showAchvModal(null, function (d) { game.achievements.push({ id: uid(), name: d.name, description: d.description, guide: d.guide, tier: d.tier, tag: d.tag || 'Story', unlocked: d.unlocked, unlockedAt: d.unlocked ? Date.now() : null }); save(); render(); toast('Trophy added.'); });
   }
 
+  function ensureTheGamesDBGame(callback) {
+    if (!window.tgdbClient || typeof window.tgdbClient.resolveGame !== 'function' || !game || !game.title) return callback(null, new Error('TheGamesDB client unavailable.'));
+    var preferredPlatform = game.platform || game.platformName || game.console || '';
+    function accept(match) {
+      if (!match || !match.id) return callback(null, new Error('TheGamesDB returned an invalid game record.'));
+      game._tgdbId = match.id;
+      game._tgdbData = match;
+      if (match.background_image || match.background_image_additional) applyCoverImage(match.background_image || match.background_image_additional);
+      callback(match.id, null, match);
+    }
+    // Never blindly trust a stale stored TheGamesDB id. Verify it against the current game title first.
+    if (game._tgdbId) {
+      window.tgdbClient.getGameDetails(game._tgdbId, function (stored, storedError) {
+        var q = String(game.title || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+        var n = String(stored && stored.name || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+        if (!storedError && stored && (q === n || q.indexOf(n) >= 0 || n.indexOf(q) >= 0)) return accept(stored);
+        window.tgdbClient.resolveGame(game.title, { platform: preferredPlatform }, function (match, error) {
+          if (error || !match) return callback(null, error || new Error('Game not found on TheGamesDB.'));
+          accept(match);
+        });
+      });
+      return;
+    }
+    window.tgdbClient.resolveGame(game.title, { platform: preferredPlatform }, function (match, error) {
+      if (error || !match) return callback(null, error || new Error('Game not found on TheGamesDB.'));
+      accept(match);
+    });
+  }
+
+  function achievementTier(percent) {
+    var p = Number(percent);
+    if (!Number.isFinite(p)) return 'bronze';
+    if (p <= 5) return 'gold';
+    if (p <= 20) return 'silver';
+    return 'bronze';
+  }
+
+  function ensureRawgGame(callback) {
+    if (!window.rawgClient || typeof window.rawgClient.resolveGame !== 'function' || !game || !game.title) return callback(null, new Error('RAWG client unavailable.'));
+    if (game._rawgId) return callback(game._rawgId, null, game._rawgData || null);
+    var preferredPlatform = game.platform || game.platformName || game.console || '';
+    window.rawgClient.resolveGame(game.title, { platform: preferredPlatform }, function (match, error) {
+      if (error || !match || !match.id) return callback(null, error || new Error('Game not found on RAWG.'));
+      game._rawgId = match.id;
+      game._rawgData = game._rawgData || { id: match.id, name: match.name, slug: match.slug || '', screenshots: [], videos: [], achievements: [] };
+      callback(match.id, null, match);
+    });
+  }
+
+  function importRawgAchievements() {
+    if (!game || !game.title) return;
+    if (!window.rawgClient || typeof window.rawgClient.getGameAchievements !== 'function') return toast('RAWG is not available right now.');
+    var button = document.getElementById('btn-import-rawg-achievements');
+    if (button) { button.disabled = true; button.textContent = '↻ Importing…'; }
+    ensureRawgGame(function (id, error, match) {
+      if (error || !id) {
+        if (button) { button.disabled = false; button.textContent = '↥ Import from RAWG'; }
+        return toast(error ? error.message : 'Could not match this game on RAWG.');
+      }
+      window.rawgClient.getGameAchievements(id, function (items, err) {
+        if (err && !items.length) {
+          if (button) { button.disabled = false; button.textContent = '↥ Import from RAWG'; }
+          return toast(err.message || 'RAWG achievement import failed.');
+        }
+        items = items || [];
+        var existing = game.achievements || [];
+        var byName = {};
+        existing.forEach(function (a) { byName[String(a.name || '').toLowerCase()] = a; });
+        var added = 0;
+        items.forEach(function (a) {
+          var key = String(a.name || '').toLowerCase();
+          if (!key || byName[key]) return;
+          var created = {
+            id: 'rawg-' + a.id,
+            name: a.name,
+            description: a.description || '',
+            guide: '',
+            tier: achievementTier(a.percent),
+            tag: 'RAWG Achievement',
+            image: a.image || '',
+            rarity: a.percent != null ? String(a.percent) + '%' : null,
+            playerPercentage: a.percent,
+            unlocked: false,
+            unlockedAt: null
+          };
+          existing.push(created); byName[key] = created; added += 1;
+        });
+        game.achievements = existing;
+        game._rawgData = game._rawgData || { id: id, screenshots: [], videos: [] };
+        game._rawgData.achievements = items;
+        if (match && match.slug) game._rawgData.slug = match.slug;
+        save(); render();
+        if (button) { button.disabled = false; button.textContent = '↥ Import from RAWG'; }
+        toast(items.length ? ('Imported ' + added + ' new RAWG achievements.') : 'RAWG returned no achievements for this game.');
+      });
+    });
+  }
+
   function bindEvents() {
     var search = document.getElementById('search-achv');
     if (search) search.addEventListener('input', function (e) { searchQuery = e.target.value; renderList(); });
     var sort = document.getElementById('trophy-sort');
     if (sort) sort.addEventListener('change', function (e) { sortMode = e.target.value; renderList(); });
+    var importRawg = document.getElementById('btn-import-rawg-achievements'); if (importRawg) importRawg.addEventListener('click', importRawgAchievements);
     var mark = document.getElementById('btn-mark-all'); if (mark) mark.addEventListener('click', markAllUnlocked);
     var emptyAdd = document.getElementById('btn-add-achievement-empty'); if (emptyAdd) emptyAdd.addEventListener('click', onAddAchv);
     var more = document.getElementById('btn-more-trophy-actions'); if (more) more.addEventListener('click', function () {
@@ -440,8 +604,15 @@
       });
     });
 
-    var edit = document.getElementById('btn-edit-game'); if (edit) edit.addEventListener('click', function () { if (game._catalogOnly) { toast('Add this game to your Vault to edit it.'); return; } showGameModal(game, function (updated) { game.title = updated.title; game.platform = updated.platform; game.color = updated.color; save(); render(); toast('Game details updated.'); }); });
-    var del = document.getElementById('btn-delete-game'); if (del) del.addEventListener('click', function () { if (game._catalogOnly) { toast('This catalog entry is read-only. Add it to your Vault first.'); return; } if (!confirm('Delete "' + game.title + '" and all its trophies? This cannot be undone.')) return; cabinet.games = cabinet.games.filter(function (g) { return g.id !== game.id; }); save(); window.pgGo('overview'); });
+    var edit = document.getElementById('btn-edit-game'); if (edit) edit.addEventListener('click', function () {
+      if (game._catalogOnly || currentUser === 'guest') { toast('Sign in to edit or save this game to your Vault.'); return; }
+      showGameModal(game, function (updated) { game.title = updated.title; game.platform = updated.platform; game.color = updated.color; save(); render(); toast('Game details updated.'); });
+    });
+    var del = document.getElementById('btn-delete-game'); if (del) del.addEventListener('click', function () {
+      if (game._catalogOnly || currentUser === 'guest') { toast('Sign in to remove games from your Vault.'); return; }
+      if (!confirm('Delete "' + game.title + '" and all its trophies? This cannot be undone.')) return;
+      cabinet.games = cabinet.games.filter(function (g) { return g.id !== game.id; }); save(); window.pgGo('overview');
+    });
     window.addEventListener('hashchange', loadFromHash);
   }
 

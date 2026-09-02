@@ -20,6 +20,7 @@
   <link rel="stylesheet" href="../../assets/css/phase45.css">
   <link rel="manifest" href="../../manifest.webmanifest">
   <meta name="theme-color" content="#7126a6">
+  <link rel="stylesheet" href="../../assets/css/site-v3.css">
 </head>
 
 <body class="app-page has-global-sidebar" data-page="overview">
@@ -247,7 +248,6 @@
   <script src="../../assets/js/game-details.js"></script>
   <script src="../../assets/js/trophy-sources.js"></script>
   <script src="../../assets/js/modals.js"></script>
-  <script src="../../assets/js/dashboard.js"></script>
 
   <script>
     (function () { const path = location.pathname; const map = [['/pages/core/overview.html', 'overview'], ['/pages/games/games.html', 'games'], ['/pages/games/game.html', 'games'], ['/pages/user/profile.html', 'profile'], ['/pages/user/settings.html', 'settings'], ['/pages/games/trophies.html', 'trophies'], ['/pages/activity/sessions.html', 'sessions'], ['/pages/social/friends.html', 'friends'], ['/pages/activity/stats.html', 'stats']]; const hit = map.find(function (x) { return path.indexOf(x[0]) >= 0; }); const key = hit && hit[1]; if (key) { document.querySelectorAll('.global-nav a').forEach(a => a.classList.toggle('active', a.dataset.nav === key)); } })();
@@ -255,7 +255,6 @@
   <script src="../../assets/js/showcase.js"></script>
   <script src="../../assets/js/shell.js"></script>
   <script src="../../assets/js/boot-guard.js"></script>
-  <script src="../../assets/js/phase45.js"></script>
 </body>
 
 </html>

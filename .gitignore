@@ -9,7 +9,7 @@ Thumbs.db
 .env.*
 service-account*.json
 firebase-adminsdk*.json
-rawg-config.js
+tgdb-config.js
 
 # Dependencies / build output
 node_modules/

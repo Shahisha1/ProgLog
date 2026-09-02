@@ -40,7 +40,7 @@ Because this is a front-end static application, users should also be aware that:
 
 - client-side validation is not a substitute for server-side enforcement
 - secrets and API keys must never be committed to the repository
-- Firebase config and RAWG API keys should remain private
+- Firebase config and TheGamesDB API keys should remain private
 
 ## Responsible Disclosure
 

@@ -4,5 +4,38 @@
   },
   "storage": {
     "rules": "storage.rules"
+  },
+  "functions": {
+    "source": "functions"
+  },
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "/api/tgdb",
+        "function": "tgdb"
+      },
+      {
+        "source": "/api/rawg",
+        "function": "rawg"
+      },
+      {
+        "source": "/api/reddit",
+        "function": "reddit"
+      },
+      {
+        "source": "/api/youtube",
+        "function": "youtube"
+      },
+      {
+        "source": "/api/twitchStreams",
+        "function": "twitchStreams"
+      }
+    ]
   }
 }
