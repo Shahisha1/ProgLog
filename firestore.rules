@@ -1,28 +1,19 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    function signedIn() {
-      return request.auth != null;
-    }
-
-    function owns(uid) {
-      return signedIn() && request.auth.uid == uid;
-    }
-
-    match /users/{uid} {
-      allow read, create, update, delete: if owns(uid);
-
+    match /users/{userId} {
+      allow read, create, update: if request.auth != null && request.auth.uid == userId;
+      allow delete: if request.auth != null && request.auth.uid == userId;
       match /games/{gameId} {
-        allow read, create, update, delete: if owns(uid);
+        allow read, create, update, delete: if request.auth != null && request.auth.uid == userId;
       }
-
       match /sessions/{sessionId} {
-        allow read, create, update, delete: if owns(uid);
+        allow read, create, update, delete: if request.auth != null && request.auth.uid == userId;
       }
-
-      match /friends/{friendId} {
-        allow read, create, update, delete: if owns(uid);
-      }
+    }
+    match /contactMessages/{messageId} {
+      allow create: if request.auth != null && request.resource.data.uid == request.auth.uid;
+      allow read, update, delete: if false;
     }
   }
 }

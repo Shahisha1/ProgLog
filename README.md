@@ -1,107 +1,162 @@
-# Proglog
+# progLog
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Static Site](https://img.shields.io/badge/Type-Static%20Site-7c5cff)](https://github.com)
-[![Firebase Ready](https://img.shields.io/badge/Firebase-Ready-ffca28)](https://firebase.google.com)
-[![PWA](https://img.shields.io/badge/PWA-Offline%20Ready-00c2a8)](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps)
+A framework-free gaming tracker using the original GameTrack dark navy/purple visual design.
 
-A sleek gaming tracker for managing your game library, trophies, sessions, profile, and progress.
+## Architecture
 
-Proglog helps players keep momentum across their backlog, track time spent playing, and surface the information they actually care about in a clean, app-like experience.
+- **GitHub Pages** — static frontend hosting
+- **Firebase Authentication** — email/password + Google sign-in
+- **Cloud Firestore** — profiles, saved games, sessions and contact messages
+- **Cloudflare Worker** — secure server-side proxy for the RAWG API
+- **RAWG** — game search, metadata, artwork URLs, screenshots and available achievement data
+- **Firebase Storage** — not used for game artwork
 
-## 📸 Site preview
+The RAWG key must never be committed to GitHub, put in `app.js`, or stored in Firestore. Cloudflare Worker Secrets are designed for API keys and auth tokens. See the Cloudflare documentation: https://developers.cloudflare.com/workers/configuration/secrets/
 
-<p align="center">
-  <img src="https://via.placeholder.com/1200x700?text=Proglog+Preview" alt="Proglog app preview" width="100%" />
-</p>
-
-## ✨ Highlights
-
-- Responsive desktop, tablet, and mobile interface
-- Personalized profile themes with accent colors
-- Trophy tracking, guides, and catalog browsing
-- Fast game and trophy search with keyboard shortcuts
-- Sessions, friends, stats, and activity monitoring
-- Offline-ready local storage with optional Firebase sync
-- PWA / offline fallback support
-- PlayStation and Steam catalog support without platform lock-in
-
-## Run locally
-
-## 🧭 Project overview
-
-Proglog is a static web application designed to feel like a modern gaming dashboard. It brings together:
-
-- game discovery and library tracking
-- trophy progress and completion data
-- play session summaries and activity history
-- profile customization and preferences
-- social features for friends and comparing progress
-
-## 🚀 Run locally
-
-Serve the project with any static web server:
-
-```bash
-python -m http.server 5500
-```
-
-Then open:
+## Project structure
 
 ```text
-http://localhost:5500/
+progLog/
+├── index.html
+├── pages/
+│   ├── games.html
+│   ├── game.html
+│   ├── achievements.html
+│   ├── trophies.html
+│   ├── sessions.html
+│   ├── friends.html
+│   ├── profile.html
+│   ├── settings.html
+│   ├── auth.html
+│   └── contact.html
+├── assets/
+│   ├── css/
+│   │   └── styles.css
+│   ├── js/
+│   │   ├── app.js
+│   │   ├── firebase.js
+│   │   ├── firebase-config.js
+│   │   └── api-config.js
+│   └── images/
+│       ├── favicon.svg
+│       ├── social-share.svg
+│       └── UI artwork
+├── worker/
+│   ├── src/index.js
+│   ├── wrangler.jsonc
+│   ├── .gitignore
+│   └── README.md
+├── firestore.rules
+├── firestore.indexes.json
+├── .firebaserc
+└── .nojekyll
 ```
 
-## 🧪 Validate
+## 1. Set up RAWG
+
+Create a RAWG API key from the RAWG developer/API area. Do not paste the key into this repository.
+
+## 2. Deploy the Cloudflare Worker
+
+Open a terminal in `worker/`:
 
 ```bash
-npm run validate
+npm install -g wrangler
+wrangler login
+wrangler secret put RAWG_API_KEY
+wrangler deploy
 ```
 
-## 🌐 Deploy
+When prompted for `RAWG_API_KEY`, paste your key. Cloudflare stores it as a secret instead of plaintext Worker configuration.
 
-The app is structured for GitHub Pages or any static hosting provider. Firebase is optional and only used for cloud persistence features.
+Copy the Worker URL, then edit:
 
-## 📁 Structure
-
-- `pages/` — grouped page templates for core, games, user, social, activity, and legal views
-- `assets/` — CSS, JavaScript, and media assets
-- `scripts/` — validation and automation scripts
-- `index.html` — main app entry point
-- `manifest.webmanifest` — PWA manifest
-- `sw.js` — service worker for offline support
-
-## 💡 Why it stands out
-
-Proglog is designed to feel lightweight and personal while still supporting richer game-tracking workflows. Its structure keeps the app fast, easy to navigate, and flexible for future upgrades without requiring a heavy framework.
-
-## Community feeds
-
-The landing page now includes larger Reddit, YouTube, and Twitch sections with refresh controls.
-
-- Reddit: public `r/gaming` JSON feed.
-- YouTube: public channel RSS feeds aggregated without a browser API key.
-- Twitch: uses the Firebase Function `twitchStreams` so OAuth credentials never reach the browser.
-
-For Twitch, configure `TWITCH_CLIENT_ID` and `TWITCH_CLIENT_SECRET` as Firebase Functions environment variables/secrets before deployment. The frontend calls `/api/twitchStreams` automatically when deployed through Firebase Hosting.
-
-## Reliable external feeds
-
-ProgLog now uses Firebase Functions as a proxy for TheGamesDB, Reddit, and YouTube. This avoids common browser CORS/rate-limit failures and adds retries, timeouts, caching, and image fallbacks.
-
-For production Firebase deployment, configure the server-side TheGamesDB key and Twitch credentials:
-
-```bash
-firebase functions:secrets:set TheGamesDB_API_KEY
-firebase functions:secrets:set TWITCH_CLIENT_ID
-firebase functions:secrets:set TWITCH_CLIENT_SECRET
-firebase deploy --only functions,hosting
+```text
+assets/js/api-config.js
 ```
 
-The browser retains the TheGamesDB key as a fallback for local/static hosting. For the most secure production setup, remove the fallback key from `assets/js/tgdb-config.js` after confirming the `/api/tgdb` function is deployed.
+and replace:
 
+```js
+export const API_BASE = 'https://YOUR-PROGLOG-RAWG-WORKER.workers.dev';
+```
 
-## Game data sources
-- TheGamesDB: primary game metadata, artwork, platform and store information.
-- RAWG: achievements, screenshots and YouTube game videos/guides.
-- Configure `THEGAMESDB_API_KEY` and `RAWG_API_KEY` as Firebase Functions secrets before deployment.
+with your real Worker URL.
+
+Test it in a browser:
+
+```text
+https://YOUR-WORKER.workers.dev/health
+https://YOUR-WORKER.workers.dev/games?search=elden%20ring
+```
+
+## 3. Firebase
+
+Firebase is still used for Authentication and Firestore; Firebase Storage is not required.
+
+In Firebase project `proglog-fa459`:
+
+1. Create/register the Firebase Web App.
+2. Enable Authentication → Email/Password.
+3. Enable Authentication → Google and add your GitHub Pages domain to Authorized domains.
+4. Create Firestore.
+5. Publish `firestore.rules`.
+6. Put the Web App config in `assets/js/firebase-config.js` for local/GitHub Pages use.
+
+The Web App config is client-side configuration. Never put Firebase service-account private keys in the repository.
+
+## 4. GitHub Pages
+
+Push the repository to GitHub and enable **Settings → Pages** using the branch/folder containing `index.html`.
+
+Because the project uses relative paths, it works with both a user/organization Pages site and a repository Pages site.
+
+Enable HTTPS in GitHub Pages. GitHub Pages supports HTTPS for Pages sites. See: https://docs.github.com/en/pages/getting-started-with-github-pages/securing-your-github-pages-site-with-https
+
+## RAWG features now wired into progLog
+
+On **Games**:
+
+- Search RAWG
+- Display matching games
+- Add a game to the user's library
+- Save RAWG ID and game metadata to Firestore when authenticated
+- Keep a local cache for offline/demo use
+
+On **Game Details**:
+
+- Load game by RAWG ID
+- Hero artwork
+- Cover artwork
+- Rating and ratings count
+- Platforms
+- Genres
+- Release date
+- Description
+- Screenshots
+- Available RAWG achievement data
+- Save game to library
+
+The same saved game object is designed to be reused by the profile, sessions, achievements and trophy views.
+
+## Recommended next development phases
+
+### Phase 1 — RAWG + library (implemented)
+
+Game search/import, game detail metadata, artwork URLs and Firestore library records.
+
+### Phase 2 — Real user data (next)
+
+Replace demo content on profile, sessions, achievements and trophies with Firestore reads/writes. Add session creation/edit/delete and per-game completion statistics.
+
+### Phase 3 — Platform achievement sync
+
+Keep RAWG as the game catalogue, then add platform-specific sources. For example, Steam can be integrated server-side so users can optionally sync their Steam achievements without exposing platform API credentials.
+
+### Phase 4 — Friends/social
+
+Add friend requests, profiles, activity visibility and recent activity using Firestore rules that prevent users from changing other users' private data.
+
+### Phase 5 — Production hardening
+
+Add Cloudflare rate limiting, API caching, better error states, loading skeletons, image fallbacks, Firestore indexes, analytics/monitoring and a production privacy policy.

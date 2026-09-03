@@ -1,17 +1,8 @@
-# OS / editor
-.DS_Store
-Thumbs.db
-.vscode/
-.idea/
-
-# Local secrets / generated Firebase files
+# Secrets / local tooling
 .env
 .env.*
-service-account*.json
-firebase-adminsdk*.json
-tgdb-config.js
-
-# Dependencies / build output
+.dev.vars
+.dev.vars.*
 node_modules/
-dist/
-build/
+.DS_Store
+.vscode/

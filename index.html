@@ -1,351 +1,194 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Proglog — The Ultimate Trophy &amp; Achievement Journal</title>
-  <link rel="icon" type="image/png" href="assets/img/proglog-icon.png">
-  <link rel="apple-touch-icon" href="assets/img/proglog-icon.png">
-  <link rel="stylesheet" href="assets/css/vars.css">
-  <link rel="stylesheet" href="assets/css/reset.css">
-  <link rel="stylesheet" href="assets/css/layout.css">
-  <link rel="stylesheet" href="assets/css/components.css">
-  <link rel="stylesheet" href="assets/css/pages.css">
-  <link rel="stylesheet" href="assets/css/ui-refresh.css">
-  <link rel="stylesheet" href="assets/css/brand-refresh.css">
-  <link rel="stylesheet" href="assets/css/reliability.css">
-  <link rel="stylesheet" href="assets/css/phase45.css">
-  <link rel="manifest" href="./manifest.webmanifest">
-  <meta name="theme-color" content="#7126a6">
-  <link rel="stylesheet" href="assets/css/site-v3.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>progLog — Track Games, Trophies & Achievements</title>
+    <meta name="description"
+        content="progLog is a beautiful gaming profile and achievement tracker for saving games, logging sessions, collecting trophies and connecting with friends.">
+    <meta name="theme-color" content="#070b12">
+    <meta property="og:title" content="progLog — Your Gaming Achievement Hub">
+    <meta property="og:description"
+        content="Track games, trophies, achievements, sessions and friends in one gaming profile.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://shahisha1.github.io/ProgLog/assets/images/social-share.svg">
+    <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="canonical" href="https://shahisha1.github.io/ProgLog/">
+    <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 
-<body>
-
-  <div id="page-landing">
-    <header id="site-nav">
-      <div class="landing-nav-inner">
-      <div class="landing-nav-left">
-        <a href="./" class="brand">
-          <img class="brandmark" src="assets/img/proglog-logo.png" alt="Proglog logo">
-          <span>Prog<span class="accent">log</span></span>
-        </a>
-        <div class="nav-links">
-          <a href="pages/core/overview.html" class="nav-link">Overview</a>
-          <a href="pages/games/games.html" class="nav-link">Catalog</a>
-          <a href="pages/user/profile.html" class="nav-link">Profile</a>
+<body><a class="skip-link" href="#main">Skip to content</a>
+    <aside class="sidebar"><a class="brand" href="index.html" aria-label="progLog home"><span
+                class="brand-mark">🎮</span>prog<span>Log</span></a>
+        <nav class="nav" aria-label="Main navigation"><a aria-current="page" href="index.html"><span
+                    class="nav-icon">⌂</span><span>Home</span></a><a href="pages/games.html"><span
+                    class="nav-icon">▣</span><span>Games</span></a><a href="pages/achievements.html"><span
+                    class="nav-icon">◆</span><span>Achievements</span></a><a href="pages/sessions.html"><span
+                    class="nav-icon">◷</span><span>Sessions</span></a><a href="pages/trophies.html"><span
+                    class="nav-icon">♜</span><span>Trophies</span></a><a href="pages/friends.html"><span
+                    class="nav-icon">♧</span><span>Friends</span></a><a href="pages/profile.html"><span
+                    class="nav-icon">♙</span><span>Profile</span></a><a href="pages/settings.html"><span
+                    class="nav-icon">⚙</span><span>Settings</span></a><a href="pages/contact.html"><span
+                    class="nav-icon">✉</span><span>Contact</span></a></nav>
+        <div class="sidebar-bottom">
+            <div class="mini-profile"><img class="avatar" src="assets/images/avatar.svg" alt="Guest profile avatar" data-user-avatar>
+                <div><strong class="user-name">Guest</strong><small>Sign in to save progress</small></div>
+            </div>
+            <div class="xp"><i style="width:0%"></i></div><small>Sign in to track your progress</small>
         </div>
-      </div>
-
-      <nav class="landing-nav-actions">
-        <a href="#faq">FAQ</a>
-        <a href="#community-feed">Community</a>
-        <a href="pages/core/auth.html" class="nav-signin">Sign In</a>
-        <a href="pages/core/overview.html" class="btn btn-primary btn-sm">Open Proglog</a>
-      </nav>
-      </div>
-    </header>
-
-    <section class="hero">
-      <div class="wrap hero-layout">
-        <div class="hero-copy">
-          <div class="eyebrow hero-kicker">◉ Welcome to ProgLog</div>
-          <h1>Track. Play.<br><span>Conquer.</span></h1>
-          <p class="lede">Your all-in-one platform to track games, earn trophies, connect with gamers, and stay updated with the gaming world.</p>
-
-          <div class="hero-actions">
-            <a href="pages/core/overview.html" class="btn btn-primary btn-lg">Explore Games</a>
-            <a href="pages/core/auth.html" class="btn btn-ghost btn-lg">Join Community</a>
-          </div>
-
-          <div class="mini-proof-row">
-            <div><strong>100%</strong><span>Vault views</span></div>
-            <div><strong>4</strong><span>Trophy tiers</span></div>
-            <div><strong>∞</strong><span>Games tracked</span></div>
-          </div>
-        </div>
-
-        <div class="hero-showcase hero-spotlight">
-          <div class="showcase-header">
-            <div>
-              <div class="showcase-platform">PlayStation</div>
-              <div class="showcase-title">The Last of Us Part I</div>
+    </aside>
+    <div class="main">
+        <header class="topbar"><button class="mobile-menu" id="menuButton" aria-label="Open navigation menu"
+                aria-expanded="false">☰</button>
+            <div class="search"><span class="search-icon">⌕</span><input id="siteSearch" type="search"
+                    aria-label="Search saved games" autocomplete="off"></div>
+            <div class="top-actions"><a class="icon-link hide-mobile" href="pages/friends.html"
+                    aria-label="Friends">♧</a><a class="icon-link hide-mobile" href="pages/contact.html"
+                    aria-label="Contact">✉</a><a class="auth-link" href="pages/profile.html">Profile</a><a
+                    href="pages/profile.html" aria-label="Open Guest profile"><img class="avatar"
+                        src="assets/images/avatar.svg" alt="Open Guest profile" style="width:34px;height:34px"></a>
             </div>
-            <div style="text-align:right;">
-              <div style="font-family:'JetBrains Mono'; font-size:18px; font-weight:700; color:var(--brand-primary);">
-                100%</div>
-              <div style="font-size:11px; color:var(--text-muted); text-transform:uppercase;">Platinum Secured</div>
+        </header>
+        <main id="main" class="content">
+            <div id="flash" class="notice hidden" role="status" aria-live="polite"></div>
+            <section class="hero" aria-labelledby="featured-game">
+                <div class="hero-art" aria-hidden="true"></div>
+                <div class="hero-shade" aria-hidden="true"></div>
+                <div class="hero-content"><img class="cover" src="assets/images/cover.svg"
+                        alt="God of War game artwork">
+                    <div class="meta">PlayStation 4 · Action · Adventure</div>
+                    <h1 id="featured-game">God of War achievement tracker</h1>
+                    <p class="rating"><strong>★ 4.8</strong> <span class="positive">Very Positive</span> · 8.9K ratings
+                    </p>
+                    <div class="actions"><a class="btn btn-primary" href="pages/game.html?name=God%20of%20War">View
+                            Game</a><button class="btn" id="detailSave" type="button">★ Saved</button><a class="btn"
+                            href="pages/games.html">My Library</a></div>
+                </div>
+            </section>
+            <div class="grid">
+                <div>
+                    <section class="stats" aria-label="God of War statistics">
+                        <div class="stat"><strong>67%</strong><small>Total completion</small></div>
+                        <div class="stat"><strong>27 / 37</strong><small>Trophies earned</small></div>
+                        <div class="stat"><strong>42h 15m</strong><small>Time played</small></div>
+                        <div class="stat"><strong>2 days ago</strong><small>Last played</small></div>
+                    </section>
+                    <section class="card">
+                        <div class="section-head">
+                            <h2>Recent trophies</h2><a class="link" href="pages/trophies.html">View all</a>
+                        </div>
+                        <div class="trophies">
+                            <div class="trophy">
+                                <div class="medal">🥈</div><b>Father and Son</b><small>Ultra Rare · 1.3%</small>
+                            </div>
+                            <div class="trophy">
+                                <div class="medal">🥇</div><b>The Journey Begins</b><small>Common · 96.1%</small>
+                            </div>
+                            <div class="trophy">
+                                <div class="medal">🥈</div><b>A New Friend</b><small>Common · 85.7%</small>
+                            </div>
+                            <div class="trophy">
+                                <div class="medal">🥇</div><b>Feels Like Home</b><small>Rare · 46.3%</small>
+                            </div>
+                            <div class="trophy">
+                                <div class="medal">🏅</div><b>Dragon Slayer</b><small>Rare · 28.1%</small>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="card">
+                        <div class="section-head">
+                            <h2>Recent gaming sessions</h2><a class="link" href="pages/sessions.html">View all</a>
+                        </div>
+                        <div class="sessions">
+                            <div class="session"><img src="assets/images/session1.svg"
+                                    alt="The Journey session artwork">
+                                <div><b>The Journey Continues</b><small>Give Me a Challenge</small></div><small>4h
+                                    32m<br>May 20, 2026</small>
+                                <div class="progress" aria-label="72 percent session progress"><i style="width:72%"></i>
+                                </div>🏆
+                            </div>
+                            <div class="session"><img src="assets/images/session2.svg"
+                                    alt="Return to the Mountain session artwork">
+                                <div><b>Return to the Mountain</b><small>Give Me a Challenge</small></div><small>3h
+                                    18m<br>May 18, 2026</small>
+                                <div class="progress" aria-label="60 percent session progress"><i style="width:60%"></i>
+                                </div>🏆
+                            </div>
+                            <div class="session"><img src="assets/images/session3.svg"
+                                    alt="Between the Realms session artwork">
+                                <div><b>Between the Realms</b><small>Give Me a Challenge</small></div><small>2h
+                                    47m<br>May 16, 2026</small>
+                                <div class="progress" aria-label="52 percent session progress"><i style="width:52%"></i>
+                                </div>🏆
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <div>
+                    <section class="card">
+                        <div class="side-profile">
+                            <div class="profile-row"><img class="avatar" src="assets/images/avatar.svg"
+                                    alt="Guest profile avatar">
+                                <div><strong class="user-name">Guest</strong><small>Sign in to save progress</small></div>
+                            </div>
+                            <div class="xp"><i style="width:0%"></i></div><small class="muted">Sign in to track your progress</small>
+                        </div>
+                        <div class="side-stats">
+                            <div><strong>0</strong><small>Games</small></div>
+                            <div><strong>0</strong><small>Trophies</small></div>
+                            <div><strong>0</strong><small>Achievements</small></div>
+                        </div>
+                    </section>
+                    <section class="card">
+                        <div class="section-head">
+                            <h2>Friends</h2><a class="link" href="pages/friends.html">View all</a>
+                        </div>
+                        <div class="friends">
+                            <div class="friend"><img class="avatar" src="assets/images/avatar.svg" alt="Aarav avatar">
+                                <div class="friend-info"><b>Aarav</b>
+                                    <div class="status online">● Online</div>
+                                </div><span class="badge">28</span>
+                            </div>
+                            <div class="friend"><img class="avatar" src="assets/images/avatar.svg"
+                                    alt="ronin_47 avatar">
+                                <div class="friend-info"><b>ronin_47</b>
+                                    <div class="status">● In game</div>
+                                </div><span class="badge">24</span>
+                            </div>
+                            <div class="friend"><img class="avatar" src="assets/images/avatar.svg"
+                                    alt="MysticBlade avatar">
+                                <div class="friend-info"><b>MysticBlade</b>
+                                    <div class="status online">● Online</div>
+                                </div><span class="badge">19</span>
+                            </div>
+                            <div class="friend"><img class="avatar" src="assets/images/avatar.svg" alt="Artemis avatar">
+                                <div class="friend-info"><b>Artemis</b>
+                                    <div class="status">● Offline</div>
+                                </div><span class="badge">16</span>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="card">
+                        <div class="section-head">
+                            <h2>Recent activity</h2>
+                        </div>
+                        <div class="activity">
+                            <div class="medal">🥈</div>
+                            <div><b>Aarav earned Dragon Slayer</b><br><span class="muted">God of War · 2h ago</span>
+                            </div>
+                        </div>
+                    </section>
+                </div>
             </div>
-          </div>
-          <div class="roadmap-strip" style="margin-top:0; margin-bottom:14px; background:var(--bg-main);">
-            <div class="roadmap-item"><span class="roadmap-label">Difficulty</span><span class="roadmap-val">3/10</span>
-            </div>
-            <div class="roadmap-item"><span class="roadmap-label">Time</span><span class="roadmap-val">15–20h</span>
-            </div>
-            <div class="roadmap-item"><span class="roadmap-label">Playthroughs</span><span class="roadmap-val">1
-                Run</span></div>
-            <div class="roadmap-item"><span class="roadmap-label">Missables</span><span class="roadmap-val">0</span>
-            </div>
-          </div>
-          <div class="gc-tiers" style="justify-content:space-between; padding:4px 2px;">
-            <span>🏆 1 Platinum</span>
-            <span>🥇 7 Gold</span>
-            <span>🥈 7 Silver</span>
-            <span>🥉 14 Bronze</span>
-          </div>
-          <div class="hero-list-preview">
-            <div><span>Vault</span><strong>24 games</strong></div>
-            <div><span>Unlocked</span><strong>412 trophies</strong></div>
-            <div><span>Progress</span><strong>78.4%</strong></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <div class="strip">
-      <div class="cell"><b>4</b><span>Trophy Tiers</span></div>
-      <div class="cell"><b>∞</b><span>Platforms &amp; Titles</span></div>
-      <div class="cell"><b>100%</b><span>Local &amp; Private</span></div>
-      <div class="cell"><b>Free</b><span>To Use</span></div>
+        </main>
+        <footer class="footer">
+            <div class="footer-inner"><span>© <span id="year"></span> progLog</span><span><a
+                        href="pages/contact.html">Contact</a> · <a href="pages/settings.html">Settings</a></span></div>
+        </footer>
     </div>
-
-    <!-- Features Grid -->
-    <section class="feat-section" id="features">
-      <div class="wrap">
-        <div class="feat-head landing-section-head">
-          <div class="eyebrow">Built for completionists</div>
-          <h2>Why Gamers Choose ProgLog</h2>
-          <p>Everything you need to turn a scattered backlog into a clear, rewarding gaming journey.</p>
-        </div>
-        <div class="feat-grid">
-          <div class="feat-card">
-            <div class="feature-icon">⌘</div>
-            <div class="num">01</div>
-            <h3>Track Everything</h3>
-            <p>Track your games, trophies, progress, sessions, and completion all in one place.</p>
-          </div>
-          <div class="feat-card">
-            <div class="feature-icon">◈</div>
-            <div class="num">02</div>
-            <h3>Discover Games</h3>
-            <p>Explore new games, view details, guides, reviews, videos, and community opinions.</p>
-          </div>
-          <div class="feat-card">
-            <div class="feature-icon">▶</div>
-            <div class="num">03</div>
-            <h3>Stay Updated</h3>
-            <p>Get the latest gaming news, Reddit posts, Twitch streams, and YouTube videos.</p>
-          </div>
-          <div class="feat-card">
-            <div class="feature-icon">♧</div>
-            <div class="num">04</div>
-            <h3>Connect</h3>
-            <p>Build your profile, showcase achievements, and connect with gamers worldwide.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Community Feed -->
-    <section class="community-section" id="community-feed">
-      <div class="wrap community-wrap">
-        <div class="community-head">
-          <div>
-            <div class="eyebrow">Live gaming pulse</div>
-            <h2>What the gaming community is talking about</h2>
-            <p>Fresh posts, videos, and live streams in one clean dashboard.</p>
-          </div>
-          <a href="pages/games/games.html" class="btn btn-ghost btn-sm">Explore your catalog →</a>
-        </div>
-
-        <div class="community-grid">
-          <article class="community-panel community-reddit">
-            <div class="community-panel-head">
-              <div><span class="community-icon">R</span><div><h3>Reddit</h3><p>Latest from r/gaming</p></div></div>
-              <div class="feed-head-actions"><span id="reddit-feed-status" class="feed-status">Loading</span><button class="feed-refresh" type="button" data-feed-refresh="reddit" aria-label="Refresh Reddit feed">↻</button></div>
-            </div>
-            <div id="community-reddit-list" class="community-feed-list"></div>
-          </article>
-
-          <article class="community-panel community-twitch">
-            <div class="community-panel-head">
-              <div><span class="community-icon">T</span><div><h3>Twitch</h3><p>Live gaming streams</p></div></div>
-              <div class="feed-head-actions"><span id="twitch-feed-status" class="feed-status">Loading</span><button class="feed-refresh" type="button" data-feed-refresh="twitch" aria-label="Refresh Twitch feed">↻</button></div>
-            </div>
-            <div id="community-twitch-list" class="community-feed-list"></div>
-          </article>
-
-          <article class="community-panel community-youtube">
-            <div class="community-panel-head">
-              <div><span class="community-icon">▶</span><div><h3>YouTube</h3><p>Latest gaming videos</p></div></div>
-              <div class="feed-head-actions"><span id="youtube-feed-status" class="feed-status">Loading</span><button class="feed-refresh" type="button" data-feed-refresh="youtube" aria-label="Refresh YouTube feed">↻</button></div>
-            </div>
-            <div id="community-youtube-list" class="community-feed-list"></div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- 5-Question Interactive FAQ Accordion -->
-    <section class="faq-section" id="faq">
-      <div class="wrap">
-        <div class="feat-head">
-          <h2>Everything You Need to Know</h2>
-        </div>
-
-        <div class="faq-list">
-          <div class="faq-item">
-            <button class="faq-question">
-              <span>How does Proglog track trophies without linking my PSN or Steam account?</span>
-              <div class="faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                  stroke-width="2.5">
-                  <path d="M6 9l6 6 6-6" />
-                </svg></div>
-            </button>
-            <div class="faq-answer">
-              Proglog keeps your tracking simple. Check off trophies as you earn them, add games to your vault, and use
-              the guide links when you need a hand.
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <button class="faq-question">
-              <span>Is my trophy data saved if I close my browser?</span>
-              <div class="faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                  stroke-width="2.5">
-                  <path d="M6 9l6 6 6-6" />
-                </svg></div>
-            </button>
-            <div class="faq-answer">
-              Yes! Your hunter profiles, checklists, completion percentages, and personal notes are saved to your
-              browser's persistent <code>localStorage</code> right away, so they survive sessions and computer restarts.
-              If you create an account, they're also synced to the cloud so you can pick up on another device.
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <button class="faq-question">
-              <span>Can I export or transfer my trophy progress to another computer?</span>
-              <div class="faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                  stroke-width="2.5">
-                  <path d="M6 9l6 6 6-6" />
-                </svg></div>
-            </button>
-            <div class="faq-answer">
-              Absolutely. On the <a href="pages/user/profile.html"
-                style="color:var(--brand-primary); font-weight:600;">Profile page</a>, you can click "Download JSON
-              Backup" to save your entire library to a <code>.json</code> file, and restore it on any other browser or
-              device in one click.
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <button class="faq-question">
-              <span>How are Hunter Levels and Trophy XP calculated?</span>
-              <div class="faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                  stroke-width="2.5">
-                  <path d="M6 9l6 6 6-6" />
-                </svg></div>
-            </button>
-            <div class="faq-answer">
-              Every unlocked trophy awards XP: Platinum = 300 XP, Gold = 90 XP, Silver = 30 XP, and Bronze = 15 XP. As
-              your XP grows, your Hunter Rank upgrades through tiers from Novice Hunter to Mythic Trophy Legend.
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <button class="faq-question">
-              <span>Can I add custom achievements or games not in the catalog?</span>
-              <div class="faq-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                  stroke-width="2.5">
-                  <path d="M6 9l6 6 6-6" />
-                </svg></div>
-            </button>
-            <div class="faq-answer">
-              Yes! You can create any custom game title across any platform (PlayStation, Steam, Xbox, Switch, PC) and
-              add custom trophy requirements, point values, categories (Story, Collectible, Combat, DLC), and personal
-              strategy notes.
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Request a Guide / Feedback Enquiry Form -->
-    <section class="cta-section" id="request-guide" style="padding-top:20px;">
-      <div class="wrap">
-        <div class="article-wrap"
-          style="text-align:left; max-width:680px; margin:0 auto; background:var(--bg-surface);">
-          <h2 style="font-size:24px; margin-bottom:8px;">Request a Trophy Guide or Submit Feedback</h2>
-          <p style="font-size:14px; color:var(--text-dim); margin-bottom:20px;">Missing a game? Add a custom title to
-            your vault or request it for the catalog.</p>
-
-          <form action="pages/legal/thank-you.html" method="GET">
-            <div class="field">
-              <label class="field-label">Game Title Requested</label>
-              <input type="text" name="game" required placeholder="e.g. Silent Hill 2 Remake, Final Fantasy VII Rebirth"
-                maxlength="80">
-            </div>
-            <div class="field">
-              <label class="field-label">Platform</label>
-              <select name="platform">
-                <option value="playstation">PlayStation 5 / PS4</option>
-                <option value="steam">Steam / PC</option>
-                <option value="xbox">Xbox Series X|S</option>
-                <option value="nintendo">Nintendo Switch</option>
-              </select>
-            </div>
-            <div class="field">
-              <label class="field-label">Your Email (Optional)</label>
-              <input type="email" name="email" placeholder="hunter@example.com">
-            </div>
-            <div class="field">
-              <label class="field-label">Additional Notes / Guide Links</label>
-              <textarea name="notes" placeholder="Any specific difficulty or missable trophy notes..."
-                maxlength="300"></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary btn-lg" style="width:100%;">
-              Send Guide Request
-            </button>
-          </form>
-        </div>
-      </div>
-    </section>
-
-    <footer id="site-footer">
-      <div class="wrap">
-        <span>Proglog — Game tracking, trophies, and guides in one place.</span>
-        <div style="display:flex; gap:18px; font-size:13px; color:var(--text-muted); flex-wrap:wrap;">
-          <a href="./">Home</a>
-          <a href="pages/core/overview.html">Overview</a>
-          <a href="pages/games/games.html">Catalog</a>
-          <a href="pages/user/profile.html">Profile</a>
-          <a href="pages/core/auth.html">Sign In / Sign Up</a>
-          <a href="pages/legal/privacy.html">Privacy Policy</a>
-        </div>
-      </div>
-    </footer>
-  </div>
-
-  <script src="assets/js/app-core.js"></script>
-  <script>
-    // FAQ Accordion Interaction
-    document.querySelectorAll('.faq-question').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var item = btn.closest('.faq-item');
-        var isOpen = item.classList.contains('open');
-        document.querySelectorAll('.faq-item').forEach(function (i) { i.classList.remove('open'); });
-        if (!isOpen) item.classList.add('open');
-      });
-    });
-  </script>
-
-  <script src="assets/js/content-feeds-config.js"></script>
-  <script src="assets/js/content-feeds.js"></script>
-  <script src="assets/js/theme.js"></script>
-  <script src="assets/js/boot-guard.js"></script>
-  <script src="./assets/js/phase45.js"></script>
+    <script type="module" src="assets/js/app.js"></script>
 </body>
 
 </html>
