@@ -67,15 +67,16 @@ export default {
       return new Response(null, { status: 204, headers: corsHeaders() });
     if (request.method !== "GET")
       return json({ error: "Method not allowed" }, 405, "no-store");
+
+    if (url.pathname === "/health")
+      return json({ ok: true, service: "progLog RAWG proxy" }, 200, "no-store");
+
     if (!env.RAWG_API_KEY)
       return json(
         { error: "RAWG_API_KEY secret is not configured on this Worker." },
         500,
         "no-store",
       );
-
-    if (url.pathname === "/health")
-      return json({ ok: true, service: "progLog RAWG proxy" }, 200, "no-store");
 
     if (url.pathname === "/games") {
       const search = cleanSearch(url.searchParams.get("search") || "");
