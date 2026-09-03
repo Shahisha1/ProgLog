@@ -8,8 +8,8 @@ A personal gaming journal, library, achievement tracker, and gaming history — 
 
 <br>
 
-[![GitHub](https://img.shields.io/badge/GitHub-View%20Repository-181717?style=for-the-badge\&logo=github)](https://github.com/Shahisha1/ProgLog)
-[![Stars](https://img.shields.io/github/stars/Shahisha1/ProgLog?style=for-the-badge\&logo=github)](https://github.com/Shahisha1/ProgLog/stargazers)
+[![GitHub](https://img.shields.io/badge/GitHub-View%20Repository-181717?style=for-the-badge&logo=github)](https://github.com/Shahisha1/ProgLog)
+[![Stars](https://img.shields.io/github/stars/Shahisha1/ProgLog?style=for-the-badge&logo=github)](https://github.com/Shahisha1/ProgLog/stargazers)
 [![Issues](https://img.shields.io/github/issues/Shahisha1/ProgLog?style=for-the-badge)](https://github.com/Shahisha1/ProgLog/issues)
 [![Last Commit](https://img.shields.io/github/last-commit/Shahisha1/ProgLog?style=for-the-badge)](https://github.com/Shahisha1/ProgLog/commits/main)
 
@@ -117,12 +117,12 @@ WISHLIST
 
 And because a game isn't just a database entry, you can also keep your own:
 
-* Ratings
-* Reviews
-* Playtime
-* Notes
-* Game metadata
-* Artwork
+- Ratings
+- Reviews
+- Playtime
+- Notes
+- Game metadata
+- Artwork
 
 Your library becomes a record of your gaming history rather than a simple list.
 
@@ -136,15 +136,15 @@ progLog connects with the RAWG game catalogue to bring rich game information dir
 
 Discover:
 
-* Artwork
-* Screenshots
-* Release dates
-* Genres
-* Platforms
-* Ratings
-* Descriptions
-* Achievements
-* Related game information
+- Artwork
+- Screenshots
+- Release dates
+- Genres
+- Platforms
+- Ratings
+- Descriptions
+- Achievements
+- Related game information
 
 Find something interesting?
 
@@ -171,11 +171,11 @@ Notes
 
 progLog turns those sessions into useful statistics:
 
-* Total playtime
-* Session history
-* Gaming activity
-* Gaming streaks
-* Per-game playtime
+- Total playtime
+- Session history
+- Gaming activity
+- Gaming streaks
+- Per-game playtime
 
 Because eventually you'll want to know where those 300 hours went.
 
@@ -189,12 +189,12 @@ Track your progress across the games you play.
 
 progLog supports:
 
-* Unlocked achievements
-* Achievement progress
-* Completion percentage
-* Rare achievements
-* Achievement milestones
-* Trophy tiers
+- Unlocked achievements
+- Achievement progress
+- Completion percentage
+- Rare achievements
+- Achievement milestones
+- Trophy tiers
 
 Your achievement progress contributes to your overall gaming profile.
 
@@ -267,16 +267,16 @@ progLog transforms your activity into a personal gaming dashboard.
 
 Track:
 
-* Total games
-* Total playtime
-* Completed games
-* Games in progress
-* Backlog size
-* Achievement completion
-* Most-played games
-* Favourite genres
-* Gaming streaks
-* Session history
+- Total games
+- Total playtime
+- Completed games
+- Games in progress
+- Backlog size
+- Achievement completion
+- Most-played games
+- Favourite genres
+- Gaming streaks
+- Session history
 
 The goal isn't to bury you in numbers.
 
@@ -292,12 +292,12 @@ Connect with other progLog users and keep up with what they're doing.
 
 See:
 
-* Friend activity
-* Recently played games
-* Achievement unlocks
-* Completed games
-* Wishlist additions
-* Public profiles
+- Friend activity
+- Recently played games
+- Achievement unlocks
+- Completed games
+- Wishlist additions
+- Public profiles
 
 Your gaming profile can become more than a private collection.
 
@@ -313,10 +313,10 @@ Keep track of the games you're waiting for.
 
 Monitor:
 
-* Wishlist games
-* Upcoming releases
-* Release dates
-* Games you're watching
+- Wishlist games
+- Upcoming releases
+- Release dates
+- Games you're watching
 
 Your backlog may be impossible to defeat.
 
@@ -377,9 +377,9 @@ progLog uses **Firebase Authentication**.
 
 Supported authentication includes:
 
-* Email and password
-* Google Sign-In
-* Demo profile
+- Email and password
+- Google Sign-In
+- Demo profile
 
 Authenticated users have access to their own protected gaming data.
 
@@ -437,16 +437,16 @@ progLog keeps the frontend lightweight while separating external API access from
 
 ### Technology Stack
 
-| Technology              | Purpose                            |
-| ----------------------- | ---------------------------------- |
-| HTML                    | Application structure              |
-| CSS                     | UI and responsive design           |
-| JavaScript              | Application logic                  |
-| Firebase Authentication | User authentication                |
-| Cloud Firestore         | Persistent user data               |
-| RAWG                    | Game catalogue and metadata        |
-| Cloudflare Workers      | API proxy                          |
-| Lucide                  | Interface icons                    |
+| Technology              | Purpose                     |
+| ----------------------- | --------------------------- |
+| HTML                    | Application structure       |
+| CSS                     | UI and responsive design    |
+| JavaScript              | Application logic           |
+| Firebase Authentication | User authentication         |
+| Cloud Firestore         | Persistent user data        |
+| RAWG                    | Game catalogue and metadata |
+| Cloudflare Workers      | API proxy                   |
+| Lucide                  | Interface icons             |
 
 ---
 
@@ -522,17 +522,17 @@ progLog includes a lightweight consent banner for browser storage.
 
 Local browser storage may be used for:
 
-* Theme preference
-* Cookie/storage consent
-* Offline shell caching
-* Local UI preferences
+- Theme preference
+- Cookie/storage consent
+- Offline shell caching
+- Local UI preferences
 
 Account-specific information is stored through Firebase.
 
 See:
 
-* `Privacy Policy`
-* `Terms of Service`
+- `Privacy Policy`
+- `Terms of Service`
 
 ---
 
@@ -549,10 +549,10 @@ cd ProgLog
 
 Create a Firebase project and enable:
 
-* Authentication
-* Email/Password
-* Google Sign-In
-* Firestore
+- Authentication
+- Email/Password
+- Google Sign-In
+- Firestore
 
 Then add your Firebase Web App configuration to:
 
@@ -569,7 +569,7 @@ export const firebaseConfig = {
   projectId: "YOUR_PROJECT_ID",
   storageBucket: "YOUR_PROJECT.firebasestorage.app",
   messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  appId: "YOUR_APP_ID",
 };
 ```
 
@@ -645,16 +645,16 @@ The core progLog experience does not depend on Steam.
 
 Without Steam, users can still:
 
-* Add games
-* Track playtime
-* Log sessions
-* Track achievements
-* Rate games
-* Write reviews
-* Manage their backlog
-* Manage their wishlist
-* Build their Journey
-* View statistics
+- Add games
+- Track playtime
+- Log sessions
+- Track achievements
+- Rate games
+- Write reviews
+- Manage their backlog
+- Manage their wishlist
+- Build their Journey
+- View statistics
 
 Steam can be connected independently without changing the core library system.
 
@@ -674,14 +674,14 @@ Enter Demo Profile
 
 The demo contains example:
 
-* Games
-* Playtime
-* Achievements
-* Sessions
-* Activity
-* Wishlist items
-* Friends
-* Statistics
+- Games
+- Playtime
+- Achievements
+- Sessions
+- Activity
+- Wishlist items
+- Friends
+- Statistics
 
 It's a fully populated example environment for exploring the application.
 
@@ -787,10 +787,10 @@ Firestore security rules are included to restrict access to user-owned data.
 
 progLog can be deployed using:
 
-* GitHub Pages
-* Cloudflare Pages
-* Netlify
-* Firebase Hosting
+- GitHub Pages
+- Cloudflare Pages
+- Netlify
+- Firebase Hosting
 
 The API proxy can run independently through Cloudflare Workers.
 
@@ -821,40 +821,40 @@ The API proxy can run independently through Cloudflare Workers.
 
 ## Completed
 
-* Firebase authentication
-* Firestore persistence
-* Game discovery
-* Game library
-* Game statuses
-* Sessions
-* Achievements
-* Ratings and reviews
-* Wishlist
-* Friends
-* Activity
-* Notifications
-* Statistics
-* Gaming Journey
-* Pixel avatars
-* Avatar customization
-* Dark / light mode
-* Responsive UI
-* PWA support
-* CSV library import
-* Optional Steam integration
+- Firebase authentication
+- Firestore persistence
+- Game discovery
+- Game library
+- Game statuses
+- Sessions
+- Achievements
+- Ratings and reviews
+- Wishlist
+- Friends
+- Activity
+- Notifications
+- Statistics
+- Gaming Journey
+- Pixel avatars
+- Avatar customization
+- Dark / light mode
+- Responsive UI
+- PWA support
+- CSV library import
+- Optional Steam integration
 
 ## Future
 
-* More avatar items
-* Unlockable cosmetics
-* XP and player levels
-* Achievement-based rewards
-* More platform integrations
-* Advanced gaming analytics
-* Social profiles
-* Community challenges
-* Shareable gaming profiles
-* Public Journey pages
+- More avatar items
+- Unlockable cosmetics
+- XP and player levels
+- Achievement-based rewards
+- More platform integrations
+- Advanced gaming analytics
+- Social profiles
+- Community challenges
+- Shareable gaming profiles
+- Public Journey pages
 
 ---
 
@@ -902,13 +902,13 @@ Keep contributions focused, tested, and consistent with the existing architectur
 
 When opening an issue, include:
 
-* What happened
-* What you expected
-* Steps to reproduce
-* Browser
-* Device
-* Console errors
-* Screenshots when useful
+- What happened
+- What you expected
+- Steps to reproduce
+- Browser
+- Device
+- Console errors
+- Screenshots when useful
 
 The more information provided, the easier it is to reproduce and fix the issue.
 
