@@ -1,4 +1,5 @@
 import { auth, db } from "./firebase.js";
+import { localSet } from "./store.js";
 import {
   doc,
   getDoc,
@@ -267,6 +268,56 @@ const DEMO_ACTIVITY = [
   },
 ];
 
+export function seedLocalDemoProfile() {
+  localSet(
+    "games",
+    DEMO_GAMES.map((g) => ({ ...g })),
+  );
+  localSet(
+    "sessions",
+    DEMO_SESSIONS.map((x, i) => ({ ...x, id: `demo-session-${i}` })),
+  );
+  localSet(
+    "activity",
+    DEMO_ACTIVITY.map((x, i) => ({ ...x, id: `demo-activity-${i}` })),
+  );
+  localSet("notifications", [
+    {
+      id: "demo-notice-1",
+      text: "Welcome to your demo profile. Explore the dashboard and make it yours.",
+      type: "info",
+      read: false,
+      createdAt: new Date().toISOString(),
+    },
+    {
+      id: "demo-notice-2",
+      text: "You are 6 achievements away from your next milestone.",
+      type: "success",
+      read: false,
+      createdAt: new Date(Date.now() - 3600000).toISOString(),
+    },
+  ]);
+  localSet("profile", {
+    displayName: "Shahisha",
+    bio: "Collecting games, chasing achievements and documenting the journey.",
+    visibility: "Public",
+    activityVisible: true,
+    friendCount: 4,
+    level: 24,
+    xp: 72,
+    avatar: {
+      preset: "wanderer",
+      skin: "#f3c7a6",
+      hair: "#3b2630",
+      shirt: "#6f42d8",
+      accent: "#f0b94b",
+      background: "#efe3ff",
+    },
+    demoSeeded: true,
+  });
+  return true;
+}
+
 export async function seedDemoProfile() {
   const user = auth?.currentUser;
   if (!user || !db) return false;
@@ -283,6 +334,14 @@ export async function seedDemoProfile() {
       friendCount: 4,
       level: 24,
       xp: 72,
+      avatar: {
+        preset: "wanderer",
+        skin: "#f3c7a6",
+        hair: "#3b2630",
+        shirt: "#6f42d8",
+        accent: "#f0b94b",
+        background: "#efe3ff",
+      },
       demoSeeded: true,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),

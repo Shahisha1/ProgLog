@@ -10,7 +10,7 @@ function resultHTML(g, i) {
       .slice(0, 4)
       .map((x) => x.platform?.name || x.name || x)
       .join(" · ") || "Platforms unavailable",
-  )}${g.released ? ` · ${esc(g.released)}` : ""}</p><small>${g.rating ? `★ ${Number(g.rating).toFixed(1)}` : "No rating"}${g.metacritic ? ` · Metacritic ${g.metacritic}` : ""}</small></div><button class="btn btn-primary import-game" data-index="${i}" type="button">Add</button></article>`;
+  )}${g.released ? ` · ${esc(g.released)}` : ""}</p><small>${g.rating ? `${Number(g.rating).toFixed(1)} rating` : "No rating"}${g.metacritic ? ` · Metacritic ${g.metacritic}` : ""}</small></div><button class="btn btn-primary import-game" data-index="${i}" type="button">Add</button></article>`;
 }
 async function search(q) {
   const box = $("#gameSearchResults");
@@ -66,6 +66,89 @@ async function add(index) {
     showToast(e.message, "error");
   }
 }
+function parseCSV(text) {
+  const rows = [];
+  let row = [],
+    cell = "",
+    quoted = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i],
+      n = text[i + 1];
+    if (c === '"') {
+      if (quoted && n === '"') {
+        cell += '"';
+        i++;
+      } else quoted = !quoted;
+    } else if (c === "," && !quoted) {
+      row.push(cell.trim());
+      cell = "";
+    } else if ((c === "\n" || c === "\r") && !quoted) {
+      if (c === "\r" && n === "\n") i++;
+      row.push(cell.trim());
+      cell = "";
+      if (row.some(Boolean)) rows.push(row);
+      row = [];
+    } else cell += c;
+  }
+  if (cell || row.length) {
+    row.push(cell.trim());
+    if (row.some(Boolean)) rows.push(row);
+  }
+  if (!rows.length) return [];
+  const headers = rows
+    .shift()
+    .map((x) => x.toLowerCase().replace(/[^a-z]/g, ""));
+  return rows
+    .map((r) => Object.fromEntries(headers.map((h, i) => [h, r[i] ?? ""])))
+    .filter((x) => x.game || x.name);
+}
+async function importCSV(file) {
+  if (!file) return showToast("Choose a CSV file first.", "error");
+  try {
+    const rows = parseCSV(await file.text());
+    if (!rows.length) throw new Error("No game rows were found.");
+    let added = 0;
+    for (const r of rows) {
+      const name = String(r.game || r.name || "").trim();
+      if (!name) continue;
+      const existing = library.find(
+        (g) => g.name?.toLowerCase() === name.toLowerCase(),
+      );
+      const game = existing || {
+        id: `manual-${Date.now()}-${added}`,
+        rawgId: null,
+        name,
+        coverUrl: "",
+        backgroundUrl: "",
+        genres: [],
+      };
+      game.status = String(r.status || game.status || "backlog").toLowerCase();
+      if (
+        !["playing", "backlog", "completed", "dropped", "wishlist"].includes(
+          game.status,
+        )
+      )
+        game.status = "backlog";
+      if (r.playtime !== undefined && r.playtime !== "")
+        game.playtimeHours = Math.max(0, Number(r.playtime) || 0);
+      if (r.rating !== undefined && r.rating !== "")
+        game.personalRating = Math.min(5, Math.max(1, Number(r.rating) || 0));
+      if (r.review !== undefined) game.review = String(r.review);
+      await saveGame(game);
+      await addActivity(
+        "library_import",
+        `Imported ${name} into your library`,
+        { gameId: game.id },
+      );
+      added++;
+    }
+    library = await listGames();
+    renderGameCards(library, $("#library"));
+    showToast(`${added} game${added === 1 ? "" : "s"} imported successfully.`);
+  } catch (e) {
+    showToast(e.message || "CSV import failed.", "error");
+  }
+}
 export async function initGames() {
   library = await listGames();
   renderGameCards(library, $("#library"));
@@ -104,6 +187,24 @@ export async function initGames() {
     renderGameCards([], $("#library"));
     showToast("Library cleared.");
   });
+  $("#csvImportForm")?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    await importCSV($("#csvFile")?.files?.[0]);
+  });
+  $("#downloadCsvTemplate")?.addEventListener("click", () => {
+    const blob = new Blob(
+      [
+        'Game,Status,Playtime,Rating,Review\nElden Ring,playing,94,5,"My notes"\n',
+      ],
+      { type: "text/csv" },
+    );
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "proglog-library-template.csv";
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  });
+  window.lucide?.createIcons();
 }
 export async function loadDiscoverCarousel() {
   const box = $("#discoverGames");
@@ -114,7 +215,7 @@ export async function loadDiscoverCarousel() {
     box.innerHTML = games
       .map(
         (g) =>
-          `<a class="game-tile" href="./game.html?rawgId=${g.id}&name=${encodeURIComponent(g.name)}"><img src="${esc(g.background_image || "")}" alt="${esc(g.name)} artwork" loading="lazy"><div class="game-copy"><strong>${esc(g.name)}</strong><small>${g.rating ? `★ ${Number(g.rating).toFixed(1)}` : "No rating"}${g.released ? ` · ${esc(g.released.slice(0, 4))}` : ""}</small></div></a>`,
+          `<a class="game-tile" href="./game.html?rawgId=${g.id}&name=${encodeURIComponent(g.name)}"><img src="${esc(g.background_image || "")}" alt="${esc(g.name)} artwork" loading="lazy"><div class="game-copy"><strong>${esc(g.name)}</strong><small>${g.rating ? `${Number(g.rating).toFixed(1)} rating` : "No rating"}${g.released ? ` · ${esc(g.released.slice(0, 4))}` : ""}</small></div></a>`,
       )
       .join("");
   } catch (e) {

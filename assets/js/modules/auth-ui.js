@@ -7,7 +7,7 @@ import {
   signInAnonymously,
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 import { $, showToast } from "./core.js";
-import { seedDemoProfile } from "./demo.js";
+import { seedDemoProfile, seedLocalDemoProfile } from "./demo.js";
 export function initAuth() {
   const form = $("#authForm");
   if (!form) return;
@@ -65,25 +65,27 @@ export function initAuth() {
     }
   });
   $("#demoAuth")?.addEventListener("click", async () => {
-    if (!configured || !auth)
-      return showToast(
-        "Configure Firebase and enable Anonymous sign-in to use the demo profile.",
-        "error",
-      );
     const b = $("#demoAuth");
     b.disabled = true;
     b.innerHTML = '<i data-lucide="loader-circle"></i> Starting demo…';
     try {
-      await signInAnonymously(auth);
-      await seedDemoProfile();
+      seedLocalDemoProfile();
+      try {
+        if (configured && auth) {
+          await signInAnonymously(auth);
+          await seedDemoProfile();
+        }
+      } catch (e) {
+        console.info("Using local demo session:", e.message);
+      }
+      sessionStorage.setItem("proglog-demo-session", "1");
       location.href = "../overview.html";
     } catch (e) {
       b.disabled = false;
       b.innerHTML = '<i data-lucide="play-circle"></i> Enter demo profile';
-      showToast(
-        "Demo sign-in failed. Enable Anonymous authentication in Firebase, then try again.",
-        "error",
-      );
+      showToast("Could not start the demo profile.", "error");
+    } finally {
+      window.lucide?.createIcons();
     }
   });
   $("#resetPassword")?.addEventListener("click", async () => {

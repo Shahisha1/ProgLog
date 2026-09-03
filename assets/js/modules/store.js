@@ -27,12 +27,15 @@ export const localSet = (k, v) =>
   localStorage.setItem(LOCAL_PREFIX + k, JSON.stringify(v));
 export const uid = () => auth?.currentUser?.uid || null;
 export async function getUserDoc() {
-  if (!uid() || !db) return null;
+  if (!uid() || !db) return localGet("profile", null);
   const s = await getDoc(doc(db, "users", uid()));
   return s.exists() ? { id: s.id, ...s.data() } : null;
 }
 export async function saveUserDoc(data) {
-  if (!uid() || !db) throw new Error("Please sign in first.");
+  if (!uid() || !db) {
+    localSet("profile", { ...localGet("profile", {}), ...data });
+    return;
+  }
   return setDoc(
     doc(db, "users", uid()),
     { ...data, updatedAt: serverTimestamp() },

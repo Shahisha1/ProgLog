@@ -1,4 +1,6 @@
 import { auth, db } from "./firebase.js";
+import { setupAvatarStudio } from "./avatar-studio.js";
+import { avatarData, avatarConfigFromUser } from "./avatar.js";
 import {
   getUserDoc,
   saveUserDoc,
@@ -31,6 +33,10 @@ export async function initProfile() {
     visibility: "Public",
   };
   $("#profileName").textContent = user.displayName || "Gamer";
+  if ($("#avatarStudio")) setupAvatarStudio(user, !user.readonly);
+  document
+    .querySelectorAll("[data-user-avatar]")
+    .forEach((x) => (x.src = avatarData(avatarConfigFromUser(user))));
   $("#profileBio").textContent = user.bio || "No bio yet.";
   $("#profileVisibility").textContent = user.visibility || "Public";
   const ownerId = user.id || auth?.currentUser?.uid;

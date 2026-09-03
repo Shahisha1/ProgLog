@@ -28,6 +28,7 @@ import { initDashboard } from "./modules/home-dashboard.js";
 import { initLanding } from "./modules/home.js";
 import { initSteam } from "./modules/steam.js";
 import { initTrophies } from "./modules/trophies.js";
+import { maybeOnboard } from "./modules/onboarding.js";
 
 await setupShell();
 navCurrent();
@@ -40,11 +41,11 @@ function globalSearch() {
 }
 globalSearch();
 async function syncUser(u) {
-  if (!db || !u) return;
+  if (!db || !u) return null;
   try {
     const ref = doc(db, "users", u.uid),
       snap = await getDoc(ref);
-    if (!snap.exists())
+    if (!snap.exists()) {
       await setDoc(
         ref,
         {
@@ -58,12 +59,19 @@ async function syncUser(u) {
         },
         { merge: true },
       );
+      return {};
+    }
+    return snap.data() || {};
   } catch (e) {
     console.warn("user sync", e);
+    return null;
   }
 }
 $$(".sign-out").forEach((b) =>
   b.addEventListener("click", async () => {
+    try {
+      sessionStorage.removeItem("proglog-demo-session");
+    } catch (e) {}
     if (auth) await signOut(auth);
     location.href = `${relPath()}index.html`;
   }),
@@ -86,25 +94,48 @@ const PRIVATE_PAGES = new Set([
   "steam.html",
 ]);
 let lastUser;
+const demoSession = () => {
+  try {
+    return sessionStorage.getItem("proglog-demo-session") === "1";
+  } catch (e) {
+    return false;
+  }
+};
+const demoUser = {
+  uid: null,
+  displayName: "Shahisha",
+  email: "demo@proglog.local",
+  photoURL: "assets/images/avatar.svg",
+  isDemo: true,
+};
 if (configured && auth) {
   onAuthStateChanged(auth, async (u) => {
     lastUser = u;
-    setUser(u);
+    const effective = u || (demoSession() ? demoUser : null);
+    setUser(effective);
     const p = location.pathname.split("/").pop() || "index.html";
-    if (PRIVATE_PAGES.has(p) && !u) {
+    if (PRIVATE_PAGES.has(p) && !effective) {
       location.replace(
         `${relPath()}pages/auth.html?next=${encodeURIComponent(location.pathname.split("/").pop())}`,
       );
       return;
     }
-    await syncUser(u);
-    await dispatch(u);
+    const profile = await syncUser(u);
+    const finalUser = u && profile ? { ...u, ...profile } : effective;
+    setUser(finalUser);
+    await maybeOnboard(finalUser);
+    await dispatch(finalUser);
   });
 } else {
-  setUser(null);
+  const effective = demoSession() ? demoUser : null;
+  setUser(effective);
   const p = location.pathname.split("/").pop() || "index.html";
-  if (PRIVATE_PAGES.has(p)) location.replace(`${relPath()}pages/auth.html`);
-  else dispatch(null);
+  if (PRIVATE_PAGES.has(p) && !effective)
+    location.replace(`${relPath()}pages/auth.html`);
+  else {
+    await maybeOnboard(effective);
+    dispatch(effective);
+  }
 }
 async function dispatch(u) {
   const p = location.pathname.split("/").pop() || "index.html";

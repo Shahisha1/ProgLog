@@ -42,12 +42,21 @@ export async function initGame() {
   }
   try {
     const d = await api(`/games/${game.rawgId}`);
-    game = {
-      ...game,
-      ...rawgToGame(d),
-      id: game.id || `rawg-${game.rawgId}`,
-      achievements: d.achievements || [],
-    };
+    game = { ...game, ...rawgToGame(d), id: game.id || `rawg-${game.rawgId}` };
+    try {
+      const ad = await api(`/games/${game.rawgId}/achievements?page_size=100`);
+      game.achievements = (ad.results || []).map((a) => ({
+        id: a.id,
+        name: a.name,
+        displayName: a.name,
+        description: a.description || "",
+        image: a.image || "",
+        percent: a.percent ?? null,
+        unlocked: Boolean(a.unlocked),
+      }));
+    } catch {
+      game.achievements = game.achievements || [];
+    }
     await saveGame(game);
     render(game);
   } catch {
@@ -64,13 +73,72 @@ export async function initGame() {
   $("#favoriteGame")?.addEventListener("click", async () => {
     game.favorite = !game.favorite;
     await saveGame(game);
-    document.querySelector("#favoriteGame").textContent = game.favorite
-      ? "★ Favorited"
-      : "☆ Favorite";
+    document.querySelector("#favoriteGame").innerHTML = game.favorite
+      ? '<i data-lucide="heart"></i> Favorited'
+      : '<i data-lucide="heart"></i> Favorite';
+    window.lucide?.createIcons();
     showToast(
       game.favorite ? "Added to favorites." : "Removed from favorites.",
     );
   });
+  const setupStars = (value = 0) => {
+    const box = $("#starRating");
+    if (!box) return;
+    const current = Number(value) || 0;
+    box.innerHTML = [1, 2, 3, 4, 5]
+      .map(
+        (n) =>
+          `<button type="button" class="star ${n <= current ? "is-active" : ""}" data-rating="${n}" aria-label="${n} star${n > 1 ? "s" : ""}" aria-pressed="${n === current ? "true" : "false"}"><i data-lucide="star"></i></button>`,
+      )
+      .join("");
+    box.querySelectorAll(".star").forEach((b) => {
+      b.addEventListener("mouseenter", () =>
+        box
+          .querySelectorAll(".star")
+          .forEach((x) =>
+            x.classList.toggle(
+              "is-hover",
+              Number(x.dataset.rating) <= Number(b.dataset.rating),
+            ),
+          ),
+      );
+      b.addEventListener("mouseleave", () =>
+        box
+          .querySelectorAll(".star")
+          .forEach((x) => x.classList.remove("is-hover")),
+      );
+      b.addEventListener("focus", () =>
+        box
+          .querySelectorAll(".star")
+          .forEach((x) =>
+            x.classList.toggle(
+              "is-hover",
+              Number(x.dataset.rating) <= Number(b.dataset.rating),
+            ),
+          ),
+      );
+      b.addEventListener("blur", () =>
+        box
+          .querySelectorAll(".star")
+          .forEach((x) => x.classList.remove("is-hover")),
+      );
+      b.addEventListener("click", () => {
+        const r = Number(b.dataset.rating);
+        $("#personalRating").value = r;
+        $("#ratingHint").textContent =
+          `${r}/5 — ${["", "Not for me", "It was okay", "Worth playing", "Really good", "Loved it"][r]}`;
+        box.querySelectorAll(".star").forEach((x) => {
+          const on = Number(x.dataset.rating) <= r;
+          x.classList.toggle("is-active", on);
+          x.setAttribute(
+            "aria-pressed",
+            String(Number(x.dataset.rating) === r),
+          );
+        });
+      });
+    });
+    window.lucide?.createIcons();
+  };
   $("#reviewForm")?.addEventListener("submit", async (e) => {
     e.preventDefault();
     game.personalRating = Number($("#personalRating").value) || null;
@@ -112,7 +180,7 @@ function render(g) {
       .join(" · ") || "Game"
   }${g.released ? ` · ${g.released}` : ""}`;
   $("#gameRating").innerHTML =
-    `<strong>★ ${g.rating ? Number(g.rating).toFixed(1) : "—"}</strong> <span class="positive">RAWG</span>${g.metacritic ? ` · Metacritic ${g.metacritic}` : ""}`;
+    `<strong>${g.rating ? Number(g.rating).toFixed(1) : "—"}</strong> <span class="positive">RAWG</span>${g.metacritic ? ` · Metacritic ${g.metacritic}` : ""}`;
   const cover = $("#gameCover");
   if (cover) {
     cover.src = g.coverUrl || g.heroUrl;
@@ -124,9 +192,12 @@ function render(g) {
     g.description || "No description available.",
   ).replace(/\n/g, "<br>");
   $("#saveStatus").value = g.status || "backlog";
-  $("#favoriteGame").textContent = g.favorite ? "★ Favorited" : "☆ Favorite";
+  $("#favoriteGame").innerHTML = g.favorite
+    ? '<i data-lucide="heart"></i> Favorited'
+    : '<i data-lucide="heart"></i> Favorite';
   $("#personalRating").value = g.personalRating || "";
   $("#personalReview").value = g.review || "";
+  setupStars(g.personalRating || 0);
   $("#playtime").textContent = fmtHours(g.playtimeHours || 0);
   const ach = g.achievements || [];
   $("#achievementCount").textContent =
@@ -136,7 +207,7 @@ function render(g) {
         .slice(0, 12)
         .map(
           (a) =>
-            `<div class="achievement ${a.unlocked ? "" : "locked"}"><img src="${esc(a.image || "")}" alt="" loading="lazy"><div><strong>${esc(a.name || a.displayName || "Achievement")}</strong><small>${esc(a.description || "")}</small></div><span class="check">${a.unlocked ? "✓" : ""}</span></div>`,
+            `<div class="achievement ${a.unlocked ? "" : "locked"}"><img src="${esc(a.image || "../assets/images/achievement-placeholder.svg")}" alt="" loading="lazy" onerror="this.onerror=null;this.src='../assets/images/achievement-placeholder.svg'"><div><strong>${esc(a.name || a.displayName || "Achievement")}</strong><small>${esc(a.description || "")}</small></div><span class="check">${a.unlocked ? '<i data-lucide="check"></i>' : ""}</span></div>`,
         )
         .join("")
     : '<div class="api-state">No RAWG achievement data for this game.</div>';
@@ -150,4 +221,5 @@ function render(g) {
         )
         .join("")
     : '<div class="api-state">No screenshots available.</div>';
+  window.lucide?.createIcons();
 }

@@ -4,8 +4,7 @@
   "compatibility_date": "2026-09-01",
   "secrets": {
     "required": [
-      "RAWG_API_KEY",
-      "STEAM_API_KEY"
+      "RAWG_API_KEY"
     ]
   }
 }

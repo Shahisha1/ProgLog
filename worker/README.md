@@ -8,7 +8,7 @@ This Worker is the secure proxy used by the GitHub Pages frontend. Keep API secr
 cd worker
 npx wrangler login
 npx wrangler secret put RAWG_API_KEY
-npx wrangler secret put STEAM_API_KEY
+npx wrangler secret put STEAM_API_KEY (optional)
 npx wrangler deploy
 ```
 

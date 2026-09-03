@@ -1,7 +1,9 @@
 import { getUserDoc, saveUserDoc } from "./store.js";
 import { $, showToast } from "./core.js";
+import { setupAvatarStudio } from "./avatar-studio.js";
 export async function initSettings() {
   const u = await getUserDoc();
+  setupAvatarStudio(u || {}, true);
   if (u) {
     $("#displayName").value = u.displayName || "";
     $("#visibility").value = u.visibility || "Public";

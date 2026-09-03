@@ -55,8 +55,7 @@ async function rawg(path, env) {
   return fetchJSON(url.toString(), { accept: "application/json" }, true);
 }
 async function steam(path, env, params) {
-  if (!env.STEAM_API_KEY)
-    throw new Error("STEAM_API_KEY secret is missing on the Worker");
+  if (!env.STEAM_API_KEY) return null;
   const u = new URL(`https://api.steampowered.com${path}`);
   Object.entries(params || {}).forEach(([k, v]) => u.searchParams.set(k, v));
   u.searchParams.set("key", env.STEAM_API_KEY);
@@ -107,6 +106,15 @@ async function handle(req, env) {
     return json(d, r.status, cors());
   }
   if (p === "/steam/resolve") {
+    if (!env.STEAM_API_KEY)
+      return json(
+        {
+          available: false,
+          error: "Steam integration is optional and is not configured.",
+        },
+        503,
+        cors(),
+      );
     const vanity = u.searchParams.get("vanity");
     if (!vanity) return json({ error: "vanity is required" }, 400, cors());
     const r = await steam("/ISteamUser/ResolveVanityURL/v1/", env, {
@@ -116,6 +124,15 @@ async function handle(req, env) {
     return json(d, r.status, cors());
   }
   if (p === "/steam/player") {
+    if (!env.STEAM_API_KEY)
+      return json(
+        {
+          available: false,
+          error: "Steam integration is optional and is not configured.",
+        },
+        503,
+        cors(),
+      );
     const steamid = u.searchParams.get("steamid");
     if (!steamid) return json({ error: "steamid is required" }, 400, cors());
     const r = await steam("/ISteamUser/GetPlayerSummaries/v2/", env, {
@@ -125,6 +142,15 @@ async function handle(req, env) {
     return json(d, r.status, cors());
   }
   if (p === "/steam/owned") {
+    if (!env.STEAM_API_KEY)
+      return json(
+        {
+          available: false,
+          error: "Steam integration is optional and is not configured.",
+        },
+        503,
+        cors(),
+      );
     const steamid = u.searchParams.get("steamid");
     if (!steamid) return json({ error: "steamid is required" }, 400, cors());
     const r = await steam("/IPlayerService/GetOwnedGames/v0001/", env, {
@@ -137,6 +163,15 @@ async function handle(req, env) {
     return json(d, r.status, cors());
   }
   if (p === "/steam/recent") {
+    if (!env.STEAM_API_KEY)
+      return json(
+        {
+          available: false,
+          error: "Steam integration is optional and is not configured.",
+        },
+        503,
+        cors(),
+      );
     const steamid = u.searchParams.get("steamid");
     if (!steamid) return json({ error: "steamid is required" }, 400, cors());
     const r = await steam(
@@ -148,6 +183,15 @@ async function handle(req, env) {
     return json(d, r.status, cors());
   }
   if (p === "/steam/schema") {
+    if (!env.STEAM_API_KEY)
+      return json(
+        {
+          available: false,
+          error: "Steam integration is optional and is not configured.",
+        },
+        503,
+        cors(),
+      );
     const appid = u.searchParams.get("appid");
     if (!appid) return json({ error: "appid is required" }, 400, cors());
     const r = await steam("/ISteamUserStats/GetSchemaForGame/v2/", env, {
@@ -158,6 +202,15 @@ async function handle(req, env) {
     return json(d, r.status, cors());
   }
   if (p === "/steam/achievements") {
+    if (!env.STEAM_API_KEY)
+      return json(
+        {
+          available: false,
+          error: "Steam integration is optional and is not configured.",
+        },
+        503,
+        cors(),
+      );
     const steamid = u.searchParams.get("steamid"),
       appid = u.searchParams.get("appid");
     if (!steamid || !appid)
