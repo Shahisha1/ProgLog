@@ -447,7 +447,6 @@ progLog keeps the frontend lightweight while separating external API access from
 | RAWG                    | Game catalogue and metadata        |
 | Cloudflare Workers      | API proxy                          |
 | Lucide                  | Interface icons                    |
-| PWA                     | Installable and offline experience |
 
 ---
 
