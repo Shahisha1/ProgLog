@@ -919,25 +919,3 @@ The more information provided, the easier it is to reproduce and fix the issue.
 This project is currently provided for **educational and personal use**.
 
 See the repository for the applicable license and third-party service terms.
-
----
-
-<div align="center">
-
-## Your library is a collection.
-
-## Your statistics are a record.
-
-## Your Journey is the story.
-
-<br>
-
-### progLog
-
-**Every game leaves a story. Keep yours.**
-
-<br>
-
-[View the repository](https://github.com/Shahisha1/ProgLog)
-
-</div>
