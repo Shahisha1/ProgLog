@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Statistics | progLog</title>
+    <meta name="description"
+        content="See playtime, completion, genres, statuses and achievement progress across your progLog library.">
+    <meta name="theme-color" content="#3d173e">
+    <meta property="og:title" content="Statistics | progLog">
+    <meta property="og:description"
+        content="See playtime, completion, genres, statuses and achievement progress across your progLog library.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="../assets/images/social-share.svg">
+    <link rel="icon" href="../assets/images/favicon.svg" type="image/svg+xml">
+    <link rel="manifest" href="../site.webmanifest">
+    <link rel="canonical" href="https://shahisha1.github.io/ProgLog/pages/stats.html">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+
+<body><a class="skip-link" href="#main">Skip to content</a>
+    <div class="layout">
+        <aside class="sidebar"><a class="brand" href="../index.html" aria-label="progLog home"><span
+                    class="brand-mark"><i data-lucide="gamepad-2"></i></span>prog<span>Log</span></a>
+            <nav class="nav" aria-label="Main navigation"><a href="../overview.html"><span
+                        class="nav-icon">⌂</span><span>Overview</span></a><a href="../pages/games.html"><span
+                        class="nav-icon">▣</span><span>Discover & Games</span></a><a
+                    href="../pages/achievements.html"><span class="nav-icon">◆</span><span>Achievements</span></a><a
+                    href="../pages/sessions.html"><span class="nav-icon">◷</span><span>Sessions</span></a><a
+                    href="../pages/trophies.html"><span class="nav-icon">♜</span><span>Trophies</span></a><a
+                    href="../pages/friends.html"><span class="nav-icon">♧</span><span>Friends</span></a><a
+                    href="../pages/journey.html"><span class="nav-icon">◌</span><span>Journey</span></a><a
+                    href="../pages/wishlist.html"><span class="nav-icon">☆</span><span>Wishlist</span></a><a
+                    href="../pages/stats.html" aria-current="page"><span
+                        class="nav-icon">∿</span><span>Stats</span></a><a href="../pages/compare.html"><span
+                        class="nav-icon">↔</span><span>Compare</span></a><a href="../pages/profile.html"><span
+                        class="nav-icon">♙</span><span>Profile</span></a><a href="../pages/settings.html"><span
+                        class="nav-icon">⚙</span><span>Settings</span></a><a href="../pages/notifications.html"><span
+                        class="nav-icon">◉</span><span>Notifications</span></a><a href="../pages/steam.html"><span
+                        class="nav-icon">S</span><span>Steam sync</span></a><a href="../pages/contact.html"><span
+                        class="nav-icon">✉</span><span>Contact</span></a></nav>
+            <div class="sidebar-bottom">
+                <div class="mini-profile"><img class="avatar" src="../assets/images/avatar.svg" alt="Profile avatar"
+                        data-user-avatar>
+                    <div><strong class="user-name">Guest</strong><small>Sign in to save progress</small></div>
+                </div>
+                <div class="xp"><i style="width:0%"></i></div><small>Your gaming progress, organized.</small>
+            </div>
+        </aside>
+        <div class="main">
+            <header class="topbar"><button class="mobile-menu" id="menuButton" aria-label="Open navigation"
+                    aria-expanded="false">☰</button>
+                <div class="search"><span class="search-icon">⌕</span><input id="siteSearch" type="search"
+                        placeholder="Search games…" aria-label="Search games" autocomplete="off"></div>
+                <div class="top-actions"><a class="icon-link hide-mobile" href="../pages/friends.html"
+                        aria-label="Friends">♧</a><a class="icon-link hide-mobile" href="../pages/notifications.html"
+                        aria-label="Notifications">◉</a><a class="auth-link" href="../pages/auth.html">Sign in</a><a
+                        href="../pages/profile.html" aria-label="Open profile"><img class="avatar"
+                            src="../assets/images/avatar.svg" alt="Open profile" data-user-avatar
+                            style="width:34px;height:34px"></a></div>
+            </header>
+            <main id="main" class="content">
+                <div id="flash" class="notice hidden" role="status" aria-live="polite"></div>
+                <div class="page-header">
+                    <div>
+                        <div class="eyebrow">Your numbers</div>
+                        <h1 class="page-title">Statistics</h1>
+                        <p class="lede">A deeper view of what you play, how much you play and how far you progress.</p>
+                    </div>
+                </div>
+                <section class="stat-row">
+                    <article class="card stat"><small>Games</small><strong id="statGames">0</strong></article>
+                    <article class="card stat"><small>Playtime</small><strong id="statHours">0m</strong></article>
+                    <article class="card stat"><small>Achievement completion</small><strong
+                            id="statCompletion">0%</strong></article>
+                    <article class="card stat"><small>Achievements</small><strong id="statAchievements">0</strong>
+                    </article>
+                    <article class="card stat"><small>Session streak</small><strong id="statStreak">0 days</strong>
+                    </article>
+                </section>
+                <section class="grid grid-2" style="margin-top:18px">
+                    <article class="card stat"><small>Completed games</small><strong id="statCompleted">0</strong>
+                    </article>
+                    <article class="card stat"><small>Currently playing</small><strong id="statPlaying">0</strong>
+                    </article>
+                    <article class="card stat"><small>Backlog</small><strong id="statBacklog">0</strong></article>
+                    <article class="card stat"><small>Top genre</small><strong id="statGenre"
+                            style="font-size:18px">—</strong></article>
+                </section>
+                <section class="card" style="margin-top:18px">
+                    <div class="section-head">
+                        <h2>Most played games</h2>
+                    </div>
+                    <div class="table-wrap">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Game</th>
+                                    <th>Playtime</th>
+                                    <th>Achievements</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="statsTable"></tbody>
+                        </table>
+                    </div>
+                </section>
+            </main>
+            <footer class="footer">
+                <div class="footer-inner"><span>© <span id="year"></span> progLog</span><span>Game data by <a
+                            href="https://rawg.io/" target="_blank" rel="noopener">RAWG</a> · <a
+                            href="../pages/privacy.html">Privacy</a> · <a href="../pages/terms.html">Terms</a></span>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <script type="module" src="../assets/js/app.js"></script>
+</body>
+
+</html>

@@ -1,139 +1,195 @@
-const RAWG_BASE = "https://api.rawg.io/api";
-
-function corsHeaders() {
-  return {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "GET, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type",
-    "Access-Control-Max-Age": "86400",
-  };
-}
-
-function json(
-  payload,
-  status = 200,
-  cache = "public, max-age=300, s-maxage=1800",
-) {
-  return new Response(JSON.stringify(payload), {
+const CACHE_TTL = 60 * 60;
+const RATE_WINDOW = 60_000,
+  RATE_MAX = 60;
+const hits = new Map();
+function json(data, status = 200, extra = {}) {
+  return new Response(JSON.stringify(data), {
     status,
     headers: {
-      "Content-Type": "application/json; charset=utf-8",
-      "Cache-Control": cache,
-      ...corsHeaders(),
+      "content-type": "application/json; charset=utf-8",
+      "cache-control": "public, max-age=60",
+      ...extra,
     },
   });
 }
-
-function cleanSearch(searchTerm) {
-  return searchTerm
-    .trim()
-    .replace(/[\u0000-\u001F]/g, "")
-    .slice(0, 80);
+function cors(h = "*") {
+  return {
+    "access-control-allow-origin": h,
+    "access-control-allow-methods": "GET,OPTIONS",
+    "access-control-allow-headers": "Content-Type, Accept",
+  };
 }
-
-async function rawgFetch(target, env, ctx) {
-  const cache = caches.default;
-  const cacheKey = new Request(target, { method: "GET" });
-  const cached = await cache.match(cacheKey);
-  if (cached) return cached;
-
-  const upstream = await fetch(target, {
-    headers: { Accept: "application/json" },
-  });
-  if (!upstream.ok)
-    return json(
-      { error: "RAWG request failed", status: upstream.status },
-      upstream.status,
-      "no-store",
-    );
-
-  const body = await upstream.text();
-  let parsed;
-  try {
-    parsed = JSON.parse(body);
-  } catch {
-    return json({ error: "RAWG returned invalid JSON." }, 502, "no-store");
+async function fetchJSON(url, headers = {}, cacheKey) {
+  const req = new Request(url, { headers });
+  if (cacheKey) {
+    const c = caches.default;
+    const hit = await c.match(req);
+    if (hit) return hit;
+    const r = await fetch(req);
+    if (r.ok) await c.put(req, r.clone());
+    return r;
   }
-
-  const response = json(parsed);
-  ctx.waitUntil(cache.put(cacheKey, response.clone()));
-  return response;
+  return fetch(req);
 }
-
-export default {
-  async fetch(request, env, ctx) {
-    const url = new URL(request.url);
-    if (request.method === "OPTIONS")
-      return new Response(null, { status: 204, headers: corsHeaders() });
-    if (request.method !== "GET")
-      return json({ error: "Method not allowed" }, 405, "no-store");
-
-    if (url.pathname === "/health")
-      return json({ ok: true, service: "progLog RAWG proxy" }, 200, "no-store");
-
-    if (!env.RAWG_API_KEY)
-      return json(
-        { error: "RAWG_API_KEY secret is not configured on this Worker." },
-        500,
-        "no-store",
-      );
-
-    if (url.pathname === "/games") {
-      const search = cleanSearch(url.searchParams.get("search") || "");
-      if (search && search.length < 2)
-        return json(
-          { error: "Search must contain at least 2 characters." },
-          400,
-          "no-store",
-        );
-      const params = new URLSearchParams({
-        key: env.RAWG_API_KEY,
-        page_size: "12",
-        ordering: "-added",
-      });
-      if (search) {
-        params.set("search", search);
-        params.set("search_precise", "true");
-      }
-      const response = await rawgFetch(
-        `${RAWG_BASE}/games?${params}`,
-        env,
-        ctx,
-      );
-      if (!response.ok) return response;
-      const rawgPayload = await response.json();
-      return json({
-        count: rawgPayload.count || 0,
-        results: (rawgPayload.results || []).map((game) => ({
-          id: game.id,
-          name: game.name,
-          slug: game.slug,
-          released: game.released,
-          background_image: game.background_image,
-          background_image_additional: game.background_image_additional,
-          rating: game.rating,
-          ratings_count: game.ratings_count,
-          metacritic: game.metacritic,
-          platforms: (game.platforms || [])
-            .map((p) => p.platform?.name)
-            .filter(Boolean),
-          genres: (game.genres || []).map((g) => g.name).filter(Boolean),
-        })),
-      });
-    }
-
-    const match = url.pathname.match(
-      /^\/games\/(\d+)(?:\/(achievements|screenshots))?$/,
+function limited(ip) {
+  const now = Date.now();
+  const x = hits.get(ip) || { n: 0, t: now };
+  if (now - x.t > RATE_WINDOW) {
+    x.n = 0;
+    x.t = now;
+  }
+  x.n++;
+  hits.set(ip, x);
+  if (hits.size > 3000 && Math.random() < 0.05)
+    hits.delete(hits.keys().next().value);
+  return x.n <= RATE_MAX;
+}
+function rawgBase(env) {
+  return `https://api.rawg.io/api`;
+}
+async function rawg(path, env) {
+  if (!env.RAWG_API_KEY)
+    throw new Error("RAWG_API_KEY secret is missing on the Worker");
+  const url = new URL(`${rawgBase(env)}${path}`);
+  url.searchParams.set("key", env.RAWG_API_KEY);
+  return fetchJSON(url.toString(), { accept: "application/json" }, true);
+}
+async function steam(path, env, params) {
+  if (!env.STEAM_API_KEY)
+    throw new Error("STEAM_API_KEY secret is missing on the Worker");
+  const u = new URL(`https://api.steampowered.com${path}`);
+  Object.entries(params || {}).forEach(([k, v]) => u.searchParams.set(k, v));
+  u.searchParams.set("key", env.STEAM_API_KEY);
+  return fetchJSON(u.toString(), { accept: "application/json" }, true);
+}
+async function handle(req, env) {
+  const u = new URL(req.url);
+  const p = u.pathname.replace(/\/$/, "");
+  if (p === "/health")
+    return json(
+      {
+        ok: true,
+        service: "progLog API proxy",
+        time: new Date().toISOString(),
+      },
+      200,
+      cors(),
     );
-    if (!match) return json({ error: "Not found" }, 404, "no-store");
-    const id = match[1];
-    const child = match[2];
-    const params = new URLSearchParams({ key: env.RAWG_API_KEY });
-    if (child === "achievements") params.set("page_size", "100");
-    return rawgFetch(
-      `${RAWG_BASE}/games/${id}${child ? `/${child}` : ""}?${params}`,
+  if (p === "/games") {
+    const allowed = [
+      "search",
+      "ordering",
+      "page",
+      "page_size",
+      "platforms",
+      "dates",
+      "genres",
+    ];
+    const q = new URLSearchParams();
+    allowed.forEach((k) => {
+      const v = u.searchParams.get(k);
+      if (v) q.set(k, v);
+    });
+    const r = await rawg(`/games?${q.toString()}`, env);
+    const d = await r.json();
+    return json(d, r.status, cors());
+  }
+  const gm = p.match(/^\/games\/(\d+)$/);
+  if (gm) {
+    const r = await rawg(`/games/${gm[1]}`, env);
+    const d = await r.json();
+    return json(d, r.status, cors());
+  }
+  const ga = p.match(/^\/games\/(\d+)\/achievements$/);
+  if (ga) {
+    const r = await rawg(`/games/${ga[1]}/achievements`, env);
+    const d = await r.json();
+    return json(d, r.status, cors());
+  }
+  if (p === "/steam/resolve") {
+    const vanity = u.searchParams.get("vanity");
+    if (!vanity) return json({ error: "vanity is required" }, 400, cors());
+    const r = await steam("/ISteamUser/ResolveVanityURL/v1/", env, {
+      vanityurl: vanity,
+    });
+    const d = await r.json();
+    return json(d, r.status, cors());
+  }
+  if (p === "/steam/player") {
+    const steamid = u.searchParams.get("steamid");
+    if (!steamid) return json({ error: "steamid is required" }, 400, cors());
+    const r = await steam("/ISteamUser/GetPlayerSummaries/v2/", env, {
+      steamids: steamid,
+    });
+    const d = await r.json();
+    return json(d, r.status, cors());
+  }
+  if (p === "/steam/owned") {
+    const steamid = u.searchParams.get("steamid");
+    if (!steamid) return json({ error: "steamid is required" }, 400, cors());
+    const r = await steam("/IPlayerService/GetOwnedGames/v0001/", env, {
+      steamid,
+      include_appinfo: "true",
+      include_played_free_games: "true",
+      format: "json",
+    });
+    const d = await r.json();
+    return json(d, r.status, cors());
+  }
+  if (p === "/steam/recent") {
+    const steamid = u.searchParams.get("steamid");
+    if (!steamid) return json({ error: "steamid is required" }, 400, cors());
+    const r = await steam(
+      "/IPlayerService/GetRecentlyPlayedGames/v0001/",
       env,
-      ctx,
+      { steamid, count: "20", format: "json" },
     );
+    const d = await r.json();
+    return json(d, r.status, cors());
+  }
+  if (p === "/steam/schema") {
+    const appid = u.searchParams.get("appid");
+    if (!appid) return json({ error: "appid is required" }, 400, cors());
+    const r = await steam("/ISteamUserStats/GetSchemaForGame/v2/", env, {
+      appid,
+      format: "json",
+    });
+    const d = await r.json();
+    return json(d, r.status, cors());
+  }
+  if (p === "/steam/achievements") {
+    const steamid = u.searchParams.get("steamid"),
+      appid = u.searchParams.get("appid");
+    if (!steamid || !appid)
+      return json({ error: "steamid and appid are required" }, 400, cors());
+    const r = await steam("/ISteamUserStats/GetPlayerAchievements/v1/", env, {
+      steamid,
+      appid,
+      l: "english",
+      format: "json",
+    });
+    const d = await r.json();
+    return json(d, r.status, cors());
+  }
+  return json({ error: "Not found" }, 404, cors());
+}
+export default {
+  async fetch(req, env) {
+    if (req.method === "OPTIONS")
+      return new Response(null, { status: 204, headers: cors() });
+    if (req.method !== "GET")
+      return json({ error: "Method not allowed" }, 405, cors());
+    const ip = req.headers.get("CF-Connecting-IP") || "unknown";
+    if (!limited(ip))
+      return json(
+        { error: "Rate limit exceeded. Try again in a minute." },
+        429,
+        cors(),
+      );
+    try {
+      return await handle(req, env);
+    } catch (e) {
+      return json({ error: e.message || "Worker error" }, 500, cors());
+    }
   },
 };

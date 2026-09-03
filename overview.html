@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Overview | progLog</title>
+    <meta name="description" content="Your progLog gaming dashboard, library, achievements and activity.">
+    <meta name="theme-color" content="#3d173e">
+    <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body><a class="skip-link" href="#main">Skip to content</a>
+    <div class="layout">
+        <aside class="sidebar"><a class="brand" href="index.html" aria-label="progLog home"><span class="brand-mark"><i
+                        data-lucide="gamepad-2"></i></span>prog<span>Log</span></a>
+            <nav class="nav" aria-label="Dashboard navigation">
+                <a class="nav-primary" href="overview.html"><span class="nav-icon"><i
+                            data-lucide="layout-dashboard"></i></span><span>Overview</span></a><a class="nav-primary"
+                    href="pages/games.html"><span class="nav-icon"><i data-lucide="library"></i></span><span>Discover &
+                        Games</span></a><a class="nav-primary" href="pages/achievements.html"><span class="nav-icon"><i
+                            data-lucide="trophy"></i></span><span>Achievements</span></a><a class="nav-primary"
+                    href="pages/sessions.html"><span class="nav-icon"><i
+                            data-lucide="clock-3"></i></span><span>Sessions</span></a><a class="nav-primary"
+                    href="pages/trophies.html"><span class="nav-icon"><i
+                            data-lucide="award"></i></span><span>Trophies</span></a><a class="nav-primary"
+                    href="pages/friends.html"><span class="nav-icon"><i
+                            data-lucide="users"></i></span><span>Friends</span></a>
+                <div class="sidebar-section">Your space</div><a href="pages/journey.html"><span class="nav-icon"><i
+                            data-lucide="route"></i></span><span>Journey</span></a><a href="pages/wishlist.html"><span
+                        class="nav-icon"><i data-lucide="star"></i></span><span>Wishlist</span></a><a
+                    href="pages/stats.html"><span class="nav-icon"><i
+                            data-lucide="chart-no-axes-combined"></i></span><span>Stats</span></a><a
+                    href="pages/compare.html"><span class="nav-icon"><i
+                            data-lucide="arrow-left-right"></i></span><span>Compare</span></a>
+                <div class="sidebar-section">Account</div><a href="pages/profile.html"><span class="nav-icon"><i
+                            data-lucide="user-round"></i></span><span>Profile</span></a><a
+                    href="pages/settings.html"><span class="nav-icon"><i
+                            data-lucide="settings"></i></span><span>Settings</span></a><a
+                    href="pages/notifications.html"><span class="nav-icon"><i
+                            data-lucide="bell"></i></span><span>Notifications</span></a><a href="pages/steam.html"><span
+                        class="nav-icon"><i data-lucide="link-2"></i></span><span>Steam sync</span></a><a
+                    href="pages/contact.html"><span class="nav-icon"><i
+                            data-lucide="mail"></i></span><span>Contact</span></a>
+            </nav>
+            <div class="sidebar-bottom">
+                <div class="mini-profile"><img class="avatar" src="assets/images/avatar.svg" alt="Profile avatar"
+                        data-user-avatar>
+                    <div><strong class="user-name">Guest</strong><small>Sign in to save progress</small></div>
+                </div>
+                <div class="xp"><i style="width:72%"></i></div><small>Keep playing. Keep progressing.</small>
+            </div>
+        </aside>
+        <div class="main">
+            <header class="topbar"><button class="mobile-menu" id="menuButton" aria-label="Open navigation"
+                    aria-expanded="false"><i data-lucide="menu"></i></button>
+                <nav class="top-nav" aria-label="Primary navigation"><a href="overview.html"><i
+                            data-lucide="layout-dashboard"></i><span>Overview</span></a><a href="pages/games.html"><i
+                            data-lucide="library"></i><span>Discover & Games</span></a><a
+                        href="pages/achievements.html"><i data-lucide="trophy"></i><span>Achievements</span></a><a
+                        href="pages/sessions.html"><i data-lucide="clock-3"></i><span>Sessions</span></a><a
+                        href="pages/trophies.html"><i data-lucide="award"></i><span>Trophies</span></a><a
+                        href="pages/friends.html"><i data-lucide="users"></i><span>Friends</span></a></nav>
+                <div class="search"><span class="search-icon"><i data-lucide="search"></i></span><input id="siteSearch"
+                        type="search" placeholder="Search games, players…" aria-label="Search games" autocomplete="off">
+                </div>
+                <div class="top-actions"><a class="icon-link" href="pages/notifications.html"
+                        aria-label="Notifications"><i data-lucide="bell"></i></a>
+                    <div class="top-user"><img class="avatar" src="assets/images/avatar.svg" alt="Profile"
+                            data-user-avatar style="width:34px;height:34px">
+                        <div class="top-user-copy"><strong class="user-name">Guest</strong><small>Gamer</small></div><i
+                            class="top-chevron" data-lucide="chevron-down"></i>
+                    </div>
+                </div>
+            </header>
+            <main id="main" class="content">
+                <div id="flash" class="notice hidden" role="status" aria-live="polite"></div>
+                <div class="demo-note"><span><strong>Demo profile:</strong> this dashboard is private. Sign in to your
+                        Firebase account to load and save your own data.</span><a class="btn btn-primary"
+                        href="pages/profile.html">Open profile</a></div>
+                <section class="dashboard-hero">
+                    <div id="heroArt" class="dashboard-hero-art"></div>
+                    <div class="dashboard-hero-inner">
+                        <div>
+                            <div class="welcome-eyebrow">Your gaming universe</div>
+                            <h1 class="welcome-title">Welcome back, <span class="user-name">Gamer</span></h1>
+                            <p class="welcome-copy">Here’s what’s happening across your library, achievements and
+                                sessions.</p>
+                        </div>
+                        <div class="hero-mini-stats">
+                            <div class="hero-mini-stat"><small>Current streak</small><strong>12 days</strong></div>
+                            <div class="hero-mini-stat"><small>Level</small><strong>24</strong></div>
+                            <div class="hero-mini-stat"><small>XP</small><strong>72%</strong></div>
+                        </div>
+                    </div>
+                </section>
+                <section class="dashboard-stats">
+                    <article class="card dash-stat">
+                        <div class="dash-stat-top"><span>Games</span><span class="dash-stat-icon"><i
+                                    data-lucide="gamepad-2"></i></span></div><strong id="dashGames">0</strong>
+                        <div class="trend" id="dashGamesChange">In your library</div>
+                    </article>
+                    <article class="card dash-stat">
+                        <div class="dash-stat-top"><span>Playtime</span><span class="dash-stat-icon"><i
+                                    data-lucide="clock-3"></i></span></div><strong id="dashHours">0m</strong>
+                        <div class="trend" id="dashHoursChange">Across saved games</div>
+                    </article>
+                    <article class="card dash-stat">
+                        <div class="dash-stat-top"><span>Achievements</span><span class="dash-stat-icon"><i
+                                    data-lucide="trophy"></i></span></div><strong id="dashAchievements">0</strong>
+                        <div class="trend" id="dashAchievementsChange">Unlocked</div>
+                    </article>
+                    <article class="card dash-stat">
+                        <div class="dash-stat-top"><span>Completion</span><span class="dash-stat-icon"><i
+                                    data-lucide="circle-gauge"></i></span></div><strong id="dashCompletion">0%</strong>
+                        <div class="trend" id="dashCompletionChange">Achievement progress</div>
+                    </article>
+                </section>
+                <div class="dashboard-grid">
+                    <div class="dash-main-col">
+                        <section class="card dash-section">
+                            <div class="section-head">
+                                <h2>Recently played</h2><a class="link" href="pages/games.html">View all <i
+                                        data-lucide="arrow-up-right"></i></a>
+                            </div>
+                            <div id="recentGames" class="recent-games"></div>
+                        </section>
+                        <div class="dash-two">
+                            <section class="card dash-section">
+                                <div class="section-head">
+                                    <h2>Continue playing</h2><a class="link" href="pages/sessions.html">Log session</a>
+                                </div>
+                                <div class="continue-card">
+                                    <div class="continue-art"><img id="continueCover" src="assets/images/cover.svg"
+                                            alt="Current game cover">
+                                        <div class="continue-overlay"><strong id="continueTitle">Your next
+                                                adventure</strong><small id="continueProgress">0% Complete · <span
+                                                    id="continueMeta">Start by adding a game</span></small><button
+                                                class="continue-button" type="button"
+                                                onclick="location.href='pages/games.html'">Continue</button></div>
+                                    </div>
+                                </div>
+                            </section>
+                            <section class="card dash-section">
+                                <div class="section-head">
+                                    <h2>My library</h2><a class="link" href="pages/games.html">View all</a>
+                                </div>
+                                <div class="library-panel"><svg id="libraryDonut" class="donut" viewBox="0 0 120 120"
+                                        aria-label="Library breakdown"></svg>
+                                    <div id="libraryBreakdown" class="library-breakdown"></div>
+                                </div>
+                            </section>
+                        </div>
+                        <section class="card dash-section">
+                            <div class="section-head">
+                                <h2>Discover new games</h2><a class="link" href="pages/games.html">Explore <i
+                                        data-lucide="arrow-right"></i></a>
+                            </div>
+                            <div id="discoverGames" class="discover-grid">
+                                <div id="discoverFallback" class="discover-grid"></div>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="dash-side-col">
+                        <section class="card dash-section">
+                            <div class="section-head">
+                                <h2>Recent activity</h2><a class="link" href="pages/journey.html">Journey</a>
+                            </div>
+                            <div id="dashActivity" class="activity"></div>
+                        </section>
+                        <section class="card dash-section">
+                            <div class="section-head">
+                                <h2>Upcoming releases</h2><a class="link" href="pages/wishlist.html">View all</a>
+                            </div>
+                            <div class="releases">
+                                <div class="release"><img
+                                        src="https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/header.jpg"
+                                        alt="Elden Ring">
+                                    <div><strong>Elden Ring: Shadow of the Erdtree</strong><small>21 Jun 2024</small>
+                                    </div><time>23d</time>
+                                </div>
+                                <div class="release"><img
+                                        src="https://cdn.cloudflare.steamstatic.com/steam/apps/2358720/header.jpg"
+                                        alt="Black Myth Wukong">
+                                    <div><strong>Black Myth: Wukong</strong><small>20 Aug 2024</small></div>
+                                    <time>83d</time>
+                                </div>
+                                <div class="release"><img
+                                        src="https://cdn.cloudflare.steamstatic.com/steam/apps/2866900/header.jpg"
+                                        alt="Star Wars Outlaws">
+                                    <div><strong>Star Wars Outlaws</strong><small>30 Aug 2024</small></div>
+                                    <time>93d</time>
+                                </div>
+                            </div>
+                        </section>
+                        <section class="card dash-section">
+                            <div class="section-head">
+                                <h2>Milestone progress</h2><a class="link" href="pages/trophies.html">All milestones</a>
+                            </div>
+                            <div id="dashMilestones" class="milestones"></div>
+                        </section>
+                    </div>
+                </div>
+                <section class="dashboard-grid" style="margin-top:16px">
+                    <section class="card dash-section">
+                        <div class="section-head">
+                            <h2>Achievements overview</h2><a class="link" href="pages/achievements.html">View
+                                achievements</a>
+                        </div>
+                        <div class="library-panel">
+                            <div class="stat"><small>Achievement progress</small><strong
+                                    id="achievementOverviewPct">84%</strong>
+                                <div class="progress" style="margin-top:10px"><i style="width:84%"></i></div>
+                            </div>
+                            <div class="activity">
+                                <div class="activity-item"><span class="activity-icon"><i
+                                            data-lucide="sparkles"></i></span>
+                                    <div><strong>Rare achievement</strong><small>The World · 0.8% of players</small>
+                                    </div>
+                                </div>
+                                <div class="activity-item"><span class="activity-icon"><i
+                                            data-lucide="trophy"></i></span>
+                                    <div><strong>Never Fade Away</strong><small>Cyberpunk 2077 · Rare · 15.5%</small>
+                                    </div>
+                                </div>
+                                <div class="activity-item"><span class="activity-icon"><i
+                                            data-lucide="shield-check"></i></span>
+                                    <div><strong>Bushido and Chill</strong><small>Ghost of Tsushima · Very Rare ·
+                                            6.3%</small></div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="card dash-section">
+                        <div class="section-head">
+                            <h2>Friends activity</h2><a class="link" href="pages/friends.html">View all</a>
+                        </div>
+                        <div id="dashFriends" class="friends-activity"></div>
+                    </section>
+                </section>
+            </main>
+            <footer class="footer">
+                <div class="footer-inner"><span>© <span id="year"></span> progLog</span><span>Game data by <a
+                            href="https://rawg.io/" target="_blank" rel="noopener">RAWG</a> · <a
+                            href="pages/privacy.html">Privacy</a> · <a href="pages/terms.html">Terms</a></span></div>
+            </footer>
+        </div>
+    </div>
+    <script type="module" src="assets/js/app.js"></script>
+</body>
+
+</html>

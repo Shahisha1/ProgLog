@@ -1,8 +1,5 @@
-# Secrets / local tooling
-.env
-.env.*
-.dev.vars
-.dev.vars.*
 node_modules/
+.wrangler/
+.dev.vars
+.env
 .DS_Store
-.vscode/

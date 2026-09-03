@@ -1,1 +1,115 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Profile | progLog</title><meta name="description" content="View your progLog profile, level, games, achievements, trophies and playtime."><meta name="theme-color" content="#070b12"><meta property="og:title" content="Profile | progLog"><meta property="og:description" content="View your progLog profile, level, games, achievements, trophies and playtime."><meta property="og:type" content="website"><meta property="og:image" content="https://shahisha1.github.io/ProgLog/assets/images/social-share.svg"><link rel="icon" href="../assets/images/favicon.svg" type="image/svg+xml"><link rel="canonical" href="https://shahisha1.github.io/ProgLog/pages/profile.html"><link rel="stylesheet" href="../assets/css/styles.css"></head><body><a class="skip-link" href="#main">Skip to content</a><aside class="sidebar"><a class="brand" href="../index.html" aria-label="progLog home"><span class="brand-mark">🎮</span>prog<span>Log</span></a><nav class="nav" aria-label="Main navigation"><a  href="../index.html"><span class="nav-icon">⌂</span><span>Home</span></a><a  href="games.html"><span class="nav-icon">▣</span><span>Games</span></a><a  href="achievements.html"><span class="nav-icon">◆</span><span>Achievements</span></a><a  href="sessions.html"><span class="nav-icon">◷</span><span>Sessions</span></a><a  href="trophies.html"><span class="nav-icon">♜</span><span>Trophies</span></a><a  href="friends.html"><span class="nav-icon">♧</span><span>Friends</span></a><a aria-current="page" href="profile.html"><span class="nav-icon">♙</span><span>Profile</span></a><a  href="settings.html"><span class="nav-icon">⚙</span><span>Settings</span></a><a  href="contact.html"><span class="nav-icon">✉</span><span>Contact</span></a></nav><div class="sidebar-bottom"><div class="mini-profile"><img class="avatar" src="../assets/images/avatar.svg" alt="Guest profile avatar" data-user-avatar><div><strong class="user-name">Guest</strong><small>Sign in to save progress</small></div></div><div class="xp"><i style="width:0%"></i></div><small>Sign in to track your progress</small></div></aside><div class="main"><header class="topbar"><button class="mobile-menu" id="menuButton" aria-label="Open navigation menu" aria-expanded="false">☰</button><div class="search"><span class="search-icon">⌕</span><input id="siteSearch" type="search" aria-label="Search saved games" autocomplete="off"></div><div class="top-actions"><a class="icon-link hide-mobile" href="friends.html" aria-label="Friends">♧</a><a class="icon-link hide-mobile" href="contact.html" aria-label="Contact">✉</a><a class="auth-link" href="profile.html">Profile</a><a href="profile.html" aria-label="Open Guest profile"><img class="avatar" src="../assets/images/avatar.svg" alt="Open Guest profile" data-user-avatar style="width:34px;height:34px"></a></div></header><main id="main" class="content"><div id="flash" class="notice hidden" role="status" aria-live="polite"></div><h1 class="page-title">Your gaming profile</h1><p class="lede">View your progLog profile, level, games, achievements, trophies and playtime.</p><section class="card"><div class="profile-row"><img class="avatar" src="../assets/images/avatar.svg" alt="Guest profile avatar" data-user-avatar><div><h2 class="user-name" style="margin:0">Guest</h2><div class="level">Create an account to start tracking</div><p class="muted">Your games, sessions, achievements and trophies will appear here.</p></div></div><div class="stats"><div class="stat"><strong>0</strong><small>Games</small></div><div class="stat"><strong>0</strong><small>Achievements</small></div><div class="stat"><strong>0</strong><small>Trophies</small></div><div class="stat"><strong>0h</strong><small>Playtime</small></div></div></section><section class="card"><h2>Profile photo</h2><p class="muted">Choose a JPG, PNG, WebP, or GIF image. It is compressed and stored on this device.</p><div class="avatar-controls"><label class="btn" for="avatarUpload">Choose photo</label><input id="avatarUpload" type="file" accept="image/png,image/jpeg,image/webp,image/gif" class="sr-only"><button class="btn btn-danger" id="resetAvatar" type="button">Remove photo</button></div></section></main><footer class="footer"><div class="footer-inner"><span>© <span id="year"></span> progLog</span><span><a href="contact.html">Contact</a> · <a href="settings.html">Settings</a></span></div></footer></div><script type="module" src="../assets/js/app.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Profile | progLog</title>
+    <meta name="description"
+        content="Your progLog profile, games, playtime, achievements, friends and visibility settings.">
+    <meta name="theme-color" content="#3d173e">
+    <meta property="og:title" content="Profile | progLog">
+    <meta property="og:description"
+        content="Your progLog profile, games, playtime, achievements, friends and visibility settings.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="../assets/images/social-share.svg">
+    <link rel="icon" href="../assets/images/favicon.svg" type="image/svg+xml">
+    <link rel="manifest" href="../site.webmanifest">
+    <link rel="canonical" href="https://shahisha1.github.io/ProgLog/pages/profile.html">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+
+<body><a class="skip-link" href="#main">Skip to content</a>
+    <div class="layout">
+        <aside class="sidebar"><a class="brand" href="../index.html" aria-label="progLog home"><span
+                    class="brand-mark"><i data-lucide="gamepad-2"></i></span>prog<span>Log</span></a>
+            <nav class="nav" aria-label="Main navigation"><a href="../overview.html"><span
+                        class="nav-icon">⌂</span><span>Overview</span></a><a href="../pages/games.html"><span
+                        class="nav-icon">▣</span><span>Discover & Games</span></a><a
+                    href="../pages/achievements.html"><span class="nav-icon">◆</span><span>Achievements</span></a><a
+                    href="../pages/sessions.html"><span class="nav-icon">◷</span><span>Sessions</span></a><a
+                    href="../pages/trophies.html"><span class="nav-icon">♜</span><span>Trophies</span></a><a
+                    href="../pages/friends.html"><span class="nav-icon">♧</span><span>Friends</span></a><a
+                    href="../pages/journey.html"><span class="nav-icon">◌</span><span>Journey</span></a><a
+                    href="../pages/wishlist.html"><span class="nav-icon">☆</span><span>Wishlist</span></a><a
+                    href="../pages/stats.html"><span class="nav-icon">∿</span><span>Stats</span></a><a
+                    href="../pages/compare.html"><span class="nav-icon">↔</span><span>Compare</span></a><a
+                    href="../pages/profile.html" aria-current="page"><span
+                        class="nav-icon">♙</span><span>Profile</span></a><a href="../pages/settings.html"><span
+                        class="nav-icon">⚙</span><span>Settings</span></a><a href="../pages/notifications.html"><span
+                        class="nav-icon">◉</span><span>Notifications</span></a><a href="../pages/steam.html"><span
+                        class="nav-icon">S</span><span>Steam sync</span></a><a href="../pages/contact.html"><span
+                        class="nav-icon">✉</span><span>Contact</span></a></nav>
+            <div class="sidebar-bottom">
+                <div class="mini-profile"><img class="avatar" src="../assets/images/avatar.svg" alt="Profile avatar"
+                        data-user-avatar>
+                    <div><strong class="user-name">Guest</strong><small>Sign in to save progress</small></div>
+                </div>
+                <div class="xp"><i style="width:0%"></i></div><small>Your gaming progress, organized.</small>
+            </div>
+        </aside>
+        <div class="main">
+            <header class="topbar"><button class="mobile-menu" id="menuButton" aria-label="Open navigation"
+                    aria-expanded="false">☰</button>
+                <div class="search"><span class="search-icon">⌕</span><input id="siteSearch" type="search"
+                        placeholder="Search games…" aria-label="Search games" autocomplete="off"></div>
+                <div class="top-actions"><a class="icon-link hide-mobile" href="../pages/friends.html"
+                        aria-label="Friends">♧</a><a class="icon-link hide-mobile" href="../pages/notifications.html"
+                        aria-label="Notifications">◉</a><a class="auth-link" href="../pages/auth.html">Sign in</a><a
+                        href="../pages/profile.html" aria-label="Open profile"><img class="avatar"
+                            src="../assets/images/avatar.svg" alt="Open profile" data-user-avatar
+                            style="width:34px;height:34px"></a></div>
+            </header>
+            <main id="main" class="content">
+                <div id="flash" class="notice hidden" role="status" aria-live="polite"></div>
+                <div class="page-header">
+                    <div>
+                        <div class="eyebrow">Player profile</div>
+                        <h1 class="page-title" id="profileName">Gamer</h1>
+                        <p class="lede" id="profileBio">No bio yet.</p>
+                    </div><span class="pill" id="profileVisibility">Public</span>
+                </div>
+                <section class="stat-row">
+                    <article class="card stat"><small>Games</small><strong id="profileGames">0</strong></article>
+                    <article class="card stat"><small>Playtime</small><strong id="profileHours">0m</strong></article>
+                    <article class="card stat"><small>Achievements</small><strong id="profileAchievements">0</strong>
+                    </article>
+                    <article class="card stat"><small>Friends</small><strong id="profileFriends">0</strong></article>
+                </section>
+                <section class="grid grid-2" style="margin-top:18px">
+                    <section class="card">
+                        <div class="section-head">
+                            <h2>Edit profile</h2>
+                        </div>
+                        <form id="profileForm" class="form">
+                            <div class="field"><label for="displayName">Display name</label><input id="displayName">
+                            </div>
+                            <div class="field"><label for="bio">Bio</label><textarea id="bio"></textarea></div>
+                            <div class="field"><label for="visibility">Visibility</label><select id="visibility">
+                                    <option>Public</option>
+                                    <option>Friends only</option>
+                                    <option>Private</option>
+                                </select></div><label><input id="activityVisible" type="checkbox" checked> Show activity
+                                to friends</label><button class="btn btn-primary" type="submit">Save profile</button>
+                        </form>
+                    </section>
+                    <section class="card">
+                        <div class="section-head">
+                            <h2>Games</h2><a class="link" href="games.html">Library</a>
+                        </div>
+                        <div id="profileGamesList" class="library"></div>
+                    </section>
+                </section>
+            </main>
+            <footer class="footer">
+                <div class="footer-inner"><span>© <span id="year"></span> progLog</span><span>Game data by <a
+                            href="https://rawg.io/" target="_blank" rel="noopener">RAWG</a> · <a
+                            href="../pages/privacy.html">Privacy</a> · <a href="../pages/terms.html">Terms</a></span>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <script type="module" src="../assets/js/app.js"></script>
+</body>
+
+</html>

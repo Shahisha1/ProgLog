@@ -1,1 +1,107 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Games | progLog</title><meta name="description" content="Browse your saved games, open game details and track completion."><meta name="theme-color" content="#070b12"><meta property="og:title" content="Games | progLog"><meta property="og:description" content="Browse your saved games, open game details and track completion."><meta property="og:type" content="website"><meta property="og:image" content="https://shahisha1.github.io/ProgLog/assets/images/social-share.svg"><link rel="icon" href="../assets/images/favicon.svg" type="image/svg+xml"><link rel="canonical" href="https://shahisha1.github.io/ProgLog/pages/games.html"><link rel="stylesheet" href="../assets/css/styles.css"></head><body><a class="skip-link" href="#main">Skip to content</a><aside class="sidebar"><a class="brand" href="../index.html" aria-label="progLog home"><span class="brand-mark">🎮</span>prog<span>Log</span></a><nav class="nav" aria-label="Main navigation"><a  href="../index.html"><span class="nav-icon">⌂</span><span>Home</span></a><a aria-current="page" href="games.html"><span class="nav-icon">▣</span><span>Games</span></a><a  href="achievements.html"><span class="nav-icon">◆</span><span>Achievements</span></a><a  href="sessions.html"><span class="nav-icon">◷</span><span>Sessions</span></a><a  href="trophies.html"><span class="nav-icon">♜</span><span>Trophies</span></a><a  href="friends.html"><span class="nav-icon">♧</span><span>Friends</span></a><a  href="profile.html"><span class="nav-icon">♙</span><span>Profile</span></a><a  href="settings.html"><span class="nav-icon">⚙</span><span>Settings</span></a><a  href="contact.html"><span class="nav-icon">✉</span><span>Contact</span></a></nav><div class="sidebar-bottom"><div class="mini-profile"><img class="avatar" src="../assets/images/avatar.svg" alt="Guest profile avatar" data-user-avatar><div><strong class="user-name">Guest</strong><small>Sign in to save progress</small></div></div><div class="xp"><i style="width:0%"></i></div><small>Sign in to track your progress</small></div></aside><div class="main"><header class="topbar"><button class="mobile-menu" id="menuButton" aria-label="Open navigation menu" aria-expanded="false">☰</button><div class="search"><span class="search-icon">⌕</span><input id="siteSearch" type="search" aria-label="Search saved games" autocomplete="off"></div><div class="top-actions"><a class="icon-link hide-mobile" href="friends.html" aria-label="Friends">♧</a><a class="icon-link hide-mobile" href="contact.html" aria-label="Contact">✉</a><a class="auth-link" href="profile.html">Profile</a><a href="profile.html" aria-label="Open Guest profile"><img class="avatar" src="../assets/images/avatar.svg" alt="Open Guest profile" data-user-avatar style="width:34px;height:34px"></a></div></header><main id="main" class="content"><div id="flash" class="notice hidden" role="status" aria-live="polite"></div><h1 class="page-title">Your saved game library</h1><p class="lede">Browse your saved games, open game details and track completion.</p><section class="card api-import-card"><div class="section-head"><div><h2>Import a game</h2><p class="muted">Search RAWG and add a game with its metadata and artwork.</p></div></div><form id="gameSearchForm" class="game-search" role="search"><label class="sr-only" for="gameSearchInput">Search games</label><input id="gameSearchInput" type="search" aria-describedby="gameSearchHelp" autocomplete="off"><button class="btn btn-primary" type="submit">Search</button><small id="gameSearchHelp" class="muted">Enter a game title to search the catalogue.</small></form><div id="gameSearchResults" class="api-results" aria-live="polite"></div></section><section class="card"><div class="section-head"><div><h2>Discover games</h2><p class="muted">Popular titles from the RAWG catalogue.</p></div></div><div id="gameCatalog" class="api-results" aria-live="polite"></div></section><section class="card"><div class="section-head"><h2>Saved games</h2><button class="btn btn-primary" id="saveGame" type="button">＋ Save game</button></div><div id="library" class="library"></div></section></main><footer class="footer"><div class="footer-inner"><span>© <span id="year"></span> progLog</span><span><a href="contact.html">Contact</a> · <a href="settings.html">Settings</a></span></div></footer></div><script type="module" src="../assets/js/app.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Discover Games | progLog</title>
+    <meta name="description" content="Search and import games into your personal progLog library with RAWG.">
+    <meta name="theme-color" content="#3d173e">
+    <meta property="og:title" content="Discover Games | progLog">
+    <meta property="og:description" content="Search and import games into your personal progLog library with RAWG.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="../assets/images/social-share.svg">
+    <link rel="icon" href="../assets/images/favicon.svg" type="image/svg+xml">
+    <link rel="manifest" href="../site.webmanifest">
+    <link rel="canonical" href="https://shahisha1.github.io/ProgLog/pages/games.html">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+
+<body><a class="skip-link" href="#main">Skip to content</a>
+    <div class="layout">
+        <aside class="sidebar"><a class="brand" href="../index.html" aria-label="progLog home"><span
+                    class="brand-mark"><i data-lucide="gamepad-2"></i></span>prog<span>Log</span></a>
+            <nav class="nav" aria-label="Main navigation"><a href="../overview.html"><span
+                        class="nav-icon">⌂</span><span>Overview</span></a><a href="../pages/games.html"
+                    aria-current="page"><span class="nav-icon">▣</span><span>Discover & Games</span></a><a
+                    href="../pages/achievements.html"><span class="nav-icon">◆</span><span>Achievements</span></a><a
+                    href="../pages/sessions.html"><span class="nav-icon">◷</span><span>Sessions</span></a><a
+                    href="../pages/trophies.html"><span class="nav-icon">♜</span><span>Trophies</span></a><a
+                    href="../pages/friends.html"><span class="nav-icon">♧</span><span>Friends</span></a><a
+                    href="../pages/journey.html"><span class="nav-icon">◌</span><span>Journey</span></a><a
+                    href="../pages/wishlist.html"><span class="nav-icon">☆</span><span>Wishlist</span></a><a
+                    href="../pages/stats.html"><span class="nav-icon">∿</span><span>Stats</span></a><a
+                    href="../pages/compare.html"><span class="nav-icon">↔</span><span>Compare</span></a><a
+                    href="../pages/profile.html"><span class="nav-icon">♙</span><span>Profile</span></a><a
+                    href="../pages/settings.html"><span class="nav-icon">⚙</span><span>Settings</span></a><a
+                    href="../pages/notifications.html"><span class="nav-icon">◉</span><span>Notifications</span></a><a
+                    href="../pages/steam.html"><span class="nav-icon">S</span><span>Steam sync</span></a><a
+                    href="../pages/contact.html"><span class="nav-icon">✉</span><span>Contact</span></a></nav>
+            <div class="sidebar-bottom">
+                <div class="mini-profile"><img class="avatar" src="../assets/images/avatar.svg" alt="Profile avatar"
+                        data-user-avatar>
+                    <div><strong class="user-name">Guest</strong><small>Sign in to save progress</small></div>
+                </div>
+                <div class="xp"><i style="width:0%"></i></div><small>Your gaming progress, organized.</small>
+            </div>
+        </aside>
+        <div class="main">
+            <header class="topbar"><button class="mobile-menu" id="menuButton" aria-label="Open navigation"
+                    aria-expanded="false">☰</button>
+                <div class="search"><span class="search-icon">⌕</span><input id="siteSearch" type="search"
+                        placeholder="Search games…" aria-label="Search games" autocomplete="off"></div>
+                <div class="top-actions"><a class="icon-link hide-mobile" href="../pages/friends.html"
+                        aria-label="Friends">♧</a><a class="icon-link hide-mobile" href="../pages/notifications.html"
+                        aria-label="Notifications">◉</a><a class="auth-link" href="../pages/auth.html">Sign in</a><a
+                        href="../pages/profile.html" aria-label="Open profile"><img class="avatar"
+                            src="../assets/images/avatar.svg" alt="Open profile" data-user-avatar
+                            style="width:34px;height:34px"></a></div>
+            </header>
+            <main id="main" class="content">
+                <div id="flash" class="notice hidden" role="status" aria-live="polite"></div>
+                <div class="page-header">
+                    <div>
+                        <div class="eyebrow">Game library</div>
+                        <h1 class="page-title">Discover games</h1>
+                        <p class="lede">Search RAWG, import a game once, and keep its artwork and metadata connected to
+                            your tracker.</p>
+                    </div>
+                    <div class="actions"><select id="libraryFilter" class="btn">
+                            <option value="all">All games</option>
+                            <option value="playing">Playing</option>
+                            <option value="backlog">Backlog</option>
+                            <option value="completed">Completed</option>
+                            <option value="dropped">Dropped</option>
+                            <option value="wishlist">Wishlist</option>
+                        </select><button id="clearGames" class="btn btn-danger" type="button">Clear library</button>
+                    </div>
+                </div>
+                <section class="card">
+                    <form id="gameSearchForm" class="form">
+                        <div class="field"><label for="gameSearchInput">Search RAWG</label><input id="gameSearchInput"
+                                type="search" placeholder="Try Elden Ring, Hades, Cyberpunk 2077…" autocomplete="off">
+                        </div>
+                        <div class="form-actions"><button class="btn btn-primary" type="submit">Search games</button>
+                        </div>
+                    </form>
+                    <div id="gameSearchResults" class="results"></div>
+                </section>
+                <section class="card" style="margin-top:18px">
+                    <div class="section-head">
+                        <h2>Your library</h2><a class="link" href="wishlist.html">Wishlist</a>
+                    </div>
+                    <div id="library" class="library"></div>
+                </section>
+            </main>
+            <footer class="footer">
+                <div class="footer-inner"><span>© <span id="year"></span> progLog</span><span>Game data by <a
+                            href="https://rawg.io/" target="_blank" rel="noopener">RAWG</a> · <a
+                            href="../pages/privacy.html">Privacy</a> · <a href="../pages/terms.html">Terms</a></span>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <script type="module" src="../assets/js/app.js"></script>
+</body>
+
+</html>

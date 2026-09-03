@@ -1,29 +1,28 @@
-# progLog RAWG proxy
+# progLog API Worker
 
-This Cloudflare Worker keeps the RAWG API key off GitHub Pages. The key is stored as a Cloudflare Worker Secret named `RAWG_API_KEY`.
+This Worker is the secure proxy used by the GitHub Pages frontend. Keep API secrets out of the repository. Cloudflare Worker Secrets are the correct place for API keys.
 
 ## Deploy
 
-1. Install Node.js and Wrangler: `npm install -g wrangler`
-2. Log in: `wrangler login`
-3. From this folder run: `wrangler secret put RAWG_API_KEY` and paste your RAWG key when prompted.
-4. Deploy: `wrangler deploy`
-5. Copy the deployed `https://...workers.dev` URL into `assets/js/api-config.js`.
-
-Endpoints:
-
-- `GET /health`
-- `GET /games?search=elden%20ring`
-- `GET /games/{rawgId}`
-
-The Worker adds CORS headers for GitHub Pages and caches successful responses. Do not put the RAWG key in the repo, `.js` files, or Firestore.
-
-## Local development
-
-Create `.dev.vars` (never commit it):
-
-```
-RAWG_API_KEY=your_key_here
+```bash
+cd worker
+npx wrangler login
+npx wrangler secret put RAWG_API_KEY
+npx wrangler secret put STEAM_API_KEY
+npx wrangler deploy
 ```
 
-Then run `wrangler dev`.
+Then keep the public Worker URL in `assets/js/api-config.js`.
+
+## Endpoints
+
+- `/health`
+- `/games`
+- `/games/:id`
+- `/games/:id/achievements`
+- `/steam/resolve`
+- `/steam/player`
+- `/steam/owned`
+- `/steam/recent`
+- `/steam/schema`
+- `/steam/achievements`

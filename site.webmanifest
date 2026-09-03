@@ -1,1 +1,15 @@
-{"name":"progLog","short_name":"progLog","start_url":"./","display":"standalone","background_color":"#070b12","theme_color":"#070b12","icons":[{"src":"assets/images/favicon.svg","sizes":"any","type":"image/svg+xml"}]}
+{
+  "name": "progLog",
+  "short_name": "progLog",
+  "start_url": "/ProgLog/overview.html",
+  "display": "standalone",
+  "background_color": "#0b070c",
+  "theme_color": "#0b070c",
+  "icons": [
+    {
+      "src": "/ProgLog/assets/images/favicon.svg",
+      "sizes": "64x64",
+      "type": "image/svg+xml"
+    }
+  ]
+}
