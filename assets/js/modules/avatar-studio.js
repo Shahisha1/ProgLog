@@ -34,44 +34,20 @@ export function setupAvatarStudio(initial = {}, editable = true) {
 
   const render = () => {
     const character = selectedCharacter();
-    root.innerHTML = `
-      <div class="avatar-trigger-wrap">
-        <button type="button" class="avatar-trigger" id="openAvatarPicker" ${editable ? "" : "disabled"}>
-          <img src="${avatarData(state)}" alt="Current avatar">
-          <span class="avatar-trigger-copy"><strong>${character ? character.name : "Choose your avatar"}</strong><span>${character ? `${character.game} · Game character` : "Open the character picker to choose an avatar"}</span></span>
-          <span class="avatar-trigger-arrow">›</span>
-        </button>
-      </div>`;
-
+    root.innerHTML = `<button type="button" class="avatar-trigger" id="openAvatarPicker" ${editable ? "" : "disabled"}><img src="${avatarData(state)}" alt="Current avatar"><span class="avatar-trigger-copy"><strong>${character ? character.name : "Choose your avatar"}</strong><span>${character ? `${character.game} · Game character` : "Open the character picker to choose an avatar"}</span></span><span class="avatar-trigger-arrow">›</span></button>`;
     $("#openAvatarPicker")?.addEventListener("click", openPicker);
+  };
+
+  const persist = async () => {
+    localStorage.setItem("proglog-avatar", JSON.stringify(state));
+    if (editable) await saveUserDoc({ avatar: state, avatarPreset: state.preset || "character" });
+    document.querySelectorAll("[data-user-avatar]").forEach((x) => (x.src = avatarData(state)));
   };
 
   const openPicker = () => {
     const modal = document.createElement("div");
     modal.className = "avatar-modal-backdrop";
-    modal.innerHTML = `
-      <section class="avatar-modal" role="dialog" aria-modal="true" aria-labelledby="avatarPickerTitle">
-        <div class="avatar-modal-head">
-          <div><h2 id="avatarPickerTitle">Choose your avatar</h2><p>Pick a character from a game, or use one of progLog's original pixel avatars.</p></div>
-          <button type="button" class="avatar-modal-close" aria-label="Close"><i data-lucide="x"></i></button>
-        </div>
-        <div class="avatar-modal-section">
-          <div class="avatar-modal-section-head"><h3>Game characters</h3><span>${GAME_CHARACTERS.length} available</span></div>
-          <div class="character-row">
-            ${GAME_CHARACTERS.map((c) => `<button type="button" class="character-card ${state.character === c.id ? "selected" : ""}" data-character="${c.id}"><img src="${GAME_CHARACTER_IMAGES[c.id] || ""}" alt="${c.name}" loading="lazy"><span class="character-card-copy"><strong>${c.name}</strong><small>${c.game}</small></span></button>`).join("")}
-          </div>
-        </div>
-        <div class="avatar-modal-section">
-          <div class="avatar-modal-section-head"><h3>progLog originals</h3><span>Custom pixel avatars</span></div>
-          <div class="avatar-choice-grid">
-            ${AVATAR_PRESETS.map((p) => `<button type="button" class="avatar-choice ${!state.character && p.id === state.preset ? "selected" : ""}" data-preset="${p.id}"><img src="${avatarData(p)}" alt="${p.name}"><span>${p.name}</span></button>`).join("")}
-          </div>
-        </div>
-        <div class="avatar-modal-footer">
-          <button type="button" class="btn" id="cancelAvatarPicker">Cancel</button>
-          <button type="button" class="btn btn-primary" id="confirmAvatarPicker">Use this avatar</button>
-        </div>
-      </section>`;
+    modal.innerHTML = `<section class="avatar-modal" role="dialog" aria-modal="true" aria-labelledby="avatarPickerTitle"><div class="avatar-modal-head"><div><h2 id="avatarPickerTitle">Choose your avatar</h2><p>Pick a character from a game, or use one of progLog's original pixel avatars.</p></div><button type="button" class="avatar-modal-close" aria-label="Close"><i data-lucide="x"></i></button></div><div class="avatar-modal-section"><div class="avatar-modal-section-head"><h3>Game characters</h3><span>${GAME_CHARACTERS.length} available</span></div><div class="character-row">${GAME_CHARACTERS.map((c) => `<button type="button" class="character-card ${state.character === c.id ? "selected" : ""}" data-character="${c.id}"><img src="${GAME_CHARACTER_IMAGES[c.id] || ""}" alt="${c.name}" loading="lazy"><span class="character-card-copy"><strong>${c.name}</strong><small>${c.game}</small></span></button>`).join("")}</div></div><div class="avatar-modal-section"><div class="avatar-modal-section-head"><h3>progLog originals</h3><span>Custom pixel avatars</span></div><div class="avatar-choice-grid">${AVATAR_PRESETS.map((p) => `<button type="button" class="avatar-choice ${!state.character && p.id === state.preset ? "selected" : ""}" data-preset="${p.id}"><img src="${avatarData(p)}" alt="${p.name}"><span>${p.name}</span></button>`).join("")}</div></div><div class="avatar-modal-footer"><button type="button" class="btn" id="cancelAvatarPicker">Cancel</button><button type="button" class="btn btn-primary" id="confirmAvatarPicker">Use this avatar</button></div></section>`;
     document.body.appendChild(modal);
     window.lucide?.createIcons();
 
@@ -96,26 +72,21 @@ export function setupAvatarStudio(initial = {}, editable = true) {
       b.classList.add("selected");
     }));
 
-    modal.querySelector("#confirmAvatarPicker")?.addEventListener("click", () => {
-      close();
-      render();
+    modal.querySelector("#confirmAvatarPicker")?.addEventListener("click", async () => {
+      const button = modal.querySelector("#confirmAvatarPicker");
+      button.disabled = true;
+      button.textContent = "Saving…";
+      try {
+        await persist();
+        close();
+        render();
+      } catch (e) {
+        console.error(e);
+        button.disabled = false;
+        button.textContent = "Try again";
+      }
     });
   };
 
-  const save = async () => {
-    const button = $("#saveAvatar");
-    if (button) button.disabled = true;
-    try {
-      localStorage.setItem("proglog-avatar", JSON.stringify(state));
-      await saveUserDoc({ avatar: state, avatarPreset: state.preset || "character" });
-      document.querySelectorAll("[data-user-avatar]").forEach((x) => (x.src = avatarData(state)));
-      if (button) button.textContent = "Saved";
-    } finally {
-      if (button) setTimeout(() => { button.textContent = "Save avatar"; button.disabled = false; }, 1000);
-    }
-  };
-
-  // The actual save button is intentionally kept out of the always-visible UI.
-  // The avatar picker is the only entry point, keeping profile pages uncluttered.
   render();
 }
