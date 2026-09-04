@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://shahisha1.github.io/ProgLog/sitemap.xml

@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Game | progLog</title>
+    <meta
+      name="description"
+      content="Track a game with artwork, metadata, achievements, sessions, playtime and your review."
+    />
+    <meta name="theme-color" content="#111217" />
+    <meta property="og:title" content="Game | progLog" />
+    <meta
+      property="og:description"
+      content="Track a game with artwork, metadata, achievements, sessions, playtime and your review."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="../assets/images/social-share.svg" />
+    <link
+      rel="icon"
+      href="../assets/images/proglog-logo-128.png"
+      type="image/png"
+    />
+    <link rel="manifest" href="../site.webmanifest" />
+    <link
+      rel="canonical"
+      href="https://shahisha1.github.io/ProgLog/pages/game.html"
+    />
+    <script>
+      try {
+        document.documentElement.dataset.theme =
+          localStorage.getItem("proglog-theme") || "dark";
+      } catch (e) {}
+    </script>
+    <link rel="stylesheet" href="../assets/css/styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="layout">
+      <aside class="sidebar">
+        <a class="brand" href="../index.html" aria-label="progLog home"
+          ><span class="brand-mark"
+            ><img
+              class="brand-logo"
+              src="../assets/images/proglog-logo-128.png"
+              alt=""
+              aria-hidden="true" /></span
+          ><span class="brand-word">prog<span>Log</span></span></a
+        >
+        <nav class="nav" aria-label="Main navigation">
+          <a href="../overview.html"
+            ><span class="nav-icon"><i data-lucide="layout-dashboard"></i></span
+            ><span>Overview</span></a
+          ><a href="../pages/games.html"
+            ><span class="nav-icon"><i data-lucide="library"></i></span
+            ><span>Discover & Games</span></a
+          ><a href="../pages/achievements.html"
+            ><span class="nav-icon"><i data-lucide="trophy"></i></span
+            ><span>Achievements</span></a
+          ><a href="../pages/sessions.html"
+            ><span class="nav-icon"><i data-lucide="clock-3"></i></span
+            ><span>Sessions</span></a
+          ><a href="../pages/trophies.html"
+            ><span class="nav-icon"><i data-lucide="award"></i></span
+            ><span>Trophies</span></a
+          ><a href="../pages/friends.html"
+            ><span class="nav-icon"><i data-lucide="users"></i></span
+            ><span>Friends</span></a
+          ><a href="../pages/journey.html"
+            ><span class="nav-icon"><i data-lucide="map"></i></span
+            ><span>Journey</span></a
+          ><a href="../pages/wishlist.html"
+            ><span class="nav-icon"><i data-lucide="star"></i></span
+            ><span>Wishlist</span></a
+          ><a href="../pages/stats.html"
+            ><span class="nav-icon"
+              ><i data-lucide="chart-no-axes-combined"></i></span
+            ><span>Stats</span></a
+          ><a href="../pages/compare.html"
+            ><span class="nav-icon"><i data-lucide="arrow-left-right"></i></span
+            ><span>Compare</span></a
+          ><a href="../pages/profile.html"
+            ><span class="nav-icon"><i data-lucide="user-round"></i></span
+            ><span>Profile</span></a
+          ><a href="../pages/settings.html"
+            ><span class="nav-icon"><i data-lucide="settings"></i></span
+            ><span>Settings</span></a
+          ><a href="../pages/notifications.html"
+            ><span class="nav-icon"><i data-lucide="bell"></i></span
+            ><span>Notifications</span></a
+          ><a href="../pages/contact.html"
+            ><span class="nav-icon"><i data-lucide="mail"></i></span
+            ><span>Contact</span></a
+          >
+        </nav>
+        <div class="sidebar-bottom">
+          <div class="mini-profile">
+            <img
+              class="avatar"
+              src="../assets/images/proglog-logo-128.png"
+              alt="Profile avatar"
+              data-user-avatar
+            />
+            <div>
+              <strong class="user-name">Guest</strong
+              ><small>Sign in to save progress</small>
+            </div>
+          </div>
+          <div class="xp"><i style="width: 0%"></i></div>
+          <small>Your gaming progress, organized.</small>
+        </div>
+      </aside>
+      <div class="main">
+        <header class="topbar">
+          <button
+            class="mobile-menu"
+            id="menuButton"
+            aria-label="Open navigation"
+            aria-expanded="false"
+          >
+            <i data-lucide="menu"></i>
+          </button>
+          <div class="search">
+            <span class="search-icon"><i data-lucide="search"></i></span
+            ><input
+              id="siteSearch"
+              type="search"
+              placeholder="Search games…"
+              aria-label="Search games"
+              autocomplete="off"
+            />
+          </div>
+          <div class="top-actions">
+            <a
+              class="icon-link hide-mobile"
+              href="../pages/friends.html"
+              aria-label="Friends"
+              ><i data-lucide="users"></i></a
+            ><a
+              class="icon-link hide-mobile"
+              href="../pages/notifications.html"
+              aria-label="Notifications"
+              ><i data-lucide="bell"></i></a
+            ><a class="auth-link" href="../pages/auth.html">Sign in</a
+            ><a href="../pages/profile.html" aria-label="Open profile"
+              ><img
+                class="avatar"
+                src="../assets/images/proglog-logo-128.png"
+                alt="Open profile"
+                data-user-avatar
+                style="width: 34px; height: 34px"
+            /></a>
+          </div>
+        </header>
+        <main id="main" class="content">
+          <div
+            id="flash"
+            class="notice hidden"
+            role="status"
+            aria-live="polite"
+          ></div>
+          <div id="gamePage">
+            <section class="hero">
+              <div id="gameHero" class="hero-art"></div>
+              <div class="hero-inner">
+                <img id="gameCover" class="cover" src="" alt="Game cover" />
+                <div class="hero-copy">
+                  <div class="eyebrow">Game details</div>
+                  <h1 id="gameName">Loading…</h1>
+                  <div id="gameMeta" class="meta">Loading game data…</div>
+                  <div id="gameRating" class="rating">—</div>
+                  <div class="actions" style="margin-top: 18px">
+                    <select id="saveStatus" class="btn">
+                      <option value="playing">Playing</option>
+                      <option value="backlog">Backlog</option>
+                      <option value="completed">Completed</option>
+                      <option value="dropped">Dropped</option>
+                      <option value="wishlist">Wishlist</option></select
+                    ><button id="favoriteGame" class="btn" type="button">
+                      ☆ Favorite
+                    </button>
+                  </div>
+                  <div class="split" style="max-width: 620px; margin-top: 16px">
+                    <span class="muted">Playtime</span
+                    ><strong id="playtime">0m</strong
+                    ><span class="muted">Achievements</span
+                    ><strong id="achievementCount">0/0</strong>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <section class="grid grid-2" style="margin-top: 18px">
+              <article class="card">
+                <div class="section-head"><h2>About</h2></div>
+                <div id="gameDescription" class="text-card"></div>
+              </article>
+              <article class="card">
+                <div class="section-head"><h2>Your review</h2></div>
+                <form id="reviewForm" class="form">
+                  <div class="field">
+                    <label for="personalRating">Your rating (1–5)</label
+                    ><input
+                      id="personalRating"
+                      type="number"
+                      min="1"
+                      max="5"
+                      step="0.5"
+                    />
+                  </div>
+                  <div class="field">
+                    <label for="personalReview">Review</label
+                    ><textarea
+                      id="personalReview"
+                      placeholder="Your notes about the game"
+                    ></textarea>
+                  </div>
+                  <button class="btn btn-primary" type="submit">
+                    Save review
+                  </button>
+                </form>
+              </article>
+            </section>
+            <section class="card" style="margin-top: 18px">
+              <div class="section-head"><h2>Screenshots</h2></div>
+              <div id="gameScreenshots" class="screens"></div>
+            </section>
+            <section class="card" style="margin-top: 18px">
+              <div class="section-head">
+                <h2>Achievements</h2>
+                <span class="link">Catalogue data</span>
+              </div>
+              <div id="gameAchievements" class="achievement-list"></div>
+            </section>
+            <section class="card" style="margin-top: 18px">
+              <div class="section-head"><h2>Log a session</h2></div>
+              <form id="sessionForm" class="form">
+                <div class="grid grid-2">
+                  <div class="field">
+                    <label for="sessionDate">Date and time</label
+                    ><input id="sessionDate" type="datetime-local" />
+                  </div>
+                  <div class="field">
+                    <label for="sessionDuration">Duration (minutes)</label
+                    ><input
+                      id="sessionDuration"
+                      type="number"
+                      min="1"
+                      placeholder="90"
+                    />
+                  </div>
+                </div>
+                <div class="field">
+                  <label for="sessionNote">Notes</label
+                  ><textarea id="sessionNote"></textarea>
+                </div>
+                <button class="btn btn-primary" type="submit">
+                  Log session
+                </button>
+              </form>
+            </section>
+          </div>
+        </main>
+        <footer class="footer">
+          <div class="footer-inner">
+            <span>© <span id="year"></span> progLog</span
+            ><span
+              >Game data by
+              <a href="https://rawg.io/" target="_blank" rel="noopener">RAWG</a>
+              · <a href="../pages/privacy.html">Privacy</a> ·
+              <a href="../pages/terms.html">Terms</a></span
+            >
+          </div>
+        </footer>
+      </div>
+    </div>
+    <script type="module" src="../assets/js/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">
+    <rect width="1200" height="630" fill="#070b12" />
+    <rect x="70" y="70" width="90" height="90" rx="20" fill="#9b6cff" />
+    <text x="210" y="150" fill="#fff" font-family="Arial, sans-serif" font-size="78"
+        font-weight="700">prog<tspan fill="#9b6cff">Log</tspan></text>
+    <text x="70" y="260" fill="#c5ccd8" font-family="Arial, sans-serif" font-size="36">Your gaming
+        progress, organized.</text>
+</svg>

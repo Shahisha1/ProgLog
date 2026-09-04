@@ -1,0 +1,15 @@
+{
+  "name": "progLog",
+  "short_name": "progLog",
+  "start_url": "/ProgLog/overview.html",
+  "display": "standalone",
+  "background_color": "#100B16",
+  "theme_color": "#3D173E",
+  "icons": [
+    {
+      "src": "/ProgLog/assets/images/proglog-logo-128.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    }
+  ]
+}

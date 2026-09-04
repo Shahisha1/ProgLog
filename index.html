@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>progLog — Keep the games worth remembering</title>
+    <meta
+      name="description"
+      content="progLog is a personal gaming journal for your library, sessions, achievements and the story behind the games you play."
+    />
+    <meta name="theme-color" content="#111217" />
+    <meta
+      property="og:title"
+      content="progLog — Keep the games worth remembering"
+    />
+    <meta
+      property="og:description"
+      content="A personal gaming journal for the games you play, the progress you make and the moments you keep."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="assets/images/social-share.svg" />
+    <link
+      rel="icon"
+      href="assets/images/proglog-logo-128.png"
+      type="image/png"
+    />
+    <link rel="manifest" href="site.webmanifest" />
+    <script>
+      try {
+        document.documentElement.dataset.theme =
+          localStorage.getItem("proglog-theme") || "dark";
+      } catch (e) {}
+    </script>
+    <link rel="stylesheet" href="assets/css/styles.css" />
+  </head>
+  <body class="landing">
+    <header class="landing-nav">
+      <a class="brand" href="index.html"
+        ><span class="brand-mark"
+          ><img
+            class="brand-logo"
+            src="assets/images/proglog-logo-128.png"
+            alt="" /></span
+        ><span class="brand-word">prog<span>Log</span></span></a
+      >
+      <nav class="landing-links">
+        <a href="#why">Why progLog</a><a href="#journey">Journey</a
+        ><a href="#how">How it works</a>
+      </nav>
+      <div class="landing-nav-actions">
+        <button
+          id="landingTheme"
+          class="theme-toggle"
+          type="button"
+          aria-label="Toggle theme"
+        >
+          <i data-lucide="sun"></i></button
+        ><a class="btn btn-primary" href="pages/auth.html">Get started</a>
+      </div>
+    </header>
+    <main>
+      <section class="landing-hero editorial-hero">
+        <div class="landing-slides" id="landingSlides"></div>
+        <div class="landing-hero-content">
+          <div class="landing-kicker">
+            <span class="pixel-dot"></span> Your personal gaming journal
+          </div>
+          <h1>Every game leaves a story.<br /><em>Keep yours.</em></h1>
+          <p>
+            Track what you're playing, remember the sessions that mattered,
+            chase achievements and build a profile that feels like you.
+          </p>
+          <div class="landing-actions">
+            <a class="btn btn-primary" href="pages/auth.html"
+              ><i data-lucide="user-plus"></i> Create your profile</a
+            ><a class="btn hero-link" href="overview.html"
+              >See the dashboard <i data-lucide="arrow-right"></i
+            ></a>
+          </div>
+          <div class="landing-proof">
+            <span><i data-lucide="gamepad-2"></i> Library</span
+            ><span><i data-lucide="clock-3"></i> Sessions</span
+            ><span><i data-lucide="trophy"></i> Achievements</span
+            ><span><i data-lucide="map"></i> Journey</span>
+          </div>
+        </div>
+        <div class="hero-pixel-badge">
+          <img
+            src="assets/images/proglog-logo.png"
+            alt="progLog controller logo"
+          /><span>PLAY · LOG · REMEMBER</span>
+        </div>
+      </section>
+      <section class="landing-section landing-story" id="why">
+        <div class="story-intro">
+          <div>
+            <div class="eyebrow">Not another stats wall</div>
+            <h2>Less dashboard. More <span>your story.</span></h2>
+          </div>
+          <p>
+            Most trackers stop at numbers. progLog connects the numbers to the
+            games, sessions and moments that produced them.
+          </p>
+        </div>
+        <div class="story-grid">
+          <article>
+            <span class="story-number">01</span>
+            <h3>Choose what matters</h3>
+            <p>
+              Keep a focused library with clear statuses, ratings, reviews and a
+              wishlist that doesn't fight for your attention.
+            </p>
+          </article>
+          <article>
+            <span class="story-number">02</span>
+            <h3>Log the moments</h3>
+            <p>
+              Record a session, write a note, unlock an achievement and let the
+              timeline remember it for you.
+            </p>
+          </article>
+          <article>
+            <span class="story-number">03</span>
+            <h3>See the journey</h3>
+            <p>
+              Watch your gaming history become a visual timeline instead of
+              another spreadsheet of numbers.
+            </p>
+          </article>
+        </div>
+      </section>
+      <section class="landing-section journey-showcase" id="journey">
+        <div class="journey-copy">
+          <div class="eyebrow">The signature feature</div>
+          <h2>Your gaming journey, <span>one chapter at a time.</span></h2>
+          <p>
+            Every game added and every session logged can become part of a
+            chronological story you can revisit later.
+          </p>
+          <a class="btn" href="pages/auth.html"
+            >Build my journey <i data-lucide="arrow-right"></i
+          ></a>
+        </div>
+        <div class="journey-demo">
+          <div class="journey-demo-head">
+            <span>MY JOURNEY</span><b>2026</b>
+          </div>
+          <div class="journey-demo-line">
+            <article>
+              <span class="journey-demo-dot"></span><small>SEP 03</small
+              ><strong>Started a new chapter</strong>
+              <p>Added a game to the backlog.</p>
+            </article>
+            <article>
+              <span class="journey-demo-dot"></span><small>SEP 01</small
+              ><strong>Achievement hunt</strong>
+              <p>Unlocked 3 achievements in Elden Ring.</p>
+            </article>
+            <article>
+              <span class="journey-demo-dot"></span><small>AUG 29</small
+              ><strong>Late-night session</strong>
+              <p>2h 14m · “Finally beat the boss.”</p>
+            </article>
+          </div>
+        </div>
+      </section>
+      <section class="landing-section" id="how">
+        <div class="eyebrow">Simple by design</div>
+        <h2>Start small. Let progLog grow with you.</h2>
+        <div class="how-grid">
+          <div>
+            <strong>1</strong>
+            <h3>Make an account</h3>
+            <p>Choose your name and pixel character in a quick setup.</p>
+          </div>
+          <div>
+            <strong>2</strong>
+            <h3>Add a game</h3>
+            <p>Search the RAWG catalogue or import your own library.</p>
+          </div>
+          <div>
+            <strong>3</strong>
+            <h3>Keep playing</h3>
+            <p>
+              Log sessions, progress, achievements and reviews when you want.
+            </p>
+          </div>
+        </div>
+      </section>
+      <section class="landing-cta">
+        <img src="assets/images/proglog-logo.png" alt="" />
+        <div>
+          <div class="eyebrow">Ready when you are</div>
+          <h2>Make your library feel like yours.</h2>
+          <p>Your games are more than a list. Start keeping the story.</p>
+        </div>
+        <a class="btn btn-primary" href="pages/auth.html"
+          >Start progLog <i data-lucide="arrow-up-right"></i
+        ></a>
+      </section>
+    </main>
+    <footer class="landing-footer">
+      <span>© <span id="year"></span> progLog</span
+      ><span
+        >Game data by
+        <a href="https://rawg.io/" target="_blank" rel="noopener">RAWG</a> ·
+        <a href="pages/privacy.html">Privacy</a> ·
+        <a href="pages/terms.html">Terms</a> ·
+        <a href="pages/contact.html">Contact</a></span
+      >
+    </footer>
+    <script type="module" src="assets/js/app.js"></script>
+    <script type="module">
+      import { api } from "./assets/js/modules/api.js";
+      const wrap = document.querySelector("#landingSlides");
+      async function load() {
+        try {
+          const d = await api("/games?ordering=-added&page_size=7");
+          const gs = (d.results || [])
+            .filter((x) => x.background_image)
+            .slice(0, 7);
+          wrap.innerHTML = gs
+            .map(
+              (g, i) =>
+                `<div class="landing-slide ${i === 0 ? "active" : ""}" style="background-image:url('${g.background_image}')"></div>`,
+            )
+            .join("");
+          let i = 0;
+          const slides = [...wrap.children];
+          if (slides.length > 1)
+            setInterval(() => {
+              slides.forEach((s, j) => s.classList.toggle("active", j === i));
+              i = (i + 1) % slides.length;
+            }, 6200);
+        } catch {
+          wrap.innerHTML = '<div class="landing-slide active"></div>';
+        }
+      }
+      load();
+    </script>
+  </body>
+</html>

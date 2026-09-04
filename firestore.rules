@@ -1,0 +1,28 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn(){ return request.auth != null; }
+    function me(uid){ return signedIn() && request.auth.uid == uid; }
+    function publicProfile(uid){ return get(/databases/$(database)/documents/users/$(uid)).data.visibility == 'Public'; }
+    function friendOf(uid){ return signedIn() && exists(/databases/$(database)/documents/users/$(uid)/friends/$(request.auth.uid)); }
+    match /users/{uid} {
+      allow read: if me(uid) || publicProfile(uid) || friendOf(uid);
+      allow create, update, delete: if me(uid);
+      match /games/{gameId} { allow read: if me(uid) || publicProfile(uid) || friendOf(uid); allow create, update, delete: if me(uid); }
+      match /sessions/{sessionId} { allow read, write: if me(uid); }
+      match /friends/{friendId} { allow read, write: if me(uid); }
+      match /activity/{activityId} { allow read: if me(uid) || publicProfile(uid) || friendOf(uid); allow create, update, delete: if me(uid); }
+      match /notifications/{notificationId} { allow read, write: if me(uid); }
+    }
+    match /friendRequests/{requestId} {
+      allow read: if signedIn() && (resource.data.fromUid == request.auth.uid || resource.data.toUid == request.auth.uid);
+      allow create: if signedIn() && request.resource.data.fromUid == request.auth.uid;
+      allow update: if signedIn() && (resource.data.toUid == request.auth.uid || resource.data.fromUid == request.auth.uid);
+      allow delete: if signedIn() && (resource.data.toUid == request.auth.uid || resource.data.fromUid == request.auth.uid);
+    }
+    match /contactMessages/{messageId} {
+      allow create: if signedIn() && request.resource.data.uid == request.auth.uid;
+      allow read, update, delete: if false;
+    }
+  }
+}
