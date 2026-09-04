@@ -1,5 +1,223 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" /><title>Journey | progLog</title><meta name="description" content="A living timeline of the games you played, sessions you logged and milestones you reached." /><meta name="theme-color" content="#111217" /><link rel="icon" href="../assets/images/proglog-logo-128.png" type="image/png" /><link rel="manifest" href="../site.webmanifest" /><script>try{document.documentElement.dataset.theme=localStorage.getItem("proglog-theme")||"dark"}catch(e){}</script><link rel="stylesheet" href="../assets/css/styles.css" /><link rel="stylesheet" href="../assets/css/profile-settings.css" /></head>
-<body><a class="skip-link" href="#main">Skip to content</a><div class="layout"><aside class="sidebar"><a class="brand" href="../index.html" aria-label="progLog home"><span class="brand-mark"><img class="brand-logo" src="../assets/images/proglog-logo-128.png" alt="" /></span><span class="brand-word">prog<span>Log</span></span></a><nav class="nav" aria-label="Dashboard navigation"><a class="nav-primary" href="../overview.html"><span class="nav-icon"><i data-lucide="layout-dashboard"></i></span><span>Overview</span></a><a class="nav-primary" href="games.html"><span class="nav-icon"><i data-lucide="library"></i></span><span>Discover &amp; Games</span></a><a class="nav-primary" href="achievements.html"><span class="nav-icon"><i data-lucide="trophy"></i></span><span>Achievements</span></a><a class="nav-primary" href="sessions.html"><span class="nav-icon"><i data-lucide="clock-3"></i></span><span>Sessions</span></a><a class="nav-primary" href="trophies.html"><span class="nav-icon"><i data-lucide="award"></i></span><span>Trophies</span></a><a class="nav-primary" href="friends.html"><span class="nav-icon"><i data-lucide="users"></i></span><span>Friends</span></a><div class="sidebar-section">Your space</div><a href="journey.html" aria-current="page"><span class="nav-icon"><i data-lucide="map"></i></span><span>Journey</span></a><a href="wishlist.html"><span class="nav-icon"><i data-lucide="star"></i></span><span>Wishlist</span></a><a href="stats.html"><span class="nav-icon"><i data-lucide="chart-no-axes-combined"></i></span><span>Stats</span></a><a class="nav-hidden" href="compare.html"><span class="nav-icon"><i data-lucide="arrow-left-right"></i></span><span>Compare</span></a><div class="sidebar-section">Account</div><a href="profile.html"><span class="nav-icon"><i data-lucide="user-round"></i></span><span>Profile</span></a><a href="settings.html"><span class="nav-icon"><i data-lucide="settings"></i></span><span>Settings</span></a><a href="notifications.html"><span class="nav-icon"><i data-lucide="bell"></i></span><span>Notifications</span></a><a class="nav-hidden" href="contact.html"><span class="nav-icon"><i data-lucide="mail"></i></span><span>Contact</span></a></nav><div class="sidebar-bottom"><div class="mini-profile"><img class="avatar" src="../assets/images/avatar.svg" alt="Profile avatar" data-user-avatar /><div><strong class="user-name">Guest</strong><small>Sign in to save progress</small></div></div><div class="xp"><i style="width:72%"></i></div><small>Keep playing. Keep the story.</small></div></aside>
-<div class="main"><header class="topbar"><button class="mobile-menu" id="menuButton" aria-label="Open navigation" aria-expanded="false"><i data-lucide="menu"></i></button><nav class="top-nav" aria-label="Primary navigation"><a href="../overview.html"><i data-lucide="layout-dashboard"></i><span>Overview</span></a><a href="games.html"><i data-lucide="library"></i><span>Discover</span></a><a href="achievements.html"><i data-lucide="trophy"></i><span>Achievements</span></a><a href="sessions.html"><i data-lucide="clock-3"></i><span>Sessions</span></a><a href="trophies.html"><i data-lucide="award"></i><span>Trophies</span></a><a href="friends.html"><i data-lucide="users"></i><span>Friends</span></a></nav><div class="search"><span class="search-icon"><i data-lucide="search"></i></span><input id="siteSearch" type="search" placeholder="Search your games…" aria-label="Search games" /></div><div class="top-actions"><a class="icon-link" href="notifications.html" aria-label="Notifications"><i data-lucide="bell"></i></a><a class="top-user" href="profile.html" aria-label="Open profile"><img class="avatar" src="../assets/images/avatar.svg" alt="Profile" data-user-avatar /><span class="top-user-copy"><strong class="user-name">Guest</strong><small>Profile</small></span></a></div></header>
-<main id="main" class="content"><div id="flash" class="notice hidden" role="status"></div><div class="page-header journey-page-header"><div><div class="eyebrow">Your story</div><h1 class="page-title">The journey</h1><p class="lede">A living record of what you played, when you played it and the moments worth remembering.</p></div><a class="btn btn-primary" href="games.html"><i data-lucide="plus"></i> Add a game</a></div><section class="journey-stats"><article class="card journey-stat"><span>Games</span><strong id="journeyGames">0</strong><small>chapters started</small></article><article class="card journey-stat"><span>Playtime</span><strong id="journeyHours">0m</strong><small>time logged</small></article><article class="card journey-stat"><span>Achievements</span><strong id="journeyAchievements">0</strong><small>moments unlocked</small></article><article class="card journey-stat"><span>Completed</span><strong id="journeyCompleted">0</strong><small>stories finished</small></article></section><section class="card journey-current" id="journeyCurrent"><div class="empty">Choose a game to make it your current chapter.</div></section><section class="card journey-timeline-card"><div class="section-head"><div><span class="section-kicker">Your history</span><h2>Every chapter, in order</h2></div><span class="tiny-label">Latest first</span></div><div id="journeyTimeline" class="journey-timeline"></div></section></main><footer class="footer"><div class="footer-inner"><span>© <span id="year"></span> progLog</span><span><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="contact.html">Contact</a></span></div></footer></div></div><script type="module" src="../assets/js/app.js"></script></body></html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Journey | progLog</title>
+    <meta
+      name="description"
+      content="A living timeline of the games you played, sessions you logged and milestones you reached."
+    />
+    <meta name="theme-color" content="#111217" />
+    <link
+      rel="icon"
+      href="../assets/images/proglog-logo-128.png"
+      type="image/png"
+    />
+    <link rel="manifest" href="../site.webmanifest" />
+    <script>
+      try {
+        document.documentElement.dataset.theme =
+          localStorage.getItem("proglog-theme") || "dark";
+      } catch (e) {}
+    </script>
+    <link rel="stylesheet" href="../assets/css/styles.css" />
+    <link rel="stylesheet" href="../assets/css/profile-settings.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="layout">
+      <aside class="sidebar">
+        <a class="brand" href="../index.html" aria-label="progLog home"
+          ><span class="brand-mark"
+            ><img
+              class="brand-logo"
+              src="../assets/images/proglog-logo-128.png"
+              alt="" /></span
+          ><span class="brand-word">prog<span>Log</span></span></a
+        >
+        <nav class="nav" aria-label="Dashboard navigation">
+          <a class="nav-primary" href="../overview.html"
+            ><span class="nav-icon"><i data-lucide="layout-dashboard"></i></span
+            ><span>Overview</span></a
+          ><a class="nav-primary" href="games.html"
+            ><span class="nav-icon"><i data-lucide="library"></i></span
+            ><span>Discover &amp; Games</span></a
+          ><a class="nav-primary" href="achievements.html"
+            ><span class="nav-icon"><i data-lucide="trophy"></i></span
+            ><span>Achievements</span></a
+          ><a class="nav-primary" href="sessions.html"
+            ><span class="nav-icon"><i data-lucide="clock-3"></i></span
+            ><span>Sessions</span></a
+          ><a class="nav-primary" href="trophies.html"
+            ><span class="nav-icon"><i data-lucide="award"></i></span
+            ><span>Trophies</span></a
+          ><a class="nav-primary" href="friends.html"
+            ><span class="nav-icon"><i data-lucide="users"></i></span
+            ><span>Friends</span></a
+          >
+          <div class="sidebar-section">Your space</div>
+          <a href="journey.html" aria-current="page"
+            ><span class="nav-icon"><i data-lucide="map"></i></span
+            ><span>Journey</span></a
+          ><a href="wishlist.html"
+            ><span class="nav-icon"><i data-lucide="star"></i></span
+            ><span>Wishlist</span></a
+          ><a href="stats.html"
+            ><span class="nav-icon"
+              ><i data-lucide="chart-no-axes-combined"></i></span
+            ><span>Stats</span></a
+          ><a class="nav-hidden" href="compare.html"
+            ><span class="nav-icon"><i data-lucide="arrow-left-right"></i></span
+            ><span>Compare</span></a
+          >
+          <div class="sidebar-section">Account</div>
+          <a href="profile.html"
+            ><span class="nav-icon"><i data-lucide="user-round"></i></span
+            ><span>Profile</span></a
+          ><a href="settings.html"
+            ><span class="nav-icon"><i data-lucide="settings"></i></span
+            ><span>Settings</span></a
+          ><a href="notifications.html"
+            ><span class="nav-icon"><i data-lucide="bell"></i></span
+            ><span>Notifications</span></a
+          ><a class="nav-hidden" href="contact.html"
+            ><span class="nav-icon"><i data-lucide="mail"></i></span
+            ><span>Contact</span></a
+          >
+        </nav>
+        <div class="sidebar-bottom">
+          <div class="mini-profile">
+            <img
+              class="avatar"
+              src="../assets/images/avatar.svg"
+              alt="Profile avatar"
+              data-user-avatar
+            />
+            <div>
+              <strong class="user-name">Guest</strong
+              ><small>Sign in to save progress</small>
+            </div>
+          </div>
+          <div class="xp"><i style="width: 72%"></i></div>
+          <small>Keep playing. Keep the story.</small>
+        </div>
+      </aside>
+      <div class="main">
+        <header class="topbar">
+          <button
+            class="mobile-menu"
+            id="menuButton"
+            aria-label="Open navigation"
+            aria-expanded="false"
+          >
+            <i data-lucide="menu"></i>
+          </button>
+          <nav class="top-nav" aria-label="Primary navigation">
+            <a href="../overview.html"
+              ><i data-lucide="layout-dashboard"></i><span>Overview</span></a
+            ><a href="games.html"
+              ><i data-lucide="library"></i><span>Discover</span></a
+            ><a href="achievements.html"
+              ><i data-lucide="trophy"></i><span>Achievements</span></a
+            ><a href="sessions.html"
+              ><i data-lucide="clock-3"></i><span>Sessions</span></a
+            ><a href="trophies.html"
+              ><i data-lucide="award"></i><span>Trophies</span></a
+            ><a href="friends.html"
+              ><i data-lucide="users"></i><span>Friends</span></a
+            >
+          </nav>
+          <div class="search">
+            <span class="search-icon"><i data-lucide="search"></i></span
+            ><input
+              id="siteSearch"
+              type="search"
+              placeholder="Search your games…"
+              aria-label="Search games"
+            />
+          </div>
+          <div class="top-actions">
+            <a
+              class="icon-link"
+              href="notifications.html"
+              aria-label="Notifications"
+              ><i data-lucide="bell"></i></a
+            ><a class="top-user" href="profile.html" aria-label="Open profile"
+              ><img
+                class="avatar"
+                src="../assets/images/avatar.svg"
+                alt="Profile"
+                data-user-avatar
+              /><span class="top-user-copy"
+                ><strong class="user-name">Guest</strong
+                ><small>Profile</small></span
+              ></a
+            >
+          </div>
+        </header>
+        <main id="main" class="content">
+          <div id="flash" class="notice hidden" role="status"></div>
+          <div class="page-header journey-page-header">
+            <div>
+              <div class="eyebrow">Your story</div>
+              <h1 class="page-title">The journey</h1>
+              <p class="lede">
+                A living record of what you played, when you played it and the
+                moments worth remembering.
+              </p>
+            </div>
+            <a class="btn btn-primary" href="games.html"
+              ><i data-lucide="plus"></i> Add a game</a
+            >
+          </div>
+          <section class="journey-stats">
+            <article class="card journey-stat">
+              <span>Games</span><strong id="journeyGames">0</strong
+              ><small>chapters started</small>
+            </article>
+            <article class="card journey-stat">
+              <span>Playtime</span><strong id="journeyHours">0m</strong
+              ><small>time logged</small>
+            </article>
+            <article class="card journey-stat">
+              <span>Achievements</span
+              ><strong id="journeyAchievements">0</strong
+              ><small>moments unlocked</small>
+            </article>
+            <article class="card journey-stat">
+              <span>Completed</span><strong id="journeyCompleted">0</strong
+              ><small>stories finished</small>
+            </article>
+          </section>
+          <section class="card journey-current" id="journeyCurrent">
+            <div class="empty">
+              Choose a game to make it your current chapter.
+            </div>
+          </section>
+          <section class="card journey-timeline-card">
+            <div class="section-head">
+              <div>
+                <span class="section-kicker">Your history</span>
+                <h2>Every chapter, in order</h2>
+              </div>
+              <span class="tiny-label">Latest first</span>
+            </div>
+            <div id="journeyTimeline" class="journey-timeline"></div>
+          </section>
+        </main>
+        <footer class="footer">
+          <div class="footer-inner">
+            <span>© <span id="year"></span> progLog</span
+            ><span
+              ><a href="privacy.html">Privacy</a> ·
+              <a href="terms.html">Terms</a> ·
+              <a href="contact.html">Contact</a></span
+            >
+          </div>
+        </footer>
+      </div>
+    </div>
+    <script type="module" src="../assets/js/app.js"></script>
+  </body>
+</html>
