@@ -1,20 +1,6 @@
-import { avatarData, AVATAR_PRESETS, DEFAULT_AVATAR, GAME_CHARACTERS } from "./avatar.js";
+import { avatarData, AVATAR_PRESETS, DEFAULT_AVATAR, GAME_CHARACTERS, GAME_CHARACTER_IMAGES } from "./avatar.js";
 import { saveUserDoc } from "./store.js";
 import { $ } from "./core.js";
-
-const GAME_CHARACTER_IMAGES = {
-  kratos: "https://vignette.wikia.nocookie.net/godofwar/images/5/52/Kratos.png/revision/latest?cb=20180220162022",
-  aloy: "https://cdn.mos.cms.futurecdn.net/v2/t%3A0%2Cl%3A420%2Ccw%3A1080%2Cch%3A1080%2Cq%3A80%2Cw%3A1080/7E2bttidPc9eveAwBNYXmG.jpg",
-  geralt: "https://assetsio.gnwcdn.com/the-witcher-3-eleito-o-jogo-do-ano-nos-the-game-awards-1449201813732.jpg?auto=webp&enable=upscale&fit=crop&format=png&height=1200&quality=100&width=1200",
-  link: "https://cdn.wikimg.net/en/zeldawiki/images/thumb/3/30/HW_Link_Render.png/1200px-HW_Link_Render.png",
-  sonic: "https://static.zerochan.net/Sonic.the.Hedgehog.%28Character%29.1024.4209105.webp",
-  lara: "https://midia.gruposinos.com.br/_midias/jpg/2016/04/29/photos_of_lara_croft_from_tomb_raider_4-1454636.jpg",
-  samus: "https://images2.wikia.nocookie.net/__cb20100215035740/metroid/images/5/58/Mprime_07_big.jpg",
-  mario: "https://i.pinimg.com/474x/a9/07/46/a907462c092ecc710299d978f1d3605b.jpg",
-  dante: "https://i.pinimg.com/originals/99/85/18/9985183f76e6c81617a5cb2f47ff96e4.jpg",
-  "master-chief": "https://s3.crackedcdn.com/phpimages/article/2/9/5/829295_800x450.jpg",
-  "2b": "https://vignette.wikia.nocookie.net/vsbattles/images/3/38/YoRHa_No.2_Type_B.png/revision/latest?cb=20170520232846",
-};
 
 const ensureStyles = () => {
   if (document.querySelector('link[data-profile-settings-style]')) return;
