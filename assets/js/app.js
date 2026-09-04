@@ -1,3 +1,83 @@
+/* From Uiverse.io by bociKond */
+const LOADER_HTML = `<div class="proglog-loader-screen" aria-label="Loading progLog" role="status"><div class="loader"></div></div>`;
+const LOADER_CSS = `
+/* From Uiverse.io by bociKond */
+.loader {
+  width: 44.8px;
+  height: 44.8px;
+  color: #554cb5;
+  position: relative;
+  background: radial-gradient(11.2px,currentColor 94%,#0000);
+}
+
+.loader:before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(10.08px at bottom right,#0000 94%,currentColor) top left,
+          radial-gradient(10.08px at bottom left ,#0000 94%,currentColor) top right,
+          radial-gradient(10.08px at top right,#0000 94%,currentColor) bottom left,
+          radial-gradient(10.08px at top left ,#0000 94%,currentColor) bottom right;
+  background-size: 22.4px 22.4px;
+  background-repeat: no-repeat;
+  animation: loader 1.5s infinite cubic-bezier(0.3,1,0,1);
+}
+
+@keyframes loader {
+  33% {
+    inset: -11.2px;
+    transform: rotate(0deg);
+  }
+
+  66% {
+    inset: -11.2px;
+    transform: rotate(90deg);
+  }
+
+  100% {
+    inset: 0;
+    transform: rotate(90deg);
+  }
+}
+
+.proglog-loader-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: grid;
+  place-items: center;
+  background: #100a11;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+
+.proglog-loader-screen.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+`;
+
+function showLoader() {
+  if (document.getElementById("proglog-loader-style")) return;
+  const style = document.createElement("style");
+  style.id = "proglog-loader-style";
+  style.textContent = LOADER_CSS;
+  document.head.appendChild(style);
+  document.body.insertAdjacentHTML("afterbegin", LOADER_HTML);
+}
+
+function hideLoader() {
+  const screen = document.querySelector(".proglog-loader-screen");
+  if (!screen) return;
+  screen.classList.add("is-hidden");
+  window.setTimeout(() => screen.remove(), 400);
+}
+
+showLoader();
+
 import { auth, configured, db } from "./modules/firebase.js";
 import {
   onAuthStateChanged,
@@ -134,7 +214,7 @@ if (configured && auth) {
     location.replace(`${relPath()}pages/auth.html`);
   else {
     await maybeOnboard(effective);
-    dispatch(effective);
+    await dispatch(effective);
   }
 }
 async function dispatch(u) {
@@ -161,6 +241,8 @@ async function dispatch(u) {
   } catch (e) {
     console.error(e);
     showToast(e.message || "Something went wrong.", "error");
+  } finally {
+    hideLoader();
   }
 }
 if ("serviceWorker" in navigator && location.protocol.startsWith("http"))
