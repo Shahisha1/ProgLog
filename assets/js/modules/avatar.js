@@ -21,6 +21,14 @@ export const GAME_CHARACTERS = [
   { id: "dante", name: "Dante", game: "Devil May Cry" },
   { id: "master-chief", name: "Master Chief", game: "Halo" },
   { id: "2b", name: "2B", game: "NieR:Automata" },
+  { id: "arthur", name: "Arthur Morgan", game: "Red Dead Redemption 2" },
+  { id: "ellie", name: "Ellie", game: "The Last of Us" },
+  { id: "cloud", name: "Cloud Strife", game: "Final Fantasy VII" },
+  { id: "leon", name: "Leon S. Kennedy", game: "Resident Evil" },
+  { id: "sephiroth", name: "Sephiroth", game: "Final Fantasy VII" },
+  { id: "jill", name: "Jill Valentine", game: "Resident Evil" },
+  { id: "doom-slayer", name: "Doom Slayer", game: "DOOM" },
+  { id: "kirby", name: "Kirby", game: "Kirby" },
 ];
 
 export const GAME_CHARACTER_IMAGES = {
@@ -35,6 +43,14 @@ export const GAME_CHARACTER_IMAGES = {
   dante: "https://i.pinimg.com/originals/99/85/18/9985183f76e6c81617a5cb2f47ff96e4.jpg",
   "master-chief": "https://s3.crackedcdn.com/phpimages/article/2/9/5/829295_800x450.jpg",
   "2b": "https://vignette.wikia.nocookie.net/vsbattles/images/3/38/YoRHa_No.2_Type_B.png/revision/latest?cb=20170520232846",
+  arthur: "https://i.weazel.ru/arthur-morgan.jpg/content/90/full.jpg",
+  ellie: "https://metagalaxia.com.br/wp-content/uploads/2023/03/Ellie-Williams.webp",
+  cloud: "https://images.saymedia-content.com/.image/t_share/MTc0NDU3Mzk5ODA4MzcwMDI0/top-5-strongest-characters-in-the-final-fantasy-7-universe.png",
+  leon: "https://static.wikia.nocookie.net/p__/images/b/b2/RE4R_Leon_Render.png/revision/latest/scale-to-width-down/1200?cb=20230412221629&path-prefix=protagonist",
+  sephiroth: "https://s1.zerochan.net/Sephiroth.600.4189950.jpg",
+  jill: "https://www.4gamer.net/games/489/G048917/20200403101/SS/007.jpg",
+  "doom-slayer": "https://www.pngall.com/wp-content/uploads/15/Doom-Slayer-PNG-Images.png",
+  kirby: "https://www.smashbros.com/wiiu-3ds/sp/images/character/kirby/main.png",
 };
 
 const SKINS = ["#f3c7a6", "#e4ad83", "#d99c76", "#c58b6a", "#b97858", "#8f5a45"];
