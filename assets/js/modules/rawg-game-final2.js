@@ -1,0 +1,1 @@
+export const RAWG_GAME_ENDPOINTS={achievements:id=>`/games/${id}/achievements?page_size=100`};
